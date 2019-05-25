@@ -1,50 +1,56 @@
-'use strict';
+"use strict";
 
-// load modules
-const express = require('express');
-const morgan = require('morgan');
+// Imports
+const express = require("express");
+const morgan = require("morgan");
 
-// variable to enable global error logging
-const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'true';
+// Whether or not a enable error logging
+const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === "true";
 
-// create the Express app
+// Express app setup
 const app = express();
 
-// setup morgan which gives us http request logging
-app.use(morgan('dev'));
+// Middleware
+app.use(morgan("dev")); // Log HTTP requests
 
-// TODO setup your api routes here
+// Routes
+// TODO: Setup routes for API
 
-// setup a friendly greeting for the root route
+// /: Friendly welcome message
 app.get('/', (req, res) => {
-  res.json({
-    message: 'Welcome to the REST API project!',
-  });
+    // Respond with welcome message
+    res.json({
+        message: "Welcome to the REST API project!",
+    });
 });
 
-// send 404 if no other route matched
+// All other routes are a 404
 app.use((req, res) => {
-  res.status(404).json({
-    message: 'Route Not Found',
-  });
+    // Set status to 404 and respond with "not found" message
+    res.status(404).json({
+        message: 'Route Not Found',
+    });
 });
 
-// setup a global error handler
+// Error Handlers
 app.use((err, req, res, next) => {
-  if (enableGlobalErrorLogging) {
-    console.error(`Global error handler: ${JSON.stringify(err.stack)}`);
-  }
+    // If we should log errors,
+    if (enableGlobalErrorLogging) {
+        // Log the error to the console
+        console.error(`Global error handler: ${JSON.stringify(err.stack)}`);
+    }
 
-  res.status(err.status || 500).json({
-    message: err.message,
-    error: {},
-  });
+    // Set error status and respond with error message
+    res.status(err.status || 500).json({
+        message: err.message,
+        error: {},
+    });
 });
 
-// set our port
+// Set port to listen on
 app.set('port', process.env.PORT || 5000);
 
-// start listening on our port
+// Listed on app port
 const server = app.listen(app.get('port'), () => {
-  console.log(`Express server is listening on port ${server.address().port}`);
+    console.log(`Express server is listening on port ${server.address().port}`);
 });
