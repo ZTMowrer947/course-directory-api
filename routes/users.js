@@ -1,6 +1,6 @@
 // Imports
 const express = require("express");
-const UserService = require("../services");
+const UserService = require("../services/UserService");
 
 // Express router setup
 const router = express.Router();
