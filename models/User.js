@@ -1,7 +1,7 @@
 // Imports
 const Sequelize = require("sequelize");
 const sequelize = require("../dbConnection");
-const Course = require("./Course");
+const bcrypt = require("bcryptjs");
 
 // Model
 class User extends Sequelize.Model {}
@@ -39,6 +39,18 @@ User.init({
 }, {
     sequelize,
     modelName: "user",
+});
+
+// Model hooks
+User.beforeCreate((user, options) => {
+    // Generate salt
+    const salt = bcrypt.genSaltSync(10);
+
+    // Generate hash
+    const hash = bcrypt.hashSync(user.password, salt);
+
+    // Set user password to hash
+    user.password = hash;
 });
 
 // Export
