@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Routes
 router.route("/")
-    // GET /users: Get currently authenticated user
+    // GET /api/users: Get currently authenticated user
     .get((req, res) => {
         // TODO: Add authentication
 
@@ -14,7 +14,9 @@ router.route("/")
 
         // Respond with "Not Implemented" status and message
         res.status(501).json({ message: "Not Implemented Yet"});
-    }).post((req, res) => {
+    })
+    // POST /api/users: Create user
+    .post((req, res) => {
         // TODO: Create user
 
         // Respond with "Not Implemented" status and message
