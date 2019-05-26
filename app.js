@@ -3,6 +3,7 @@
 // Imports
 const express = require("express");
 const morgan = require("morgan");
+const apiRouter = require("./routes");
 
 // Whether or not a enable error logging
 const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === "true";
@@ -14,7 +15,7 @@ const app = express();
 app.use(morgan("dev")); // Log HTTP requests
 
 // Routes
-// TODO: Setup routes for API
+app.use("/api", apiRouter);
 
 // /: Friendly welcome message
 app.get('/', (req, res) => {
