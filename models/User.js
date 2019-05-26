@@ -38,7 +38,7 @@ User.init({
     },
 }, {
     sequelize,
-    modelName: "Users",
+    modelName: "user",
 });
 
 // Export

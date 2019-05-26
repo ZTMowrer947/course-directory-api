@@ -34,7 +34,7 @@ Course.init({
     },
 }, {
     sequelize,
-    modelName: "Courses",
+    modelName: "course",
 });
 
 // Export

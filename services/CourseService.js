@@ -65,7 +65,7 @@ class CourseService {
             await user.addCourse(course);
 
             // Get course with new association
-            const newCourse = (await user.getCourses({ where: { UserId: user.id} }))[0];
+            const newCourse = (await user.getCourses({ where: { userId: user.id} }))[0];
 
             // Return the new course
             return newCourse;
