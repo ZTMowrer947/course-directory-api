@@ -1,5 +1,6 @@
 // Imports
 const express = require("express");
+const authMiddleware = require("../middleware/auth");
 const UserService = require("../services/UserService");
 
 // Express router setup
@@ -8,7 +9,7 @@ const router = express.Router();
 // Middleware
 router.use((req, res, next) => {
     // Provide user service
-    req.service = new UserService();
+    req.userService = new UserService();
 
     // Pass control to next middleware/route
     next();
@@ -17,13 +18,9 @@ router.use((req, res, next) => {
 // Routes
 router.route("/")
     // GET /api/users: Get currently authenticated user
-    .get((req, res) => {
-        // TODO: Add authentication
-
-        // TODO: Get authenticated user
-
-        // Respond with "Not Implemented" status and message
-        res.status(501).json({ message: "Not Implemented Yet"});
+    .get(authMiddleware, (req, res) => {
+        // Response with authenticated user
+        res.json(req.user);
     })
     // POST /api/users: Create user
     .post(async (req, res) => {
@@ -36,7 +33,7 @@ router.route("/")
         }
 
         // Create user
-        await req.service.create(userData);
+        await req.userService.create(userData);
 
         // Set Location header to root endpoint
         res.set("Location", "/");
