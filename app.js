@@ -1,7 +1,6 @@
 "use strict";
 
 // Imports
-const http = require("http");
 const express = require("express");
 const morgan = require("morgan");
 const apiRouter = require("./routes");
@@ -52,25 +51,5 @@ app.use((err, req, res, next) => {
 // Set port to listen on
 app.set('port', process.env.PORT || 5000);
 
-// HTTP Server setup
-const server = http.createServer(app);
-
-// Listening on specified port
-server.listen(app.get('port'), () => {
-    console.log(`Express server is listening on port ${server.address().port}`);
-});
-
-// When recieving CTRL-C,
-process.on("SIGINT", () => {
-    // Display shutting down message
-    console.log("Shutting down express server...");
-
-    // Close HTTP server
-    server.close(() => {
-        // Display shutdown message
-        console.log("Shutdown complete.");
-
-        // Exit with success status
-        process.exit(0);
-    });
-});
+// Export
+module.exports = app;
