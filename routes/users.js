@@ -29,7 +29,7 @@ router.route("/")
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             emailAddress: req.body.emailAddress,
-            password: req.body.emailAddress,
+            password: req.body.password,
         }
 
         // Create user
