@@ -65,7 +65,7 @@ class CourseService {
             await user.addCourse(course);
 
             // Get course with new association
-            const newCourse = (await user.getCourses({ where: { userId: user.id} }))[0];
+            const newCourse = this.getById(course.id)
 
             // Return the new course
             return newCourse;
@@ -99,6 +99,12 @@ class CourseService {
 
             // Validate and save updates
             await course.save();
+
+            // Get course with association
+            const updatedCourse = this.getById(course.id);
+
+            // Return the updated course
+            return updatedCourse;
         } catch (error) {
             // If the error caught was a validation error,
             if (error.name.endsWith("ValidationError")) {
