@@ -13,6 +13,8 @@ const app = express();
 
 // Middleware
 app.use(morgan("dev")); // Log HTTP requests
+app.use(express.urlencoded({ extended: true })) // Parse urlencoded bodies
+app.use(express.json()) // Parse JSON bodies
 
 // Routes
 app.use("/api", apiRouter);
