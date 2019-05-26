@@ -24,8 +24,6 @@ if (testing) {
     logging = console.log;
 }
 
-console.log(logging);
-
 // Database connection setup
 const sequelize = new Sequelize({
     // Use SQLite dialect
