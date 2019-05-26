@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon .",
     "seed": "cross-env DB_ENABLE_LOGGING=true node './seed'",
-    "test": "jest"
+    "test": "cross-env NODE_ENV=test jest"
   },
   "keywords": [],
   "author": "",
