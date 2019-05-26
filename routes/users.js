@@ -9,6 +9,9 @@ const router = express.Router();
 router.use((req, res, next) => {
     // Provide user service
     req.service = new UserService();
+
+    // Pass control to next middleware/route
+    next();
 });
 
 // Routes
