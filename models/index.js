@@ -6,6 +6,10 @@ const Course = require("./Course");
 User.hasMany(Course);
 Course.belongsTo(User);
 
+// Sync models
+User.sync()
+Course.sync();
+
 // Exports
 module.exports = {
     User,

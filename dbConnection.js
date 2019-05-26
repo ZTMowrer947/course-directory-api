@@ -52,8 +52,5 @@ sequelize.authenticate()
         process.exit(1);
     });
 
-// Synchronize database
-sequelize.sync();
-
 // Export
 module.exports = sequelize;
