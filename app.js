@@ -12,7 +12,10 @@ const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === "tr
 const app = express();
 
 // Middleware
-app.use(morgan("dev")); // Log HTTP requests
+if (!process.env.NODE_ENV.startsWith("test")) {
+    app.use(morgan("dev")); // Log HTTP requests if not doing testing
+
+}
 app.use(express.urlencoded({ extended: true })) // Parse urlencoded bodies
 app.use(express.json()) // Parse JSON bodies
 
