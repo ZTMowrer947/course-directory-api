@@ -6,7 +6,7 @@ const app = require("../../app");
 // Test Suite
 describe("/api/v1/courses", () => {
     // Declare variables for tests
-    let userCredentials, user, courseId;
+    let userCredentials, user, courseId, courseData;
 
     // Run before all tests
     beforeAll(async () => {
@@ -42,16 +42,16 @@ describe("/api/v1/courses", () => {
 
         // Store user for test usage
         user = userGetResponse.body;
+
+        // Define course data
+        courseData = {
+            title: "How to write tests using Jest",
+            description: "In this course, you'll learn how to write tests for your JavaScript code using the Jest testing framework.",
+        };
     });
 
     describe("POST method", () => {
         test("should create a new course, owned by the authenticated user", async () => {
-            // Define course data
-            const courseData = {
-                title: "How to write tests using Jest",
-                description: "In this course, you'll learn how to write tests for your JavaScript code using the Jest testing framework.",
-            };
-
             // Create course
             const response = await request(app)
                 .post("/api/courses")
@@ -63,6 +63,18 @@ describe("/api/v1/courses", () => {
 
             // Expect Location header to be set correctly
             expect(response.headers.location).toEqual(expect.stringMatching(/^\/api\/courses\/\d+$/));
+
+            // Get location of new course
+            const location = response.headers.location
+
+            // Get last index of "/" in location
+            const lastSlashIndex = location.lastIndexOf("/");
+
+            // Get course ID from location
+            courseId = parseInt(location.substring(lastSlashIndex + 1));
+
+            // Expect courseId not to be NaN (not a number)
+            expect(isNaN(courseId)).toBe(false);
         });
     });
 })
