@@ -77,4 +77,32 @@ describe("/api/v1/courses", () => {
             expect(isNaN(courseId)).toBe(false);
         });
     });
+
+    describe("GET method", () => {
+        test("should retrieve a list of all courses", async () => {
+            // Get list of courses
+            const response = await request(app)
+                .get("/api/courses");
+
+            // Expect a 200 OK Response
+            expect(response.status).toBe(200);
+
+            // Find course with ID matching the one stored earlier
+            const testCourse = response.body.find(course => course.id === courseId);
+
+            // Expect test course to have been found
+            expect(testCourse).not.toBeFalsy();
+
+            // Expect test course to match input data
+            expect(testCourse.title).toBe(courseData.title);
+            expect(testCourse.description).toBe(courseData.description);
+
+            // Expect test course to be owned be test user
+            expect(testCourse.userId).toBe(user.id);
+            expect(testCourse.user.firstName).toBe(user.firstName);
+            expect(testCourse.user.lastName).toBe(user.lastName);
+            expect(testCourse.user.emailAddress).toBe(user.emailAddress);
+            expect(testCourse.user.password).toBe(user.password);
+        });
+    });
 })
