@@ -17,6 +17,20 @@ router.use((req, res, next) => {
     next();
 });
 
+// Handle ID param
+router.param("id", async (req, res, next, id) => {
+    try {
+        // Get course with provided ID
+        const course = await req.courseService.getById(id);
+
+        // Attach course to request object
+        req.course = course;
+    } catch (error) {
+        // Pass caught errors to error handlers
+        next(error);
+    }
+});
+
 // Routes
 router.route("/")
     // GET /api/courses: Get list of courses
@@ -50,10 +64,8 @@ router.route("/")
 router.route("/:id")
     // GET /api/courses/:id: Get course with provided ID
     .get((req, res) => {
-        // TODO: Get user by ID
-
-        // Respond with "Not Implemented" status and message
-        res.status(501).json({ message: "Not Implemented Yet"});
+        // Response with course retrived with the provided ID
+        res.json(req.course);
     })
     // PUT /api/courses/:id: Update course with provided ID
     .put((req, res) => {
