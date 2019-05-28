@@ -96,13 +96,44 @@ describe("/api/v1/courses", () => {
             // Expect test course to match input data
             expect(testCourse.title).toBe(courseData.title);
             expect(testCourse.description).toBe(courseData.description);
+            expect(testCourse.estimatedTime).toBeNull();
+            expect(testCourse.materialsNeeded).toBeNull();
 
-            // Expect test course to be owned be test user
+            // Expect test course to be owned by test user
             expect(testCourse.userId).toBe(user.id);
             expect(testCourse.user.firstName).toBe(user.firstName);
             expect(testCourse.user.lastName).toBe(user.lastName);
             expect(testCourse.user.emailAddress).toBe(user.emailAddress);
             expect(testCourse.user.password).toBe(user.password);
+        });
+    });
+
+    describe("/:id", () => {
+        describe("GET method", () => {
+            test("should return a course with the provided ID", async () => {
+                // Get one course
+                const response = await request(app)
+                    .get(`/api/courses/${courseId}`);
+
+                // Expect a 200 OK response
+                expect(response.status).toBe(200);
+                
+                // Get course from response body
+                const course = response.body;
+
+                // Expect course to match course input data
+                expect(course.title).toBe(courseData.title);
+                expect(course.description).toBe(courseData.description);
+                expect(course.estimatedTime).toBeNull();
+                expect(course.materialsNeeded).toBeNull();
+
+                // Expect test course to be owned by test user
+                expect(course.userId).toBe(user.id);
+                expect(course.user.firstName).toBe(user.firstName);
+                expect(course.user.lastName).toBe(user.lastName);
+                expect(course.user.emailAddress).toBe(user.emailAddress);
+                expect(course.user.password).toBe(user.password);
+            });
         });
     });
 })
