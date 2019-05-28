@@ -23,7 +23,7 @@ router.route("/")
     .get(async (req, res) => {
         // Get courses
         const courses = await req.courseService.getList();
-        
+
         // Respond with list of courses
         res.json(courses);
     })
@@ -38,7 +38,10 @@ router.route("/")
         };
 
         // Create course
-        await req.courseService.create(req.user, courseData);
+        const user = await req.courseService.create(req.user, courseData);
+
+        // Set Location header
+        res.set("Location", `/api/courses/${user.id}`);
 
         // Respond with 201 Status
         res.status(201).end();
