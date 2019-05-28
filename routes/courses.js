@@ -25,6 +25,9 @@ router.param("id", async (req, res, next, id) => {
 
         // Attach course to request object
         req.course = course;
+
+        // Pass control to next middleware/route
+        next();
     } catch (error) {
         // Pass caught errors to error handlers
         next(error);
