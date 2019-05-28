@@ -67,6 +67,22 @@ router.route("/:id")
         // Response with course retrived with the provided ID
         res.json(req.course);
     })
+    // Add middleware to remaining route handlers in this chain
+    .all(authMiddleware, (req, res, next) => {
+        // If the authenticated user does not own the requested course,
+        if (req.user.id !== req.course.userId) {
+            // Create a "forbidden" error
+            const error = new Error("You may not modify the requested course because you do not own the course.");
+            error.name = "ForbiddenError";
+            error.status = 403;
+
+            // Pass error to error handlers
+            next(error);
+        } else {
+            // Otherwise, pass control to next route handler
+            next();
+        }
+    })
     // PUT /api/courses/:id: Update course with provided ID
     .put((req, res) => {
         // TODO: Update user by ID
