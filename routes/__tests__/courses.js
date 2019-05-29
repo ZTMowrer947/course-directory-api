@@ -117,7 +117,7 @@ describe("/api/v1/courses", () => {
 
                 // Expect a 200 OK response
                 expect(response.status).toBe(200);
-                
+
                 // Get course from response body
                 const course = response.body;
 
@@ -133,6 +133,70 @@ describe("/api/v1/courses", () => {
                 expect(course.user.lastName).toBe(user.lastName);
                 expect(course.user.emailAddress).toBe(user.emailAddress);
                 expect(course.user.password).toBe(user.password);
+            });
+        });
+
+        describe("PUT method", () => {
+            test("should update a course", async () => {
+                // Define new course data
+                courseData = {
+                    title: "liveJ gnisu stset etirw ot woH",
+                    description: "CHAOSCHAOSCHAOS",
+                    estimatedTime: "ALL OF ETERNITY",
+                    materialsNeeded: "FUN FUN",
+                };
+
+                // Update course
+                const response = await request(app)
+                    .put(`/api/courses/${courseId}`)
+                    .auth(userCredentials.emailAddress, userCredentials.password)
+                    .send(courseData);
+
+
+                // Expect a 204 Response
+                expect(response.status).toBe(204);
+
+                // Retrieve the updated course
+                const courseGetResponse = await request(app)
+                    .get(`/api/courses/${courseId}`);
+
+                // Expect a 200 Response
+                expect(courseGetResponse.status).toBe(200);
+
+                // Get course from response body
+                const course = courseGetResponse.body;
+
+                // Expect course to have updated information
+                expect(course.title).toBe(courseData.title);
+                expect(course.description).toBe(courseData.description);
+                expect(course.estimatedTime).toBe(courseData.estimatedTime);
+                expect(course.materialsNeeded).toBe(courseData.materialsNeeded);
+
+                // Expect test course to be owned by test user
+                expect(course.userId).toBe(user.id);
+                expect(course.user.firstName).toBe(user.firstName);
+                expect(course.user.lastName).toBe(user.lastName);
+                expect(course.user.emailAddress).toBe(user.emailAddress);
+                expect(course.user.password).toBe(user.password);
+            });
+        });
+
+        describe("DELETE method", () => {
+            test("should delete a course", async () => {
+                // Delete course
+                const response = await request(app)
+                    .delete(`/api/courses/${courseId}`)
+                    .auth(userCredentials.emailAddress, userCredentials.password);
+
+                // Expect a 204 response
+                expect(response.status).toBe(204);
+
+                // Attempt to find course by ID
+                const courseGetResponse = await request(app)
+                    .get(`/api/course/${courseId}`);
+
+                // Expect a 404 response
+                expect(courseGetResponse.status).toBe(404);
             });
         });
     });
