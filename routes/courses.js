@@ -87,18 +87,28 @@ router.route("/:id")
         }
     })
     // PUT /api/courses/:id: Update course with provided ID
-    .put((req, res) => {
-        // TODO: Update user by ID
+    .put(async (req, res) => {
+        // Define course update data
+        const updateData = {
+            title: req.body.title,
+            description: req.body.description,
+            estimatedTime: req.body.estimatedTime,
+            materialsNeeded: req.body.materialsNeeded,
+        };
 
-        // Respond with "Not Implemented" status and message
-        res.status(501).json({ message: "Not Implemented Yet"});
+        // Update course
+        await req.courseService.update(req.course, updateData);
+
+        // Respond with 204 status
+        res.status(204).end();
     })
     // DELETE /api/courses/:id: Delete course with provided ID
-    .delete((req, res) => {
-        // TODO: Delete user by ID
+    .delete(async (req, res) => {
+        // Delete user by ID
+        await req.courseService.delete(req.user, req.course);
 
-        // Respond with "Not Implemented" status and message
-        res.status(501).json({ message: "Not Implemented Yet"});
+        // Respond with 204 status
+        res.status(204).end();
     });
 
 // Export
