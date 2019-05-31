@@ -129,7 +129,6 @@ describe("/api/v1/courses", () => {
             expect(testCourse.user.firstName).toBe(user.firstName);
             expect(testCourse.user.lastName).toBe(user.lastName);
             expect(testCourse.user.emailAddress).toBe(user.emailAddress);
-            expect(testCourse.user.password).toBe(user.password);
         });
     });
 
@@ -180,7 +179,6 @@ describe("/api/v1/courses", () => {
                 expect(course.user.firstName).toBe(user.firstName);
                 expect(course.user.lastName).toBe(user.lastName);
                 expect(course.user.emailAddress).toBe(user.emailAddress);
-                expect(course.user.password).toBe(user.password);
             });
 
             test("should return a 404 error if a course with the provided ID isn't found", async () => {
@@ -246,7 +244,6 @@ describe("/api/v1/courses", () => {
                 expect(course.user.firstName).toBe(user.firstName);
                 expect(course.user.lastName).toBe(user.lastName);
                 expect(course.user.emailAddress).toBe(user.emailAddress);
-                expect(course.user.password).toBe(user.password);
             });
 
             test("should return a 400 error when given invalid data", async () => {
