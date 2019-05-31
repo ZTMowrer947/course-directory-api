@@ -47,6 +47,22 @@ describe("Course service", () => {
             expect(course.estimatedTime).toBeNull();
             expect(course.materialsNeeded).toBeNull();
         });
+
+        test("should reject with a validation error if invalid data was provided", async () => {
+            // Define invalid course data
+            const invalidData = {
+                title: "How NOT to structure tests in Jest",
+                estimatedTime: "1 nanosecond",
+            };
+
+            // Model expected error
+            const expectedError = new Error("notNull Violation: description is a required field.");
+            expectedError.name = "SequelizeValidationError";
+            expectedError.status = 400;
+
+            // Expect course creation to reject with expected error
+            await expect(service.create(user, invalidData)).rejects.toThrow(expectedError);
+        });
     });
 
     describe("getList function", () => {
@@ -91,6 +107,19 @@ describe("Course service", () => {
             expect(testCourse.user.lastName).toBe(user.lastName);
             expect(testCourse.user.emailAddress).toBe(user.emailAddress);
         });
+
+        test("should reject if a course with the given ID was not found", async () => {
+            // Define ID of nonexistent course
+            const testId = Math.pow(2, 32);
+
+            // Model expected error
+            const expectedError = new Error(`Course not found with ID "${testId}"`);
+            expectedError.name = "NotFoundError";
+            expectedError.status = 404;
+
+            // Expect course retrieval to reject with expected error
+            await expect(service.getById(testId)).rejects.toThrow(expectedError);
+        })
     });
 
     describe("update function", () => {
@@ -118,6 +147,21 @@ describe("Course service", () => {
 
             // Store updated course for later tests
             course = updatedCourse;
+        });
+
+        test("should reject with a validation error if invalid data was provided", async () => {
+            // Define invalid course data
+            const invalidData = {
+                title: "",
+            };
+
+            // Model expected error
+            const expectedError = new Error("Validation error: title is a required field");
+            expectedError.name = "SequelizeValidationError";
+            expectedError.status = 400;
+
+            // Expect course creation to reject with expected error
+            await expect(service.update(course, invalidData)).rejects.toThrow(expectedError);
         });
     });
 

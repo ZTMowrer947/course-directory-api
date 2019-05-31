@@ -85,16 +85,16 @@ class CourseService {
     async update(course, updateData) {
         try {
             // Update each course property if it differs from current values
-            if (updateData.title && updateData.title !== course.title)
+            if (updateData.title !== undefined && updateData.title !== course.title)
                 course.title = updateData.title;
 
-            if (updateData.description && updateData.description !== course.description)
+            if (updateData.description !== undefined && updateData.description !== course.description)
                 course.description = updateData.description;
 
-            if (updateData.estimatedTime && updateData.title !== course.estimatedTime)
+            if (updateData.estimatedTime !== undefined && updateData.title !== course.estimatedTime)
                 course.estimatedTime = updateData.estimatedTime;
 
-            if (updateData.materialsNeeded && updateData.materialsNeeded !== course.materialsNeeded)
+            if (updateData.materialsNeeded !== undefined && updateData.materialsNeeded !== course.materialsNeeded)
                 course.materialsNeeded = updateData.materialsNeeded;
 
             // Validate and save updates

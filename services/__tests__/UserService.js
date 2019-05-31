@@ -33,6 +33,19 @@ describe("User service", () => {
             expect(user.emailAddress).toBe(userData.emailAddress);
             expect(bcrypt.compareSync(userData.password, user.password)).toBeTruthy();
         });
+
+        test("should reject with a validation error if invalid data is provided", async () => {
+            // Define invalid user data
+            const invalidData = {
+                firstName: "In",
+                lastName: "valid",
+                emailAddress: "nope",
+                password: "invalidpass",
+            };
+
+            // Expect user creation to reject with validation error
+            await expect(service.create(invalidData)).rejects.toThrow("Validation error: email address must be in the form of an email address");
+        });
     });
 
     describe("getUserByEmail method", () => {
@@ -45,6 +58,17 @@ describe("User service", () => {
             expect(user.lastName).toBe(userData.lastName);
             expect(user.emailAddress).toBe(userData.emailAddress);
             expect(bcrypt.compareSync(userData.password, user.password)).toBeTruthy();
+        });
+
+        test("should reject with a 404 error if user with given email was not found", async () => {
+            // Define nonexistent email
+            const testEmail = "nope@example.fail";
+
+            // Model expected error message
+            const expectedMessage = `User not found with email "${testEmail}"`;
+
+            // Expect user retrieval to reject with expected message
+            await expect(service.getUserByEmail(testEmail)).rejects.toThrow(expectedMessage);
         });
     });
 });
