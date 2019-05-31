@@ -59,7 +59,35 @@ describe("/api/users", () => {
 
             // Expect response body to equal expected error
             expect(response.body).toStrictEqual(expectedError);
-        })
+        });
+
+        test("should return a 400 if the provided email address is already in use", async () => {
+            // Define user data
+            const userData = {
+                firstName: "Examply",
+                lastName: "Exampleton",
+                emailAddress,
+                password: "password",
+            };
+
+            // POST to API
+            const response = await request(app)
+                .post("/api/users")
+                .set("Content-Type", "application/json")
+                .send(userData);
+
+            // Model expected error
+            const expectedError = {
+                error: "Bad Request",
+                message: "Email address has already been used by another user.",
+            };
+            
+            // Expect a 400 response
+            expect(response.status).toBe(400);
+
+            // Expect response body to equal expected error
+            expect(response.body).toStrictEqual(expectedError);
+        });
     });
 
     describe("GET method", () => {
