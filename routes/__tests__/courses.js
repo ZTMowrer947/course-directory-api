@@ -76,6 +76,31 @@ describe("/api/v1/courses", () => {
             // Expect courseId not to be NaN (not a number)
             expect(isNaN(courseId)).toBe(false);
         });
+
+        test("should return a 400 error when given invalid data", async () => {
+            // Define invalid course data
+            const invalidData = {
+                title: "How not to test Express endpoints",
+            };
+
+            // Attempt to create course
+            const response = await request(app)
+                .post("/api/courses")
+                .auth(userCredentials.emailAddress, userCredentials.password)
+                .send(invalidData);
+
+            // Model expected error
+            const expectedError = {
+                error: "Bad Request",
+                message: "notNull Violation: description is a required field.",
+            }
+
+            // Expect a 400 response
+            expect(response.status).toBe(400);
+
+            // Expect response body to equal expected error
+            expect(response.body).toStrictEqual(expectedError);
+        });
     });
 
     describe("GET method", () => {
@@ -109,6 +134,29 @@ describe("/api/v1/courses", () => {
     });
 
     describe("/:id", () => {
+        // Declare variables for ID endpoint tests
+        let user2Credentials;
+
+        beforeAll(async () => {
+            // Define user 2 credentials
+            user2Credentials = {
+                emailAddress: "mallory@example.tld",
+                password: "hahaha",
+            }
+
+            // Define user 2 data
+            const userData = {
+                ...user2Credentials,
+                firstName: "Mallory",
+                lastName: "Mallet",
+            };
+
+            // Create second user
+            await request(app)
+                .post("/api/users")
+                .send(userData);
+        })
+
         describe("GET method", () => {
             test("should return a course with the provided ID", async () => {
                 // Get one course
@@ -133,6 +181,27 @@ describe("/api/v1/courses", () => {
                 expect(course.user.lastName).toBe(user.lastName);
                 expect(course.user.emailAddress).toBe(user.emailAddress);
                 expect(course.user.password).toBe(user.password);
+            });
+
+            test("should return a 404 error if a course with the provided ID isn't found", async () => {
+                // Define ID of nonexistent course
+                const testId = Math.pow(2, 32);
+
+                // Attempt to get one course
+                const response = await request(app)
+                    .get(`/api/courses/${testId}`);
+
+                // Model expected error
+                const expectedError = {
+                    error: "Not Found",
+                    message: `Course not found with ID "${testId}"`,
+                };
+
+                // Expect a 404 response
+                expect(response.status).toBe(404);
+
+                // Expect response body to equal expected error
+                expect(response.body).toStrictEqual(expectedError);
             });
         });
 
@@ -179,9 +248,125 @@ describe("/api/v1/courses", () => {
                 expect(course.user.emailAddress).toBe(user.emailAddress);
                 expect(course.user.password).toBe(user.password);
             });
+
+            test("should return a 400 error when given invalid data", async () => {
+                // Define invalid course data
+                const invalidData = {
+                    title: "",
+                };
+    
+                // Attempt to create course
+                const response = await request(app)
+                    .put(`/api/courses/${courseId}`)
+                    .auth(userCredentials.emailAddress, userCredentials.password)
+                    .send(invalidData);
+
+                // Model expected error
+                const expectedError = {
+                    error: "Bad Request",
+                    message: "Validation error: title is a required field",
+                }
+    
+                // Expect a 400 response
+                expect(response.status).toBe(400);
+
+                // Expect response body to equal expected error
+                expect(response.body).toStrictEqual(expectedError);
+            });
+
+            test("should return a 404 error if a course with the provided ID isn't found", async () => {
+                // Define ID of nonexistent course
+                const testId = Math.pow(2, 32);
+
+                // Attempt to get one course
+                const response = await request(app)
+                    .put(`/api/courses/${testId}`)
+                    .auth(userCredentials.emailAddress, userCredentials.password);
+
+                // Model expected error
+                const expectedError = {
+                    error: "Not Found",
+                    message: `Course not found with ID "${testId}"`,
+                };
+
+                // Expect a 404 response
+                expect(response.status).toBe(404);
+
+                // Expect response body to equal expected error
+                expect(response.body).toStrictEqual(expectedError);
+            });
+
+            test("should return a 403 error if a user tries to update a course belonging to another user", async () => {
+                // Define new course data
+                courseData = {
+                    title: "liveJ gnisu stset etirw ot woH",
+                    description: "CHAOSCHAOSCHAOS",
+                    estimatedTime: "ALL OF ETERNITY",
+                    materialsNeeded: "FUN FUN",
+                };
+
+                // Attempt to update course
+                const response = await request(app)
+                    .put(`/api/courses/${courseId}`)
+                    .auth(user2Credentials.emailAddress, user2Credentials.password)
+                    .send(courseData);
+
+                // Model expected error
+                const expectedError = {
+                    error: "Forbidden",
+                    message: "You may not modify the requested course because you do not own the course.",
+                };
+
+                // Expect a 403 response
+                expect(response.status).toBe(403);
+
+                // Expect response body to equal expected error
+                expect(response.body).toStrictEqual(expectedError);
+            });
         });
 
         describe("DELETE method", () => {
+            test("should return a 404 error if a course with the provided ID isn't found", async () => {
+                // Define ID of nonexistent course
+                const testId = Math.pow(2, 32);
+
+                // Attempt to get one course
+                const response = await request(app)
+                    .delete(`/api/courses/${testId}`)
+                    .auth(userCredentials.emailAddress, userCredentials.password);
+
+                // Model expected error
+                const expectedError = {
+                    error: "Not Found",
+                    message: `Course not found with ID "${testId}"`,
+                };
+
+                // Expect a 404 response
+                expect(response.status).toBe(404);
+
+                // Expect response body to equal expected error
+                expect(response.body).toStrictEqual(expectedError);
+            });
+
+            test("should return a 403 error if a user tries to delete a course belonging to another user", async () => {
+                // Attempt to delete course
+                const response = await request(app)
+                    .delete(`/api/courses/${courseId}`)
+                    .auth(user2Credentials.emailAddress, user2Credentials.password)
+
+                // Model expected error
+                const expectedError = {
+                    error: "Forbidden",
+                    message: "You may not modify the requested course because you do not own the course.",
+                };
+
+                // Expect a 403 response
+                expect(response.status).toBe(403);
+
+                // Expect response body to equal expected error
+                expect(response.body).toStrictEqual(expectedError);
+            });
+
             test("should delete a course", async () => {
                 // Delete course
                 const response = await request(app)
