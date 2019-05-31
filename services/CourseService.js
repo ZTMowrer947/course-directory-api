@@ -71,20 +71,14 @@ class CourseService {
     async create(user, courseData) {
         try {
             // Create Course object
-            const course = Course.build({
+            const course = await user.createCourse({
                 title: courseData.title,
                 description: courseData.description,
                 estimatedTime: courseData.estimatedTime,
                 materialsNeeded: courseData.materialsNeeded,
             });
 
-            // Validate and save course data
-            await course.save();
-
-            // Associate course with user
-            await user.addCourse(course);
-
-            // Get course with new association
+            // Get course with new data
             const newCourse = this.getById(course.id)
 
             // Return the new course
