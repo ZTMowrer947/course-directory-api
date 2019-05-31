@@ -106,7 +106,7 @@ router.route("/:id")
     // DELETE /api/courses/:id: Delete course with provided ID
     .delete(asyncHandler(async (req, res) => {
         // Delete user by ID
-        await req.courseService.delete(req.user, req.course);
+        await req.courseService.delete(req.course);
 
         // Respond with 204 status
         res.status(204).end();

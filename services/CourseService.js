@@ -132,10 +132,7 @@ class CourseService {
     }
 
     // Delete a course
-    async delete(user, course) {
-        // Remove association between user and course
-        await user.removeCourse(course);
-
+    async delete(course) {
         // Delete course
         await course.destroy();
     }

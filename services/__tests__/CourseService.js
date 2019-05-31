@@ -173,7 +173,7 @@ describe("Course service", () => {
             expectedError.status = 404;
 
             // Delete course
-            await service.delete(user, course);
+            await service.delete(course);
 
             // Expect rejection when trying to find course by ID
             expect(service.getById(course.id)).rejects.toEqual(expectedError);
