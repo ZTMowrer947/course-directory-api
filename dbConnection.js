@@ -6,7 +6,7 @@ const Sequelize = require("sequelize");
 let testing = process.env.NODE_ENV.startsWith("test");
 
 // Declare variable for if we should log
-let shouldLog = Boolean(process.env.DB_ENABLE_LOGGING);
+let shouldLog = process.env.DB_ENABLE_LOGGING === "true";
 
 // Declare env-dependent options
 let storage;
