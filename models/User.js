@@ -21,20 +21,57 @@ User.init({
         
         // Do not allow null values
         allowNull: false,
+
+        validate: {
+            // Field mustn't be null
+            notNull: {
+                msg: "first name is a required field.",
+            },
+
+            // Field must only include letters, numbers, and certain punctuation
+            is: {
+                args: [/^[A-Za-z0-9.,' ]+$/],
+                msg: "first name must only consist of letters, numbers, and punctuation",
+            },
+        },
     },
     lastName: {
         type: Sequelize.STRING(96),
         allowNull: false,
+
+        validate: {
+            // Field mustn't be null
+            notNull: {
+                msg: "last name is a required field.",
+            },
+
+            // Field must only include letters, numbers, and certain punctuation
+            is: {
+                args: [/^[A-Za-z0-9., ']+$/],
+                msg: "last name must only consist of letters, numbers, and punctuation",
+            },
+        },
     },
     emailAddress: {
         type: Sequelize.STRING(127),
         allowNull: false,
         // Ensure that each email is unique
         unique: true,
+        validate: {
+            isEmail: {
+                msg: "email address must be in the form of an email address",
+            },
+        },
     },
     password: {
         type: Sequelize.STRING,
         allowNull: false,
+        validate: {
+            // Field mustn't be null
+            notNull: {
+                msg: "last name is a required field.",
+            },
+        },
     },
 }, {
     sequelize,
