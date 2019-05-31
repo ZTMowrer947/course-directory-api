@@ -1,6 +1,7 @@
 "use strict";
 
 // Imports
+const { STATUS_CODES } = require("http");
 const express = require("express");
 const morgan = require("morgan");
 const apiRouter = require("./routes");
@@ -49,7 +50,7 @@ app.use((err, req, res, next) => {
     // Set error status and respond with error message
     res.status(err.status || 500).json({
         message: err.message,
-        error: {},
+        error: STATUS_CODES[res.statusCode],
     });
 });
 
