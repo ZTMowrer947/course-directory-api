@@ -1,9 +1,10 @@
 // Imports
 const basicAuth = require("basic-auth");
 const bcrypt = require("bcryptjs");
+const asyncHandler = require("express-async-handler");
 
 // Middleware
-const authMiddleware = async (req, res, next) => {
+const authMiddleware = asyncHandler(async (req, res, next) => {
     // Get authorization credentials
     const credentials = basicAuth(req);
 
@@ -46,7 +47,7 @@ const authMiddleware = async (req, res, next) => {
         // Pass control to next middleware/route
         next();
     }
-};
+});
 
 // Export
 module.exports = authMiddleware;
