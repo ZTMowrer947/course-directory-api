@@ -1,5 +1,6 @@
 // Imports
 const express = require("express");
+const asyncHandler = require("express-async-handler");
 const authMiddleware = require("../middleware/auth");
 const CourseService = require("../services/CourseService");
 const UserService = require("../services/UserService");
@@ -18,34 +19,29 @@ router.use((req, res, next) => {
 });
 
 // Handle ID param
-router.param("id", async (req, res, next, id) => {
-    try {
-        // Get course with provided ID
-        const course = await req.courseService.getById(id);
+router.param("id", asyncHandler(async (req, res, next, id) => {
+    // Get course with provided ID
+    const course = await req.courseService.getById(id);
 
-        // Attach course to request object
-        req.course = course;
+    // Attach course to request object
+    req.course = course;
 
-        // Pass control to next middleware/route
-        next();
-    } catch (error) {
-        // Pass caught errors to error handlers
-        next(error);
-    }
-});
+    // Pass control to next middleware/route
+    next();
+}));
 
 // Routes
 router.route("/")
     // GET /api/courses: Get list of courses
-    .get(async (req, res) => {
+    .get(asyncHandler(async (req, res) => {
         // Get courses
         const courses = await req.courseService.getList();
 
         // Respond with list of courses
         res.json(courses);
-    })
+    }))
     // POST /api/courses: Create new course
-    .post(authMiddleware, async (req, res) => {
+    .post(authMiddleware, asyncHandler(async (req, res) => {
         // Define course data
         const courseData = {
             title: req.body.title,
@@ -62,7 +58,7 @@ router.route("/")
 
         // Respond with 201 Status
         res.status(201).end();
-    });
+    }));
 
 router.route("/:id")
     // GET /api/courses/:id: Get course with provided ID
@@ -87,7 +83,7 @@ router.route("/:id")
         }
     })
     // PUT /api/courses/:id: Update course with provided ID
-    .put(async (req, res) => {
+    .put(asyncHandler(async (req, res) => {
         // Define course update data
         const updateData = {
             title: req.body.title,
@@ -101,15 +97,15 @@ router.route("/:id")
 
         // Respond with 204 status
         res.status(204).end();
-    })
+    }))
     // DELETE /api/courses/:id: Delete course with provided ID
-    .delete(async (req, res) => {
+    .delete(asyncHandler(async (req, res) => {
         // Delete user by ID
         await req.courseService.delete(req.user, req.course);
 
         // Respond with 204 status
         res.status(204).end();
-    });
+    }));
 
 // Export
 module.exports = router;

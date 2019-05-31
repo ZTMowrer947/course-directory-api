@@ -1,5 +1,6 @@
 // Imports
 const express = require("express");
+const asyncHandler = require("express-async-handler");
 const authMiddleware = require("../middleware/auth");
 const UserService = require("../services/UserService");
 
@@ -23,7 +24,7 @@ router.route("/")
         res.json(req.user);
     })
     // POST /api/users: Create user
-    .post(async (req, res) => {
+    .post(asyncHandler(async (req, res) => {
         // Define user data
         const userData = {
             firstName: req.body.firstName,
@@ -40,7 +41,7 @@ router.route("/")
 
         // Set status to 201 and end response
         res.status(201).end();
-    });
+    }));
 
 // Export
 module.exports = router;
