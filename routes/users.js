@@ -25,6 +25,27 @@ router.route("/")
     })
     // POST /api/users: Create user
     .post(asyncHandler(async (req, res) => {
+        try {
+            // Attempt to find user with email address if present
+            if (req.body.emailAddress) {
+                await req.userService.getUserByEmail(req.body.emailAddress);
+
+                console.log("oo");
+                // If we got here, the provided email address has already been used
+                // Create error
+                const error = new Error("Email address has already been used by another user.");
+                error.name = "BadRequestError";
+                error.status = 401;
+
+                // Throw error
+                throw error;
+            }
+        } catch (error) {
+            // Rethrow error if 401
+            if (error.status === 401)
+                throw error;
+        }
+            
         // Define user data
         const userData = {
             firstName: req.body.firstName,
