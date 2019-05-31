@@ -12,8 +12,18 @@ class CourseService {
                 // Include User
                 {
                     model: User,
+                    // Set attributes for course
+                    attributes: {
+                        // Exclude password timestamps
+                        exclude: ["password", "createdAt", "updatedAt"],
+                    },
                 },
             ],
+            // Set attributes for course
+            attributes: {
+                // Exclude timestamps
+                exclude: ["createdAt", "updatedAt"],
+            },
         });
     }
 
@@ -26,8 +36,18 @@ class CourseService {
                 // Include User
                 {
                     model: User,
+                    // Set attributes for course
+                    attributes: {
+                        // Exclude password timestamps
+                        exclude: ["password", "createdAt", "updatedAt"],
+                    },
                 },
             ],
+            // Set attributes for course
+            attributes: {
+                // Exclude timestamps
+                exclude: ["createdAt", "updatedAt"],
+            },
         });
 
         // If the course was found,
