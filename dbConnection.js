@@ -5,6 +5,9 @@ const Sequelize = require("sequelize");
 // Declare variable for if we are testing
 let testing = process.env.NODE_ENV.startsWith("test");
 
+// Declare variable for if we should log
+let shouldLog = Boolean(process.env.DB_ENABLE_LOGGING);
+
 // Declare env-dependent options
 let storage;
 let logging;
@@ -13,16 +16,13 @@ let logging;
 if (testing) {
     // Set storage location to memory
     storage = ":memory:";
-
-    // Disable logging
-    logging = false;
 } else {
     // Otherwise, set storage to database file
     storage = `${__dirname}/fsjstd-restapi.db`;
-
-    // Log to console
-    logging = console.log;
 }
+
+// Log queries if appropriate
+logging = shouldLog ? console.log : false;
 
 // Database connection setup
 const sequelize = new Sequelize({
@@ -38,13 +38,13 @@ const sequelize = new Sequelize({
 // Authenticate connection
 sequelize.authenticate()
     .then((() => {
-        // Log only if not testing
-        if (!testing)
+        // Log only if appropriate
+        if (shouldLog)
             // If the connection is successfully made, log to the console
             console.log("Database connection successfully established.");
     })).catch((error) => {
-        // Log only if not testing
-        if (!testing)
+        // Log only if appropriate
+        if (shouldLog)
             // Log any errors to the console
             console.error(`Database connection error: ${error.message}`);
 
