@@ -19,16 +19,21 @@ router.use((req, res, next) => {
 });
 
 // Handle ID param
-router.param("id", asyncHandler(async (req, res, next, id) => {
-    // Get course with provided ID
-    const course = await req.courseService.getById(id);
+router.param("id", async (req, res, next, id) => {
+    try {
+        // Get course with provided ID
+        const course = await req.courseService.getById(id);
 
-    // Attach course to request object
-    req.course = course;
+        // Attach course to request object
+        req.course = course;
 
-    // Pass control to next middleware/route
-    next();
-}));
+        // Pass control to next middleware/route
+        next();
+    } catch (error) {
+        // Pass caught errors to error handlers
+        next(error);
+    }
+});
 
 // Routes
 router.route("/")
