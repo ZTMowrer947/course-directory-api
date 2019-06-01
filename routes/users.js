@@ -1,8 +1,16 @@
 // Imports
+const cors = require("cors");
 const express = require("express");
 const asyncHandler = require("express-async-handler");
 const authMiddleware = require("../middleware/auth");
 const UserService = require("../services/UserService");
+
+// CORS base options
+const corsBaseOptions = {
+    origin: ["http://localhost:8000"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+};
 
 // Express router setup
 const router = express.Router();
@@ -18,6 +26,8 @@ router.use((req, res, next) => {
 
 // Routes
 router.route("/")
+    // Enable CORS
+    .all(cors(corsBaseOptions))
     // GET /api/users: Get currently authenticated user
     .get(authMiddleware, (req, res) => {
         // Response with authenticated user

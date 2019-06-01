@@ -1,9 +1,17 @@
 // Imports
+const cors = require("cors");
 const express = require("express");
 const asyncHandler = require("express-async-handler");
 const authMiddleware = require("../middleware/auth");
 const CourseService = require("../services/CourseService");
 const UserService = require("../services/UserService");
+
+// CORS base options
+const corsBaseOptions = {
+    origin: ["http://localhost:8000"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+};
 
 // Express router setup
 const router = express.Router();
@@ -37,6 +45,8 @@ router.param("id", async (req, res, next, id) => {
 
 // Routes
 router.route("/")
+    // Enable CORS
+    .all(cors(corsBaseOptions))
     // GET /api/courses: Get list of courses
     .get(asyncHandler(async (req, res) => {
         // Get courses
@@ -65,12 +75,20 @@ router.route("/")
         res.status(201).end();
     }));
 
+// Define CORS middleware to id-based routes
+const corsIdMiddleware = cors({
+    ...corsBaseOptions,
+    methods: ["GET", "PUT", "DELETE"],
+});
+
 router.route("/:id")
     // GET /api/courses/:id: Get course with provided ID
-    .get((req, res) => {
+    .get(corsIdMiddleware, (req, res) => {
         // Response with course retrived with the provided ID
         res.json(req.course);
     })
+    // CORS preflight
+    .options(corsIdMiddleware)
     // Add middleware to remaining route handlers in this chain
     .all(authMiddleware, (req, res, next) => {
         // If the authenticated user does not own the requested course,
