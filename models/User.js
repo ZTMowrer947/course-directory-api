@@ -58,6 +58,12 @@ User.init({
         // Ensure that each email is unique
         unique: true,
         validate: {
+            // Field mustn't be null
+            notNull: {
+                msg: "email address is a required field.",
+            },
+
+            // Field must be in the form of an email address
             isEmail: {
                 msg: "email address must be in the form of an email address",
             },
