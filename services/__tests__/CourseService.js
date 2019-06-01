@@ -126,6 +126,8 @@ describe("Course service", () => {
         test("should update an existing course", async () => {
             // Define update course data
             const updatedCourseData = {
+                title: course.title,
+                description: course.description,
                 estimatedTime: "FOREVER",
                 materialsNeeded: "FUN FUN FUN FUN FUN FUN",
             };
@@ -153,6 +155,7 @@ describe("Course service", () => {
             // Define invalid course data
             const invalidData = {
                 title: "",
+                description: course.description,
             };
 
             // Model expected error

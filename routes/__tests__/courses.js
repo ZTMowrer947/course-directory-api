@@ -250,6 +250,7 @@ describe("/api/v1/courses", () => {
                 // Define invalid course data
                 const invalidData = {
                     title: "",
+                    description: "This course is one that should not be created if validation works correctly.",
                 };
     
                 // Attempt to create course
