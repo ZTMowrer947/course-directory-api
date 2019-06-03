@@ -7,10 +7,15 @@ class UserService {
     async getUserByEmail(emailAddress) {
         // Find one user
         const user = await User.findOne({
+            // Set attributes for user
+            attributes: {
+                // Exclude timestamps
+                exclude: ["createdAt", "updatedAt"],
+            },
             where: {
                 // Match email addresses
                 emailAddress,
-            }
+            },
         });
 
         // If the user was found,

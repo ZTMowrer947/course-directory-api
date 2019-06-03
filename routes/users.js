@@ -30,6 +30,9 @@ router.route("/")
     .all(cors(corsBaseOptions))
     // GET /api/users: Get currently authenticated user
     .get(authMiddleware, (req, res) => {
+        // Remove password field
+        req.user.password = undefined;
+
         // Response with authenticated user
         res.json(req.user);
     })
