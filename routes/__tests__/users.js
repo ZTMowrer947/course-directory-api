@@ -1,5 +1,4 @@
 // Imports
-const bcrypt = require("bcryptjs");
 const request = require("supertest");
 const app = require("../../app");
 
@@ -111,7 +110,6 @@ describe("/api/users", () => {
 
             // Expect user to match email and password data
             expect(user.emailAddress).toBe(credentials.emailAddress);
-            expect(bcrypt.compareSync(credentials.password, user.password)).toBeTruthy();
         });
     });
 });
