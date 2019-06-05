@@ -7,7 +7,7 @@ const UserService = require("../services/UserService");
 
 // CORS base options
 const corsBaseOptions = {
-    origin: ["http://localhost:8000"],
+    origin: ["http://localhost:3000"],
     allowedHeaders: ["Content-Type", "Authorization"],
     exposeHeaders: ["Location"],
     credentials: true,
