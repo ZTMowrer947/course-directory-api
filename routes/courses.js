@@ -91,7 +91,7 @@ router.route("/:id")
     // CORS preflight
     .options(corsIdMiddleware)
     // Add middleware to remaining route handlers in this chain
-    .all(authMiddleware, (req, res, next) => {
+    .all(corsIdMiddleware, authMiddleware, (req, res, next) => {
         // If the authenticated user does not own the requested course,
         if (req.user.id !== req.course.userId) {
             // Create a "forbidden" error
