@@ -27,23 +27,6 @@ router.use((req, res, next) => {
     next();
 });
 
-// Handle ID param
-router.param("id", async (req, res, next, id) => {
-    try {
-        // Get course with provided ID
-        const course = await req.courseService.getById(id);
-
-        // Attach course to request object
-        req.course = course;
-
-        // Pass control to next middleware/route
-        next();
-    } catch (error) {
-        // Pass caught errors to error handlers
-        next(error);
-    }
-});
-
 // Routes
 router.route("/")
     // Enable CORS
@@ -83,6 +66,22 @@ const corsIdMiddleware = cors({
 });
 
 router.route("/:id")
+    // Enable CORS and attempt to get course by ID
+    .all(corsIdMiddleware, asyncHandler(async (req, res, next) => {
+        try {
+            // Get course with provided ID
+            const course = await req.courseService.getById(req.params.id);
+    
+            // Attach course to request object
+            req.course = course;
+    
+            // Pass control to next middleware/route
+            next();
+        } catch (error) {
+            // Pass caught errors to error handlers
+            next(error);
+        }
+    }))
     // GET /api/courses/:id: Get course with provided ID
     .get(corsIdMiddleware, (req, res) => {
         // Response with course retrived with the provided ID
@@ -91,7 +90,7 @@ router.route("/:id")
     // CORS preflight
     .options(corsIdMiddleware)
     // Add middleware to remaining route handlers in this chain
-    .all(corsIdMiddleware, authMiddleware, (req, res, next) => {
+    .all(authMiddleware, (req, res, next) => {
         // If the authenticated user does not own the requested course,
         if (req.user.id !== req.course.userId) {
             // Create a "forbidden" error
