@@ -31,7 +31,7 @@ User.init({
             // Field must only include letters, numbers, and certain punctuation
             is: {
                 args: [/^[A-Za-z0-9.,' ]+$/],
-                msg: "first name must only consist of letters, numbers, and punctuation",
+                msg: "first name must only consist of alphanumeric characters and punctuation",
             },
         },
     },
@@ -48,7 +48,7 @@ User.init({
             // Field must only include letters, numbers, and certain punctuation
             is: {
                 args: [/^[A-Za-z0-9., ']+$/],
-                msg: "last name must only consist of letters, numbers, and punctuation",
+                msg: "last name must only consist of alphanumeric characters and punctuation",
             },
         },
     },
@@ -75,7 +75,7 @@ User.init({
         validate: {
             // Field mustn't be null
             notNull: {
-                msg: "last name is a required field.",
+                msg: "password is a required field.",
             },
         },
     },
