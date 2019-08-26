@@ -6,7 +6,8 @@
     "scripts": {
         "start": "nodemon .",
         "seed": "cross-env DB_ENABLE_LOGGING=true node './seed'",
-        "test": "cross-env NODE_ENV=test jest"
+        "test": "cross-env NODE_ENV=test jest",
+        "typeorm:ts": "babel-node --extensions '.ts' node_modules/typeorm/cli.js"
     },
     "keywords": [],
     "author": "",
