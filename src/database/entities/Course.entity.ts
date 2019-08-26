@@ -20,6 +20,7 @@ export default class Course extends TimestampedEntity {
 
     @ManyToOne(() => User, user => user.createdCourses, {
         nullable: false,
+        onDelete: "CASCADE",
     })
     public creator!: User;
 }
