@@ -25,6 +25,13 @@
         "typescript": "^3.5.3"
     },
     "dependencies": {
+        "@babel/core": "^7.5.5",
+        "@babel/plugin-proposal-class-properties": "^7.5.5",
+        "@babel/plugin-proposal-decorators": "^7.4.4",
+        "@babel/plugin-transform-runtime": "^7.5.5",
+        "@babel/preset-env": "^7.5.5",
+        "@babel/preset-typescript": "^7.3.3",
+        "babel-plugin-transform-typescript-metadata": "^0.2.2",
         "basic-auth": "^2.0.1",
         "bcryptjs": "^2.4.3",
         "cors": "^2.8.5",
