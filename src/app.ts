@@ -1,7 +1,4 @@
-"use strict";
-
 // Imports
-import { STATUS_CODES } from "http";
 import express from "express";
 import morgan from "morgan";
 import {
@@ -10,16 +7,14 @@ import {
 } from "routing-controllers";
 import { Container } from "typedi";
 import { useContainer as ormUseContainer } from "typeorm";
+import authChecker from "./authChecker";
 import UserController from "./controllers/User.controller";
+import currentUserChecker from "./currentUserChecker";
 import env from "./env";
 
 // Container setup
 routingUseContainer(Container);
 ormUseContainer(Container);
-
-// Whether or not a enable error logging
-const enableGlobalErrorLogging =
-    process.env.ENABLE_GLOBAL_ERROR_LOGGING === "true";
 
 // Express app setup
 const app = express();
@@ -35,24 +30,9 @@ useExpressServer(app, {
     classTransformer: true,
     routePrefix: "/api",
     validation: true,
+    authorizationChecker: authChecker,
+    currentUserChecker,
 });
-
-// Error Handlers
-const errorHandler: express.ErrorRequestHandler = (err: Error, req, res) => {
-    // If we should log errors,
-    if (enableGlobalErrorLogging) {
-        // Log the error to the console
-        console.error(`Global error handler: ${JSON.stringify(err.stack)}`);
-    }
-
-    // Set error status and respond with error message
-    res.status(500).json({
-        message: err.message,
-        error: STATUS_CODES[res.statusCode],
-    });
-};
-
-app.use(errorHandler);
 
 // Set port to listen on
 app.set("port", process.env.PORT || 5000);
