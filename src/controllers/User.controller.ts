@@ -6,17 +6,16 @@ import {
     Post,
     Location,
 } from "routing-controllers";
-import { InjectRepository } from "typeorm-typedi-extensions";
+import { Inject } from "typedi";
 import UserModifyDTO from "../models/UserModifyDTO";
 import UserService from "../services/User.service";
-import User from "../database/entities/User.entity";
 
 // Controller
 @JsonController("/users")
 export default class UserController {
     private userService: UserService;
 
-    public constructor(@InjectRepository(User) userService: UserService) {
+    public constructor(@Inject() userService: UserService) {
         this.userService = userService;
     }
 
