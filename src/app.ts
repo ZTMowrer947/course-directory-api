@@ -28,30 +28,12 @@ const app = express();
 if (env !== "staging") {
     app.use(morgan("dev")); // Log HTTP requests if not doing testing
 }
-app.use(express.urlencoded({ extended: true })); // Parse urlencoded bodies
-app.use(express.json()); // Parse JSON bodies
 
 // Controller setup
 useExpressServer(app, {
     controllers: [UserController],
     classTransformer: true,
     routePrefix: "/api",
-});
-
-// /: Friendly welcome message
-app.get("/", (req, res) => {
-    // Respond with welcome message
-    res.json({
-        message: "Welcome to the REST API project!",
-    });
-});
-
-// All other routes are a 404
-app.use((req, res) => {
-    // Set status to 404 and respond with "not found" message
-    res.status(404).json({
-        message: "Route Not Found",
-    });
 });
 
 // Error Handlers
