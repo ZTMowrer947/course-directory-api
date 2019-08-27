@@ -11,6 +11,7 @@ import authChecker from "./authChecker";
 import UserController from "./controllers/User.controller";
 import currentUserChecker from "./currentUserChecker";
 import env from "./env";
+import SerializeInterceptor from "./interceptors/SerializeInterceptor";
 
 // Container setup
 routingUseContainer(Container);
@@ -27,6 +28,7 @@ if (env !== "staging") {
 // Controller setup
 useExpressServer(app, {
     controllers: [UserController],
+    interceptors: [SerializeInterceptor],
     classTransformer: true,
     routePrefix: "/api",
     validation: true,
