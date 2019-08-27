@@ -4,7 +4,18 @@
 import { STATUS_CODES } from "http";
 import express from "express";
 import morgan from "morgan";
+import {
+    useContainer as routingUseContainer,
+    useExpressServer,
+} from "routing-controllers";
+import { Container } from "typedi";
+import { useContainer as ormUseContainer } from "typeorm";
+import UserController from "./controllers/User.controller";
 import env from "./env";
+
+// Container setup
+routingUseContainer(Container);
+ormUseContainer(Container);
 
 // Whether or not a enable error logging
 const enableGlobalErrorLogging =
@@ -20,8 +31,12 @@ if (env !== "staging") {
 app.use(express.urlencoded({ extended: true })); // Parse urlencoded bodies
 app.use(express.json()); // Parse JSON bodies
 
-// // Routes
-// app.use("/api", apiRouter);
+// Controller setup
+useExpressServer(app, {
+    controllers: [UserController],
+    classTransformer: true,
+    routePrefix: "/api",
+});
 
 // /: Friendly welcome message
 app.get("/", (req, res) => {
