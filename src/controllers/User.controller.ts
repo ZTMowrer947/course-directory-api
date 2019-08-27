@@ -15,14 +15,16 @@ import UserService from "../services/User.service";
 export default class UserController {
     private userService: UserService;
 
-    public constructor(@Inject() userService: UserService) {
+    public constructor(@Inject(() => UserService) userService: UserService) {
         this.userService = userService;
     }
 
     @Post("/")
     @OnUndefined(201)
     @Location("/")
-    public async create(@Body() userData: UserModifyDTO): Promise<void> {
+    public async create(
+        @Body({ validate: true }) userData: UserModifyDTO
+    ): Promise<void> {
         return this.userService.create(userData);
     }
 }

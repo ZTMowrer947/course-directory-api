@@ -34,6 +34,7 @@ useExpressServer(app, {
     controllers: [UserController],
     classTransformer: true,
     routePrefix: "/api",
+    validation: true,
 });
 
 // Error Handlers
