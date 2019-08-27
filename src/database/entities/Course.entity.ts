@@ -23,4 +23,15 @@ export default class Course extends TimestampedEntity {
         onDelete: "CASCADE",
     })
     public creator!: User;
+
+    public toJSON(): object {
+        return {
+            id: this.id,
+            title: this.title,
+            description: this.description,
+            estimatedTime: this.estimatedTime,
+            materialsNeeded: this.materialsNeeded,
+            creator: this.creator,
+        };
+    }
 }

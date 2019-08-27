@@ -51,4 +51,14 @@ export default class User extends TimestampedEntity {
     private async hashPasswordIfUpdated(): Promise<void> {
         if (this.password !== this.tempPassword) await this.hashPassword();
     }
+
+    public toJSON(): object {
+        return {
+            id: this.id,
+            firstName: this.firstName,
+            lastName: this.lastName,
+            emailAddress: this.emailAddress,
+            createdCourses: this.createdCourses,
+        };
+    }
 }
