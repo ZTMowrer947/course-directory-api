@@ -18,7 +18,7 @@ export default class UserService {
         // Create query
         const query = this.repository
             .createQueryBuilder("users")
-            .where("user.emailAddress = :emailAddress", { emailAddress });
+            .where("users.emailAddress = :emailAddress", { emailAddress });
 
         // Execute query
         const user = await query.getOne();
