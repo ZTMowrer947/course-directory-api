@@ -53,6 +53,8 @@
         "reflect-metadata": "^0.1.13",
         "sequelize": "^5.8.6",
         "sqlite3": "^4.0.2",
-        "typeorm": "^0.2.18"
+        "typedi": "^0.8.0",
+        "typeorm": "^0.2.18",
+        "typeorm-typedi-extensions": "^0.2.3"
     }
 }
