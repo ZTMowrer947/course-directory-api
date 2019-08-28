@@ -37,6 +37,7 @@ export default class User extends TimestampedEntity {
         this.tempPassword = this.password;
     }
 
+    /* istanbul ignore next */
     @BeforeInsert()
     private async hashPassword(): Promise<void> {
         this.password = await argon2.hash(this.password, {
@@ -47,11 +48,13 @@ export default class User extends TimestampedEntity {
         });
     }
 
+    /* istanbul ignore next */
     @BeforeUpdate()
     private async hashPasswordIfUpdated(): Promise<void> {
         if (this.password !== this.tempPassword) await this.hashPassword();
     }
 
+    /* istanbul ignore next */
     public toJSON(): object {
         return {
             id: this.id,

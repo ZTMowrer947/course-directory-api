@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 // Imports
 import { ConnectionOptions } from "typeorm";
 import env from "./src/env";

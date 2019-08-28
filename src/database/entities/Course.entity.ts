@@ -24,6 +24,7 @@ export default class Course extends TimestampedEntity {
     })
     public creator!: User;
 
+    /* istanbul ignore next */
     public toJSON(): object {
         return {
             id: this.id,
