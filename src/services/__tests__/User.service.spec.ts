@@ -4,6 +4,7 @@ import { getRepository } from "typeorm";
 import User from "../../database/entities/User.entity";
 import UserService from "../User.service";
 import UserModifyDTO from "../../models/UserModifyDTO";
+import AppError from "../../models/AppError";
 
 // Test Suite
 describe("User service", () => {
@@ -53,10 +54,13 @@ describe("User service", () => {
             // Define unused email
             const unusedEmail = "unused@example.tld";
 
+            // Define expected error
+            const error = new AppError(`User not found with email address "unused@example.tld".`, 404);
+
             // Expect user fetch to throw error
             await expect(
                 userService.getUserByEmail(unusedEmail)
-            ).rejects.toThrow();
+            ).rejects.toThrowError(error);
         });
     });
 });

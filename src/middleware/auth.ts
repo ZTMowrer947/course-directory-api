@@ -3,6 +3,7 @@ import argon2 from "argon2";
 import basicAuth from "basic-auth";
 import { Middleware } from "koa";
 import { Container } from "typedi";
+import AppError from "../models/AppError";
 import AuthState from "../models/AuthState";
 import UserService from "../services/User.service";
 
@@ -39,14 +40,14 @@ const auth: Middleware<AuthState> = async (ctx, next) => {
             await next();
         } else {
             // Otherwise, throw error
-            throw new Error("Incorrect password.");
+            throw new AppError("Incorrect password.", 401);
         }
     } else {
         // Otherwise, set WWW-Authenticate header
         ctx.set("WWW-Authenticate", "Basic");
 
         // Throw error
-        throw new Error("Credentials are required to access this route.");
+        throw new AppError("Credentials are required to access this route.", 401);
     }
 };
 

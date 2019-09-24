@@ -3,6 +3,7 @@ import { Service } from "typedi";
 import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import User from "../database/entities/User.entity";
+import AppError from "../models/AppError";
 import UserModifyDTO from "../models/UserModifyDTO";
 
 // Service
@@ -25,8 +26,9 @@ export default class UserService {
 
         // If user was not found, throw an error
         if (!user) {
-            throw new Error(
-                `User not found with email address "${emailAddress}".`
+            throw new AppError(
+                `User not found with email address "${emailAddress}".`,
+                404
             );
         }
 
