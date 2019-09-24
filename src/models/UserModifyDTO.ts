@@ -1,4 +1,5 @@
 // Imports
+import { Expose } from "class-transformer";
 import {
     Matches,
     IsNotEmpty,
@@ -10,8 +11,9 @@ import User from "../database/entities/User.entity";
 
 // DTO
 export default class UserModifyDTO implements Partial<User> {
+    @Expose()
     @IsNotEmpty({ message: "firstName is a required field." })
-    @Matches(/^[A-Za-z0-9].,' $/, {
+    @Matches(/^[A-Za-z0-9.,' ]+$/, {
         message:
             "firstName must only consist of alphanumeric characters and punctuation",
     })
@@ -20,8 +22,9 @@ export default class UserModifyDTO implements Partial<User> {
     })
     public firstName!: string;
 
+    @Expose()
     @IsNotEmpty({ message: "lastName is a required field." })
-    @Matches(/^[A-Za-z0-9].,' $/, {
+    @Matches(/^[A-Za-z0-9.,' ]+$/, {
         message:
             "lastName must only consist of alphanumeric characters and punctuation",
     })
@@ -30,6 +33,7 @@ export default class UserModifyDTO implements Partial<User> {
     })
     public lastName!: string;
 
+    @Expose()
     @IsNotEmpty({ message: "emailAddress is a required field." })
     @IsEmail(undefined, {
         message: "emailAddress must be a valid email address.",
@@ -39,6 +43,7 @@ export default class UserModifyDTO implements Partial<User> {
     })
     public emailAddress!: string;
 
+    @Expose()
     @IsNotEmpty({ message: "password is a required field." })
     @MinLength(8, { message: "password must be at least 8 characters long." })
     public password!: string;
