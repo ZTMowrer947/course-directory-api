@@ -4,6 +4,9 @@ import { isJSONSerializable } from "../models/JSONSerializable";
 
 // Middleware
 const jsonSerializer: Middleware = async (ctx, next) => {
+    // Proceed with middleware chain
+    await next();
+
     // If the context body is JSON-serializable,
     if (isJSONSerializable(ctx.body)) {
         // Serialize it as JSON
