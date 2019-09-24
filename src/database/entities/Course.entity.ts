@@ -32,6 +32,6 @@ export default class Course extends TimestampedEntity {
 
     /* istanbul ignore next */
     public toJSON(): object {
-        return classToPlain(this);
+        return classToPlain(this, { strategy: "excludeAll" });
     }
 }
