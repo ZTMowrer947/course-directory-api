@@ -1,6 +1,5 @@
 // Imports
 import { Container } from "typedi";
-import { useContainer as routingUseContainer } from "routing-controllers";
 import { Connection, useContainer as ormUseContainer } from "typeorm";
 import ormBootstrap from "./database";
 
@@ -10,7 +9,6 @@ let connection: Connection;
 // Run before all tests
 beforeAll(async () => {
     // Setup TypeDI container
-    routingUseContainer(Container);
     ormUseContainer(Container);
 
     // Setup database connection
