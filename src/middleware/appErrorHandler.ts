@@ -15,8 +15,8 @@ const appErrorHandler: Middleware = async (ctx, next) => {
             // Set status according to status property
             ctx.status = error.status;
 
-            // Set response body to JSON-serialized error body
-            ctx.body = error.toJSON();
+            // Set response body to error body
+            ctx.body = error;
         } else {
             // Otherwise, rethrow error
             throw error;
