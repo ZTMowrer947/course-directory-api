@@ -1,5 +1,5 @@
 // Imports
-import { Expose, Type } from "class-transformer";
+import { classToPlain, Expose, Type } from "class-transformer";
 import { Column, Entity, ManyToOne } from "typeorm";
 import TimestampedEntity from "./TimestampedEntity";
 import User from "./User.entity";
@@ -32,13 +32,6 @@ export default class Course extends TimestampedEntity {
 
     /* istanbul ignore next */
     public toJSON(): object {
-        return {
-            id: this.id,
-            title: this.title,
-            description: this.description,
-            estimatedTime: this.estimatedTime,
-            materialsNeeded: this.materialsNeeded,
-            creator: this.creator,
-        };
+        return classToPlain(this);
     }
 }

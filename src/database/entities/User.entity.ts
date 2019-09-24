@@ -1,7 +1,7 @@
 // Imports
 import os from "os";
 import argon2 from "argon2";
-import { Expose } from "class-transformer";
+import { classToPlain, Expose } from "class-transformer";
 import {
     Column,
     Entity,
@@ -60,12 +60,6 @@ export default class User extends TimestampedEntity {
 
     /* istanbul ignore next */
     public toJSON(): object {
-        return {
-            id: this.id,
-            firstName: this.firstName,
-            lastName: this.lastName,
-            emailAddress: this.emailAddress,
-            createdCourses: this.createdCourses,
-        };
+        return classToPlain(this);
     }
 }
