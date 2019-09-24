@@ -1,6 +1,7 @@
 // Imports
 import kcors from "kcors";
 import Koa from "koa";
+import bodyParser from "koa-bodyparser";
 import logger from "koa-logger";
 import apiRouter from "./routes";
 import baseErrorHandler from "./middleware/baseErrorHandler";
@@ -15,6 +16,7 @@ app.use(jsonSerializer);
 app.use(baseErrorHandler);
 app.use(appErrorHandler);
 app.use(logger());
+app.use(bodyParser());
 app.use(kcors());
 
 // Routes
