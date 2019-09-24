@@ -3,9 +3,15 @@ import kcors from "kcors";
 import Koa from "koa";
 import logger from "koa-logger";
 import apiRouter from "./routes";
+import baseErrorHandler from "./middleware/baseErrorHandler";
+import appErrorHandler from "./middleware/appErrorHandler";
 
 // Application setup
 const app = new Koa();
+
+// Error handlers
+app.use(baseErrorHandler);
+app.use(appErrorHandler);
 
 // Middleware
 app.use(logger());
