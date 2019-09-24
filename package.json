@@ -47,7 +47,7 @@
         "babel-plugin-transform-typescript-metadata": "^0.2.2",
         "basic-auth": "^2.0.1",
         "body-parser": "^1.19.0",
-        "class-transformer": "0.1.9",
+        "class-transformer": "^0.2.3",
         "class-validator": "^0.10.0",
         "core-js": "3",
         "cross-env": "^5.2.0",
