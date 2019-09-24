@@ -1,6 +1,7 @@
 // Imports
 import os from "os";
 import argon2 from "argon2";
+import { Expose } from "class-transformer";
 import {
     Column,
     Entity,
@@ -15,12 +16,15 @@ import Course from "./Course.entity";
 // Entity
 @Entity("users")
 export default class User extends TimestampedEntity {
+    @Expose()
     @Column({ length: 96, nullable: false })
     public firstName!: string;
 
+    @Expose()
     @Column({ length: 96, nullable: false })
     public lastName!: string;
 
+    @Expose()
     @Column({ length: 127, nullable: false, unique: true })
     public emailAddress!: string;
 

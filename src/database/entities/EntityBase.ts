@@ -1,11 +1,13 @@
 // Imports
 import crypto from "crypto";
+import { Expose } from "class-transformer";
 import base32 from "hi-base32";
 import { BeforeInsert, PrimaryColumn } from "typeorm";
 import JSONSerializable from "../../models/JSONSerializable";
 
 // Entity
 abstract class EntityBase implements JSONSerializable {
+    @Expose()
     @PrimaryColumn({ length: 16 })
     public id!: string;
 
