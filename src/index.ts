@@ -1,7 +1,12 @@
 // Imports
 import http from "http";
+import { Container } from "typedi";
+import { useContainer } from "typeorm";
 import app from "./app";
 import ormBootstrap from "./database";
+
+// Configure TypeORM to use TypeDI container
+useContainer(Container);
 
 // Bootstrap TypeORM database connection
 ormBootstrap().then(() => {
