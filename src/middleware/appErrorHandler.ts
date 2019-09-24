@@ -22,7 +22,7 @@ const appErrorHandler: Middleware = async (ctx, next) => {
             throw error;
         }
     }
-}
+};
 
 // Export
 export default appErrorHandler;

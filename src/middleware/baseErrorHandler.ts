@@ -1,7 +1,6 @@
 // Imports
 import { Middleware } from "koa";
 import env from "../env";
-import AppError from "../models/AppError";
 
 // Middleware
 const baseErrorHandler: Middleware = async (ctx, next) => {
@@ -23,7 +22,7 @@ const baseErrorHandler: Middleware = async (ctx, next) => {
             stack: env !== "production" ? error.stack : undefined,
         };
     }
-}
+};
 
 // Export
 export default baseErrorHandler;

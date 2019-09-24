@@ -55,7 +55,10 @@ describe("User service", () => {
             const unusedEmail = "unused@example.tld";
 
             // Define expected error
-            const error = new AppError(`User not found with email address "unused@example.tld".`, 404);
+            const error = new AppError(
+                `User not found with email address "unused@example.tld".`,
+                404
+            );
 
             // Expect user fetch to throw error
             await expect(

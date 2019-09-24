@@ -47,7 +47,10 @@ const auth: Middleware<AuthState> = async (ctx, next) => {
         ctx.set("WWW-Authenticate", "Basic");
 
         // Throw error
-        throw new AppError("Credentials are required to access this route.", 401);
+        throw new AppError(
+            "Credentials are required to access this route.",
+            401
+        );
     }
 };
 
