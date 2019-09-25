@@ -8,7 +8,7 @@ export default class InvalidRequestError extends AppError {
     public readonly validationErrors: ValidationError[];
 
     public constructor(validationErrors: ValidationError[] = []) {
-        super(undefined, 401);
+        super(undefined, 400);
 
         this.validationErrors = validationErrors;
     }
