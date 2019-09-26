@@ -54,7 +54,7 @@ export default class CourseService {
     public async create(
         user: User,
         courseData: CourseModifyDTO
-    ): Promise<void> {
+    ): Promise<string> {
         // Create course instance
         const course = new Course();
 
@@ -69,6 +69,9 @@ export default class CourseService {
 
         // Persist course to database
         await this.repository.save(course);
+
+        // Return ID of new course
+        return course.id;
     }
 
     public async update(
