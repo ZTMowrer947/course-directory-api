@@ -1,6 +1,6 @@
 // Imports
 import { Expose } from "class-transformer";
-import { IsNotEmpty, MaxLength, MinLength } from "class-validator";
+import { IsNotEmpty, MaxLength } from "class-validator";
 import Course from "../database/entities/Course.entity";
 
 // Class
@@ -17,10 +17,8 @@ export default class CourseModifyDTO implements Partial<Course> {
     public description!: string;
 
     @Expose()
-    @MinLength(1, { message: "estimatedTime must not be empty if defined" })
     public estimatedTime?: string;
 
     @Expose()
-    @MinLength(1, { message: "materialsNeeded must not be empty if defined" })
     public materialsNeeded?: string;
 }
