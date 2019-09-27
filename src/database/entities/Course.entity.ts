@@ -23,6 +23,7 @@ export default class Course extends TimestampedEntity {
     @Column({ nullable: true, default: null })
     public materialsNeeded!: string | null;
 
+    @Expose()
     @Type(() => User)
     @ManyToOne(() => User, user => user.createdCourses, {
         nullable: false,
