@@ -44,7 +44,7 @@ export default class CourseService {
         // If the course was not found,
         if (!course) {
             // Throw a 404 error
-            throw new AppError(`Course not found with ID "${id}".`);
+            throw new AppError(`Course not found with ID "${id}".`, 404);
         }
 
         // Otherwise, return result
