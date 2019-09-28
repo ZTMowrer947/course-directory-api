@@ -10,6 +10,7 @@ import UserState from "../models/UserState";
 import UserService from "../services/User.service";
 import UserModifyDTO from "../models/UserModifyDTO";
 import InvalidRequestError from "../models/InvalidRequestError";
+import AppError from "../models/AppError";
 
 // Router setup
 const userRouter = new Router();
@@ -38,6 +39,19 @@ userRouter.post("/", async (ctx: ParameterizedContext<UserState>) => {
     // If errors were found, throw validation error
     if (errors.length > 0) {
         throw new InvalidRequestError(errors);
+    }
+
+    // Otherwise, check if email address is already in use
+    const existingUser = await ctx.state.userService.getUserByEmail(
+        userData.emailAddress
+    );
+
+    // If user was found, throw 400 error
+    if (existingUser) {
+        throw new AppError(
+            "Email address is already in use by another user.",
+            400
+        );
     }
 
     // Otherwise, create user
