@@ -3,7 +3,6 @@ import { Service } from "typedi";
 import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import User from "../database/entities/User.entity";
-import AppError from "../models/AppError";
 import UserModifyDTO from "../models/UserModifyDTO";
 
 // Service
@@ -15,7 +14,9 @@ export default class UserService {
         this.repository = repository;
     }
 
-    public async getUserByEmail(emailAddress: string): Promise<User> {
+    public async getUserByEmail(
+        emailAddress: string
+    ): Promise<User | undefined> {
         // Create query
         const query = this.repository
             .createQueryBuilder("users")
@@ -24,15 +25,7 @@ export default class UserService {
         // Execute query
         const user = await query.getOne();
 
-        // If user was not found, throw an error
-        if (!user) {
-            throw new AppError(
-                `User not found with email address "${emailAddress}".`,
-                404
-            );
-        }
-
-        // Otherwise, return the user
+        // Return the user
         return user;
     }
 

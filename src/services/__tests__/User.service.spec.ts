@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 // Imports
 import argon2 from "argon2";
 import { getRepository } from "typeorm";
 import User from "../../database/entities/User.entity";
 import UserService from "../User.service";
 import UserModifyDTO from "../../models/UserModifyDTO";
-import AppError from "../../models/AppError";
 
 // Test Suite
 describe("User service", () => {
@@ -41,29 +41,27 @@ describe("User service", () => {
                 userData.emailAddress
             );
 
+            // Expect user to be defined
+            expect(user).toBeDefined();
+
             // Expect user to match input data
-            expect(user.firstName).toBe(userData.firstName);
-            expect(user.lastName).toBe(userData.lastName);
-            expect(user.emailAddress).toBe(userData.emailAddress);
+            expect(user!.firstName).toBe(userData.firstName);
+            expect(user!.lastName).toBe(userData.lastName);
+            expect(user!.emailAddress).toBe(userData.emailAddress);
             await expect(
-                argon2.verify(user.password, userData.password)
+                argon2.verify(user!.password, userData.password)
             ).resolves.toBeTruthy();
         });
 
-        it("should throw an error if a user with a matching email wasn't found", async () => {
+        it("should return undefined if a user with a matching email wasn't found", async () => {
             // Define unused email
             const unusedEmail = "unused@example.tld";
 
-            // Define expected error
-            const error = new AppError(
-                `User not found with email address "unused@example.tld".`,
-                404
-            );
+            // Attempt to fetch user by email
+            const user = await userService.getUserByEmail(unusedEmail);
 
-            // Expect user fetch to throw error
-            await expect(
-                userService.getUserByEmail(unusedEmail)
-            ).rejects.toThrowError(error);
+            // Expect user to be undefined
+            expect(user).toBeUndefined();
         });
     });
 });

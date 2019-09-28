@@ -25,6 +25,14 @@ const auth: Middleware<AuthState> = async (ctx, next) => {
             credentials.name
         );
 
+        // If the user was not found,
+        if (!user) {
+            throw new AppError(
+                `User not found with email address "${credentials.name}".`,
+                404
+            );
+        }
+
         // Then, verify that password matches user data
         const passwordMatches = await argon2.verify(
             user.password,
