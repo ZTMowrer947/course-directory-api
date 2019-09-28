@@ -56,6 +56,26 @@ describe("/api/v1/users", () => {
             // Expect error array to have length of 4
             expect(response.body.errors).toHaveLength(4);
         });
+
+        it("should return a 400 error when trying to create a user with an email address in use by another user", async () => {
+            // Make API request
+            const response = await agent(app)
+                .post("/api/users")
+                .send(userData);
+
+            // Expect a 400 response
+            expect(response.status).toBe(400);
+
+            // Define expected error message
+            const expectedMessage =
+                "Email address is already in use by another user.";
+
+            // Get actual error message
+            const actualMessage = response.body.message;
+
+            // Expect messages to match
+            expect(actualMessage).toBe(expectedMessage);
+        });
     });
 
     describe("GET", () => {
