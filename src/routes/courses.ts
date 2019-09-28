@@ -29,10 +29,17 @@ const courseById: Middleware<CourseByIdState, Router.IRouterContext> = async (
     ctx,
     next
 ) => {
-    // Find course by ID and attach to context state
-    ctx.state.course = await ctx.state.courseService.getCourseById(
-        ctx.params.id
-    );
+    // Find course by ID
+    const course = await ctx.state.courseService.getCourseById(ctx.params.id);
+
+    // If the course was not found,
+    if (!course) {
+        // Throw a 404 error
+        throw new AppError(`Course not found with ID "${ctx.params.id}".`, 404);
+    }
+
+    // Otherwise, attach course to context state
+    ctx.state.course = course;
 
     // Continue middleware flow
     await next();

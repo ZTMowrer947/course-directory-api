@@ -3,7 +3,6 @@ import { Service } from "typedi";
 import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import Course from "../database/entities/Course.entity";
-import AppError from "../models/AppError";
 import User from "../database/entities/User.entity";
 import CourseModifyDTO from "../models/CourseModifyDTO";
 
@@ -31,7 +30,7 @@ export default class CourseService {
         return courses;
     }
 
-    public async getCourseById(id: string): Promise<Course> {
+    public async getCourseById(id: string): Promise<Course | undefined> {
         // Create query
         const query = this.repository
             .createQueryBuilder("course")
@@ -40,12 +39,6 @@ export default class CourseService {
 
         // Execute query and get result
         const course = await query.getOne();
-
-        // If the course was not found,
-        if (!course) {
-            // Throw a 404 error
-            throw new AppError(`Course not found with ID "${id}".`, 404);
-        }
 
         // Otherwise, return result
         return course;

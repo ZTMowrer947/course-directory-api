@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 // Imports
 import { plainToClass } from "class-transformer";
 import { getRepository } from "typeorm";
 import Course from "../../database/entities/Course.entity";
 import User from "../../database/entities/User.entity";
-import AppError from "../../models/AppError";
 import CourseModifyDTO from "../../models/CourseModifyDTO";
 import CourseService from "../Course.service";
 import UserService from "../User.service";
@@ -32,7 +32,7 @@ describe("Course service", () => {
         const userService = new UserService(userRepository);
 
         // Find user for testing
-        user = await userService.getUserByEmail("joe@smith.com");
+        user = (await userService.getUserByEmail("joe@smith.com"))!;
     });
 
     describe("getList method", () => {
@@ -70,23 +70,18 @@ describe("Course service", () => {
     describe("getById method", () => {
         it("should return the course with the given ID, if found", async () => {
             // Get course with ID
-            course = await courseService.getCourseById(id);
+            course = (await courseService.getCourseById(id))!;
 
             // Expect IDs to match
             expect(course.id).toBe(id);
         });
 
-        it("should throw a 404 error if no course exists with the given ID", async () => {
-            // Define expected error
-            const error = new AppError(
-                `Course not found with ID "${unusedId}".`,
-                404
-            );
+        it("should return undefined if no course exists with the given ID", async () => {
+            // Attempt to find course by ID
+            const course = await courseService.getCourseById(unusedId);
 
-            // Expect course retrieval to throw 404 error
-            await expect(
-                courseService.getCourseById(unusedId)
-            ).rejects.toThrowError(error);
+            // Expect course to be undefined
+            expect(course).toBeUndefined();
         });
     });
 
@@ -113,7 +108,7 @@ describe("Course service", () => {
 
         it("should have applied the updates successfully", async () => {
             // Get updated course
-            course = await courseService.getCourseById(id);
+            course = (await courseService.getCourseById(id))!;
 
             // Expect course to match updated data
             expect(course.title).toBe(updateData.title);
@@ -130,16 +125,11 @@ describe("Course service", () => {
         });
 
         it("should have deleted the course successfully", async () => {
-            // Define expected error
-            const error = new AppError(
-                `Course not found with ID "${id}".`,
-                404
-            );
+            // Attempt to find course by ID
+            const course = await courseService.getCourseById(id);
 
-            // Expect course retrieval to throw 404 error
-            await expect(courseService.getCourseById(id)).rejects.toThrowError(
-                error
-            );
+            // Expect course to be undefined
+            expect(course).toBeUndefined();
         });
     });
 });
