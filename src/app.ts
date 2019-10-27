@@ -28,7 +28,11 @@ if (env !== "staging") {
     app.use(logger());
 }
 app.use(bodyParser());
-app.use(kcors());
+app.use(
+    kcors({
+        exposeHeaders: ["Location"],
+    })
+);
 
 // Routes
 app.use(apiRouter.routes());
