@@ -44,6 +44,7 @@
         "@types/koa-bodyparser": "^4.3.0",
         "@types/koa-logger": "^3.1.1",
         "@types/koa-router": "^7.0.42",
+        "apollo-server-koa": "^2.9.12",
         "argon2": "^0.24.0",
         "babel-plugin-transform-typescript-metadata": "^0.2.2",
         "basic-auth": "^2.0.1",
@@ -52,6 +53,7 @@
         "class-validator": "^0.10.0",
         "core-js": "3",
         "cross-env": "^5.2.0",
+        "graphql": "^14.5.8",
         "hi-base32": "^0.5.0",
         "kcors": "^2.2.2",
         "koa": "^2.8.1",
@@ -61,6 +63,7 @@
         "reflect-metadata": "^0.1.13",
         "regenerator-runtime": "^0.13.3",
         "sqlite3": "^4.0.2",
+        "type-graphql": "^0.17.5",
         "typedi": "^0.8.0",
         "typeorm": "^0.2.18",
         "typeorm-typedi-extensions": "^0.2.3"
