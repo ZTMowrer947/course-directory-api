@@ -1,13 +1,17 @@
 // Imports
+import { ApolloServer } from "apollo-server-koa";
 import kcors from "kcors";
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 import logger from "koa-logger";
+import { Container } from "typedi";
+import { buildSchema } from "type-graphql";
 import apiRouter from "./routes";
 import baseErrorHandler from "./middleware/baseErrorHandler";
 import appErrorHandler from "./middleware/appErrorHandler";
 import jsonSerializer from "./middleware/jsonSerializer";
 import env from "./env";
+import CourseResolver from "./resolvers/CourseResolver";
 
 // Application setup
 const app = new Koa();
@@ -18,25 +22,45 @@ if (env === "staging") {
     app.silent = true;
 }
 
-// Middleware
-app.use(jsonSerializer);
-app.use(baseErrorHandler);
-app.use(appErrorHandler);
+(async () => {
+    // GraphQL schema setup
+    const schema = await buildSchema({
+        resolvers: [CourseResolver],
+        container: Container,
+    });
 
-if (env !== "staging") {
-    // Only add logger when not testing
-    app.use(logger());
-}
-app.use(bodyParser());
-app.use(
-    kcors({
-        exposeHeaders: ["Location"],
-    })
-);
+    // Apollo server setup
+    const server = new ApolloServer({ schema });
 
-// Routes
-app.use(apiRouter.routes());
-app.use(apiRouter.allowedMethods());
+    // Middleware
+    app.use(async (ctx, next) => {
+        if (!ctx.path.startsWith(server.graphqlPath)) {
+            await jsonSerializer(ctx, next);
+        } else {
+            await next();
+        }
+    });
+    app.use(baseErrorHandler);
+    app.use(appErrorHandler);
+
+    if (env !== "staging") {
+        // Only add logger when not testing
+        app.use(logger());
+    }
+    app.use(bodyParser());
+    app.use(
+        kcors({
+            exposeHeaders: ["Location"],
+        })
+    );
+
+    // Routes
+    app.use(apiRouter.routes());
+    app.use(apiRouter.allowedMethods());
+
+    // Attach GraphQL server to koa app
+    app.use(server.getMiddleware({ path: "/gql" }));
+})();
 
 // Export
 export default app;
