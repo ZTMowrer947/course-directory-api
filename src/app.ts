@@ -6,6 +6,7 @@ import bodyParser from "koa-bodyparser";
 import logger from "koa-logger";
 import { Container } from "typedi";
 import { buildSchema } from "type-graphql";
+import authChecker from "./authChecker";
 import apiRouter from "./routes";
 import baseErrorHandler from "./middleware/baseErrorHandler";
 import appErrorHandler from "./middleware/appErrorHandler";
@@ -25,12 +26,18 @@ if (env === "staging") {
 (async () => {
     // GraphQL schema setup
     const schema = await buildSchema({
+        authChecker,
         resolvers: [CourseResolver],
         container: Container,
     });
 
     // Apollo server setup
-    const server = new ApolloServer({ schema });
+    const server = new ApolloServer({
+        schema,
+        context: ({ ctx }) => {
+            return { koaCtx: ctx };
+        },
+    });
 
     // Middleware
     app.use(async (ctx, next) => {
