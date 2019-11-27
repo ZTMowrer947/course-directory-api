@@ -4,7 +4,7 @@ import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import Course from "../database/entities/Course.entity";
 import User from "../database/entities/User.entity";
-import CourseModifyDTO from "../models/CourseModifyDTO";
+import CourseInput from "../models/CourseInput";
 
 // Service
 @Service()
@@ -44,10 +44,7 @@ export default class CourseService {
         return course;
     }
 
-    public async create(
-        user: User,
-        courseData: CourseModifyDTO
-    ): Promise<string> {
+    public async create(user: User, courseData: CourseInput): Promise<string> {
         // Create course instance
         const course = new Course();
 
@@ -69,7 +66,7 @@ export default class CourseService {
 
     public async update(
         course: Course,
-        updateData: CourseModifyDTO
+        updateData: CourseInput
     ): Promise<void> {
         // Set course properties
         course.title = updateData.title;

@@ -9,7 +9,7 @@ import CourseService from "../services/Course.service";
 import CourseByIdState from "../models/CourseByIdState";
 import AuthState from "../models/AuthState";
 import auth from "../middleware/auth";
-import CourseModifyDTO from "../models/CourseModifyDTO";
+import CourseInput from "../models/CourseInput";
 import InvalidRequestError from "../models/InvalidRequestError";
 import AppError from "../models/AppError";
 
@@ -55,8 +55,8 @@ courseRouter.post(
     "/",
     auth,
     async (ctx: ParameterizedContext<CourseState & AuthState>) => {
-        // Transform request body into CourseModifyDTO
-        const courseData = plainToClass(CourseModifyDTO, ctx.request.body, {
+        // Transform request body into CourseInput
+        const courseData = plainToClass(CourseInput, ctx.request.body, {
             excludeExtraneousValues: true,
         });
 
@@ -108,8 +108,8 @@ courseRouter.put(
             );
         }
 
-        // Otherwise, ransform request body into CourseModifyDTO
-        const updateData = plainToClass(CourseModifyDTO, ctx.request.body, {
+        // Otherwise, ransform request body into CourseInput
+        const updateData = plainToClass(CourseInput, ctx.request.body, {
             excludeExtraneousValues: true,
         });
 

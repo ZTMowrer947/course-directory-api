@@ -5,8 +5,8 @@ import { InputType, Field } from "type-graphql";
 import Course from "../database/entities/Course.entity";
 
 // Input Type
-@InputType("CourseInput")
-export default class CourseModifyDTO implements Partial<Course> {
+@InputType()
+export default class CourseInput implements Partial<Course> {
     @Expose()
     @IsNotEmpty({ message: "title is a required field." })
     @MaxLength(127, {
