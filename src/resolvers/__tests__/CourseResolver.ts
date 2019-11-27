@@ -142,7 +142,43 @@ describe("Course resolver", () => {
             id = response.body.data.newCourse;
         });
 
-        it.todo("should return a validation error when given invalid data");
+        it("should return a validation error when given invalid data", async () => {
+            // Define invalid course data
+            const invalidPlainData = {
+                title: "invalid".repeat(32),
+                description: "",
+            };
+
+            const invalidData = plainToClass(CourseInput, invalidPlainData);
+
+            // Define variables
+            const variables = {
+                courseInput: invalidData,
+            };
+
+            // Define request body
+            const body = {
+                query: queries.newCourse,
+                variables,
+            };
+
+            // Make request to API
+            const response = await agent(app)
+                .post("/gql")
+                .send(body)
+                .auth("joe@smith.com", "joepassword");
+
+            // Expect there to be 1 GraphQL Error
+            expect(response.body.errors).toHaveLength(1);
+
+            // Get validation errors
+            const {
+                validationErrors,
+            } = response.body.errors[0].extensions.exception;
+
+            // Expect there to be 2 validation errors
+            expect(validationErrors).toHaveLength(2);
+        });
     });
 
     describe("course query", () => {
@@ -313,6 +349,45 @@ describe("Course resolver", () => {
 
             // Expect messages to match
             expect(actualMessage).toBe(expectedMessage);
+        });
+
+        it("should return a validation error when given invalid data", async () => {
+            // Define invalid course data
+            const invalidPlainData = {
+                title: "invalid".repeat(32),
+                description: "",
+            };
+
+            const invalidData = plainToClass(CourseInput, invalidPlainData);
+
+            // Define variables
+            const variables = {
+                courseInput: invalidData,
+                id,
+            };
+
+            // Define request body
+            const body = {
+                query: queries.updateCourse,
+                variables,
+            };
+
+            // Make request to API
+            const response = await agent(app)
+                .post("/gql")
+                .send(body)
+                .auth("joe@smith.com", "joepassword");
+
+            // Expect there to be 1 GraphQL Error
+            expect(response.body.errors).toHaveLength(1);
+
+            // Get validation errors
+            const {
+                validationErrors,
+            } = response.body.errors[0].extensions.exception;
+
+            // Expect there to be 2 validation errors
+            expect(validationErrors).toHaveLength(2);
         });
 
         it("should update the course with the given ID when given proper user authentication and valid update data", async () => {
