@@ -4,6 +4,47 @@ import agent from "../../koaTestAgent";
 import app from "../../app";
 import CourseInput from "../../models/CourseInput";
 
+// GraphQL queries
+const queries = {
+    courses: `
+        query {
+            courses {
+                id
+                title
+                description
+                estimatedTime
+                materialsNeeded
+            }
+        }
+    `,
+    course: `
+        query ($id:ID!) {
+            course(id:$id) {
+                id
+                title
+                description
+                estimatedTime
+                materialsNeeded
+            }
+        }
+    `,
+    newCourse: `
+        mutation ($courseInput:CourseInput!) {
+            newCourse(courseInput:$courseInput)
+        }
+    `,
+    updateCourse: `
+        mutation ($id:ID!, $courseInput:CourseInput!) {
+            updateCourse(id:$id, courseInput:$courseInput)
+        }
+    `,
+    deleteCourse: `
+        mutation ($id:ID!) {
+            deleteCourse(id:$id)
+        }
+    `,
+};
+
 // Test Suite
 describe("Course resolver", () => {
     let courseData: CourseInput;
@@ -28,22 +69,9 @@ describe("Course resolver", () => {
 
     describe("courses query", () => {
         it("should return a list of courses", async () => {
-            // Define GraphQL query
-            const query = `
-                query {
-                    courses {
-                        id
-                        title
-                        description
-                        estimatedTime
-                        materialsNeeded
-                    }
-                }
-            `;
-
             // Define request body
             const body = {
-                query,
+                query: queries.courses,
             };
 
             // Make request to API
@@ -61,13 +89,6 @@ describe("Course resolver", () => {
 
     describe("newCourse mutation", () => {
         it("should return an authorization error if no authentication is provided", async () => {
-            // Define GraphQL query
-            const query = `
-                mutation ($courseInput:CourseInput!) {
-                    newCourse(courseInput:$courseInput)
-                }
-            `;
-
             // Define variables
             const variables = {
                 courseInput: courseData,
@@ -75,7 +96,7 @@ describe("Course resolver", () => {
 
             // Define request body
             const body = {
-                query,
+                query: queries.newCourse,
                 variables,
             };
 
@@ -99,13 +120,6 @@ describe("Course resolver", () => {
         });
 
         it("should create a new course given user authentication and valid data", async () => {
-            // Define GraphQL query
-            const query = `
-                mutation ($courseInput:CourseInput!) {
-                    newCourse(courseInput:$courseInput)
-                }
-            `;
-
             // Define variables
             const variables = {
                 courseInput: courseData,
@@ -113,7 +127,7 @@ describe("Course resolver", () => {
 
             // Define request body
             const body = {
-                query,
+                query: queries.newCourse,
                 variables,
             };
 
@@ -136,19 +150,6 @@ describe("Course resolver", () => {
 
     describe("course query", () => {
         it("should return the course with the given ID, if found", async () => {
-            // Define GraphQL query
-            const query = `
-                query ($id:ID!) {
-                    course(id:$id) {
-                        id
-                        title
-                        description
-                        estimatedTime
-                        materialsNeeded
-                    }
-                }
-            `;
-
             // Define variables
             const variables = {
                 id,
@@ -156,7 +157,7 @@ describe("Course resolver", () => {
 
             // Define request body
             const body = {
-                query,
+                query: queries.course,
                 variables,
             };
 
@@ -175,19 +176,6 @@ describe("Course resolver", () => {
         });
 
         it("should return a Not Found error if no course exists with the given ID", async () => {
-            // Define GraphQL query
-            const query = `
-                query ($id:ID!) {
-                    course(id:$id) {
-                        id
-                        title
-                        description
-                        estimatedTime
-                        materialsNeeded
-                    }
-                }
-            `;
-
             // Define variables
             const variables = {
                 id: unusedId,
@@ -195,7 +183,7 @@ describe("Course resolver", () => {
 
             // Define request body
             const body = {
-                query,
+                query: queries.course,
                 variables,
             };
 
@@ -234,13 +222,6 @@ describe("Course resolver", () => {
         });
 
         it("should return an authorization error if no authentication is provided", async () => {
-            // Define GraphQL query
-            const query = `
-                mutation ($id:ID!, $courseInput:CourseInput!) {
-                    updateCourse(id:$id, courseInput:$courseInput)
-                }
-            `;
-
             // Define variables
             const variables = {
                 courseInput: updateData,
@@ -249,7 +230,7 @@ describe("Course resolver", () => {
 
             // Define request body
             const body = {
-                query,
+                query: queries.updateCourse,
                 variables,
             };
 
@@ -273,13 +254,6 @@ describe("Course resolver", () => {
         });
 
         it("should return a Forbidden error if the authenticating user did not create the course to be updated", async () => {
-            // Define GraphQL query
-            const query = `
-                mutation ($id:ID!, $courseInput:CourseInput!) {
-                    updateCourse(id:$id, courseInput:$courseInput)
-                }
-            `;
-
             // Define variables
             const variables = {
                 courseInput: updateData,
@@ -288,7 +262,7 @@ describe("Course resolver", () => {
 
             // Define request body
             const body = {
-                query,
+                query: queries.updateCourse,
                 variables,
             };
 
@@ -313,13 +287,6 @@ describe("Course resolver", () => {
         });
 
         it("should return a Not Found error if no course exists with the given ID", async () => {
-            // Define GraphQL query
-            const query = `
-                mutation ($id:ID!, $courseInput:CourseInput!) {
-                    updateCourse(id:$id, courseInput:$courseInput)
-                }
-            `;
-
             // Define variables
             const variables = {
                 courseInput: updateData,
@@ -328,7 +295,7 @@ describe("Course resolver", () => {
 
             // Define request body
             const body = {
-                query,
+                query: queries.updateCourse,
                 variables,
             };
 
@@ -352,13 +319,6 @@ describe("Course resolver", () => {
         });
 
         it("should update the course with the given ID when given proper user authentication and valid update data", async () => {
-            // Define GraphQL query
-            const query = `
-                mutation ($id:ID!, $courseInput:CourseInput!) {
-                    updateCourse(id:$id, courseInput:$courseInput)
-                }
-            `;
-
             // Define variables
             const variables = {
                 courseInput: updateData,
@@ -367,7 +327,7 @@ describe("Course resolver", () => {
 
             // Define request body
             const body = {
-                query,
+                query: queries.updateCourse,
                 variables,
             };
 
@@ -382,19 +342,6 @@ describe("Course resolver", () => {
         });
 
         it("should have successfully applied the updates", async () => {
-            // Define GraphQL query
-            const query = `
-                query ($id:ID!) {
-                    course(id:$id) {
-                        id
-                        title
-                        description
-                        estimatedTime
-                        materialsNeeded
-                    }
-                }
-            `;
-
             // Define variables
             const variables = {
                 id,
@@ -402,7 +349,7 @@ describe("Course resolver", () => {
 
             // Define request body
             const body = {
-                query,
+                query: queries.course,
                 variables,
             };
 
@@ -423,13 +370,6 @@ describe("Course resolver", () => {
 
     describe("deleteCourse query", () => {
         it("should return an authorization error if no authentication is provided", async () => {
-            // Define GraphQL query
-            const query = `
-                mutation ($id:ID!) {
-                    deleteCourse(id:$id)
-                }
-            `;
-
             // Define variables
             const variables = {
                 id,
@@ -437,7 +377,7 @@ describe("Course resolver", () => {
 
             // Define request body
             const body = {
-                query,
+                query: queries.deleteCourse,
                 variables,
             };
 
@@ -461,13 +401,6 @@ describe("Course resolver", () => {
         });
 
         it("should return a Forbidden error if the authenticating user did not create the course to be deleted", async () => {
-            // Define GraphQL query
-            const query = `
-                mutation ($id:ID!) {
-                    deleteCourse(id:$id)
-                }
-            `;
-
             // Define variables
             const variables = {
                 id,
@@ -475,7 +408,7 @@ describe("Course resolver", () => {
 
             // Define request body
             const body = {
-                query,
+                query: queries.deleteCourse,
                 variables,
             };
 
@@ -500,13 +433,6 @@ describe("Course resolver", () => {
         });
 
         it("should return a Not Found error if no course exists with the given ID", async () => {
-            // Define GraphQL query
-            const query = `
-                mutation ($id:ID!) {
-                    deleteCourse(id:$id)
-                }
-            `;
-
             // Define variables
             const variables = {
                 id: unusedId,
@@ -514,7 +440,7 @@ describe("Course resolver", () => {
 
             // Define request body
             const body = {
-                query,
+                query: queries.deleteCourse,
                 variables,
             };
 
@@ -538,13 +464,6 @@ describe("Course resolver", () => {
         });
 
         it("should delete the course with the given ID when given proper user authentication", async () => {
-            // Define GraphQL query
-            const query = `
-                mutation ($id:ID!) {
-                    deleteCourse(id:$id)
-                }
-            `;
-
             // Define variables
             const variables = {
                 id,
@@ -552,7 +471,7 @@ describe("Course resolver", () => {
 
             // Define request body
             const body = {
-                query,
+                query: queries.deleteCourse,
                 variables,
             };
 
@@ -567,13 +486,6 @@ describe("Course resolver", () => {
         });
 
         it("should have successfully deleted the course", async () => {
-            // Define GraphQL query
-            const query = `
-                mutation ($id:ID!) {
-                    deleteCourse(id:$id)
-                }
-            `;
-
             // Define variables
             const variables = {
                 id,
@@ -581,7 +493,7 @@ describe("Course resolver", () => {
 
             // Define request body
             const body = {
-                query,
+                query: queries.course,
                 variables,
             };
 

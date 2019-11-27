@@ -4,6 +4,25 @@ import UserInput from "../../models/UserInput";
 import agent from "../../koaTestAgent";
 import app from "../../app";
 
+// GraphQL queries
+const queries = {
+    user: `
+        query {
+            user {
+                id
+                firstName
+                lastName
+                emailAddress
+            }
+        }
+    `,
+    newUser: `
+        mutation ($userInput:UserInput!) {
+            newUser(userInput:$userInput)
+        }
+    `,
+};
+
 // Test Suite
 describe("/api/v1/users", () => {
     let userData: UserInput;
@@ -22,13 +41,6 @@ describe("/api/v1/users", () => {
 
     describe("newUser mutation", () => {
         it("should create a user given valid data", async () => {
-            // Define query
-            const query = `
-                mutation ($userInput:UserInput!) {
-                    newUser(userInput:$userInput)
-                }
-            `;
-
             // Define variables
             const variables = {
                 userInput: userData,
@@ -36,7 +48,7 @@ describe("/api/v1/users", () => {
 
             // Define request body
             const body = {
-                query,
+                query: queries.newUser,
                 variables,
             };
 
@@ -58,13 +70,6 @@ describe("/api/v1/users", () => {
                 password: "nope",
             };
 
-            // Define query
-            const query = `
-                mutation ($userInput:UserInput!) {
-                    newUser(userInput:$userInput)
-                }
-            `;
-
             // Define variables
             const variables = {
                 userInput: invalidData,
@@ -72,7 +77,7 @@ describe("/api/v1/users", () => {
 
             // Define request body
             const body = {
-                query,
+                query: queries.newUser,
                 variables,
             };
 
@@ -94,13 +99,6 @@ describe("/api/v1/users", () => {
         });
 
         it("should return a 400 error when trying to create a user with an email address in use by another user", async () => {
-            // Define query
-            const query = `
-                mutation ($userInput:UserInput!) {
-                    newUser(userInput:$userInput)
-                }
-            `;
-
             // Define variables
             const variables = {
                 userInput: userData,
@@ -108,7 +106,7 @@ describe("/api/v1/users", () => {
 
             // Define request body
             const body = {
-                query,
+                query: queries.newUser,
                 variables,
             };
 
@@ -134,21 +132,9 @@ describe("/api/v1/users", () => {
 
     describe("user query", () => {
         it("should return a 401 error if no authorization is provided", async () => {
-            // Define query
-            const query = `
-                query {
-                    user {
-                        id
-                        firstName
-                        lastName
-                        emailAddress
-                    }
-                }
-            `;
-
             // Define request body
             const body = {
-                query,
+                query: queries.user,
             };
 
             // Make API request
@@ -171,21 +157,9 @@ describe("/api/v1/users", () => {
         });
 
         it("should return the proper user data when proper authentication is provided", async () => {
-            // Define query
-            const query = `
-                query {
-                    user {
-                        id
-                        firstName
-                        lastName
-                        emailAddress
-                    }
-                }
-            `;
-
             // Define request body
             const body = {
-                query,
+                query: queries.user,
             };
 
             // Make API request
