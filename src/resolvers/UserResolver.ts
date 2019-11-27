@@ -4,6 +4,7 @@ import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import User from "../database/entities/User.entity";
 import UserService from "../services/User.service";
 import UserInput from "../models/UserInput";
+import AppError from "../models/AppError";
 
 // Resolver
 @Service()
@@ -25,6 +26,16 @@ export default class UserResolver {
     public async newUser(
         @Arg("userInput") userInput: UserInput
     ): Promise<boolean> {
+        const existingUser = await this.userService.getUserByEmail(
+            userInput.emailAddress
+        );
+
+        if (existingUser)
+            throw new AppError(
+                "Email address is already in use by another user.",
+                400
+            );
+
         await this.userService.create(userInput);
 
         return true;
