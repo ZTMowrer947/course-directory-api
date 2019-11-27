@@ -79,9 +79,6 @@ describe("Course resolver", () => {
                 .post("/gql")
                 .send(body);
 
-            // Expect a 200 response
-            expect(response.status).toBe(200);
-
             // Expect response body to contain 3 courses
             expect(response.body.data.courses).toHaveLength(3);
         });
