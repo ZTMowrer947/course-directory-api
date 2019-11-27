@@ -50,7 +50,7 @@
         "basic-auth": "^2.0.1",
         "body-parser": "^1.19.0",
         "class-transformer": "^0.2.3",
-        "class-validator": "^0.10.0",
+        "class-validator": "0.11.x",
         "core-js": "3",
         "cross-env": "^5.2.0",
         "graphql": "^14.5.8",
