@@ -60,18 +60,162 @@ describe("Course resolver", () => {
     });
 
     describe("newCourse mutation", () => {
-        it.todo("should return a 401 error if no authentication is provided");
-        it.todo(
-            "should create a new course given user authentication and valid data"
-        );
-        it.todo("should return a 400 error when given invalid data");
+        it("should return an authorization error if no authentication is provided", async () => {
+            // Define GraphQL query
+            const query = `
+                mutation ($courseInput:CourseInput!) {
+                    newCourse(courseInput:$courseInput)
+                }
+            `;
+
+            // Define variables
+            const variables = {
+                courseInput: courseData,
+            };
+
+            // Define request body
+            const body = {
+                query,
+                variables,
+            };
+
+            // Make request to API
+            const response = await agent(app)
+                .post("/gql")
+                .send(body);
+
+            // Expect there to be 1 GraphQL Error
+            expect(response.body.errors).toHaveLength(1);
+
+            // Define expected error message
+            const expectedMessage =
+                "Credentials are required to perform the requested action.";
+
+            // Get actual error message
+            const actualMessage = response.body.errors[0].message;
+
+            // Expect messages to match
+            expect(actualMessage).toBe(expectedMessage);
+        });
+
+        it("should create a new course given user authentication and valid data", async () => {
+            // Define GraphQL query
+            const query = `
+                mutation ($courseInput:CourseInput!) {
+                    newCourse(courseInput:$courseInput)
+                }
+            `;
+
+            // Define variables
+            const variables = {
+                courseInput: courseData,
+            };
+
+            // Define request body
+            const body = {
+                query,
+                variables,
+            };
+
+            // Make request to API
+            const response = await agent(app)
+                .post("/gql")
+                .send(body)
+                .auth("joe@smith.com", "joepassword");
+
+            // Expect response to contain new course id
+            expect(response.body).toHaveProperty("data");
+            expect(response.body.data).toHaveProperty("newCourse");
+
+            // Store id for later use
+            id = response.body.data.newCourse;
+        });
+
+        it.todo("should return a validation error when given invalid data");
     });
 
     describe("course query", () => {
-        it.todo("should return the course with the given ID, if found");
-        it.todo(
-            "hould return a 404 error if no course exists with the given ID"
-        );
+        it("should return the course with the given ID, if found", async () => {
+            // Define GraphQL query
+            const query = `
+                query ($id:ID!) {
+                    course(id:$id) {
+                        id
+                        title
+                        description
+                        estimatedTime
+                        materialsNeeded
+                    }
+                }
+            `;
+
+            // Define variables
+            const variables = {
+                id,
+            };
+
+            // Define request body
+            const body = {
+                query,
+                variables,
+            };
+
+            // Make request to API
+            const response = await agent(app)
+                .post("/gql")
+                .send(body);
+
+            // Get course data
+            const { course } = response.body.data;
+
+            // Expect course to match input data
+            expect(course.id).toBe(id);
+            expect(course.title).toBe(courseData.title);
+            expect(course.description).toBe(courseData.description);
+        });
+
+        it("should return a Not Found error if no course exists with the given ID", async () => {
+            // Define GraphQL query
+            const query = `
+                query ($id:ID!) {
+                    course(id:$id) {
+                        id
+                        title
+                        description
+                        estimatedTime
+                        materialsNeeded
+                    }
+                }
+            `;
+
+            // Define variables
+            const variables = {
+                id: unusedId,
+            };
+
+            // Define request body
+            const body = {
+                query,
+                variables,
+            };
+
+            // Make request to API
+            const response = await agent(app)
+                .post("/gql")
+                .send(body);
+
+            // Expect there to be 1 GraphQL Error
+            expect(response.body.errors).toHaveLength(1);
+
+            // Define expected error message
+            const expectedMessage = `Course not found with ID "${unusedId}".`;
+
+            // Get actual error message
+            const actualMessage = response.body.errors[0].message;
+
+            // Expect messages to match
+            expect(actualMessage).toBe(expectedMessage);
+        });
     });
 
     describe("updateCourse query", () => {
@@ -89,30 +233,375 @@ describe("Course resolver", () => {
             updateData = plainToClass(CourseInput, plainData);
         });
 
-        it.todo("should return a 401 error if no authentication is provided");
-        it.todo(
-            "should return a 403 error if the authenticating user did not create the course to be updated"
-        );
-        it.todo(
-            "should return a 404 error if no course exists with the given ID"
-        );
-        it.todo(
-            "should update the course with the given ID when given proper user authentication and valid update data"
-        );
-        it.todo("should have successfully applied the updates");
+        it("should return an authorization error if no authentication is provided", async () => {
+            // Define GraphQL query
+            const query = `
+                mutation ($id:ID!, $courseInput:CourseInput!) {
+                    updateCourse(id:$id, courseInput:$courseInput)
+                }
+            `;
+
+            // Define variables
+            const variables = {
+                courseInput: updateData,
+                id,
+            };
+
+            // Define request body
+            const body = {
+                query,
+                variables,
+            };
+
+            // Make request to API
+            const response = await agent(app)
+                .post("/gql")
+                .send(body);
+
+            // Expect there to be 1 GraphQL Error
+            expect(response.body.errors).toHaveLength(1);
+
+            // Define expected error message
+            const expectedMessage =
+                "Credentials are required to perform the requested action.";
+
+            // Get actual error message
+            const actualMessage = response.body.errors[0].message;
+
+            // Expect messages to match
+            expect(actualMessage).toBe(expectedMessage);
+        });
+
+        it("should return a Forbidden error if the authenticating user did not create the course to be updated", async () => {
+            // Define GraphQL query
+            const query = `
+                mutation ($id:ID!, $courseInput:CourseInput!) {
+                    updateCourse(id:$id, courseInput:$courseInput)
+                }
+            `;
+
+            // Define variables
+            const variables = {
+                courseInput: updateData,
+                id,
+            };
+
+            // Define request body
+            const body = {
+                query,
+                variables,
+            };
+
+            // Make request to API
+            const response = await agent(app)
+                .post("/gql")
+                .send(body)
+                .auth("sally@jones.com", "sallypassword");
+
+            // Expect there to be 1 GraphQL Error
+            expect(response.body.errors).toHaveLength(1);
+
+            // Define expected error message
+            const expectedMessage =
+                "You are not allowed to modify this resource.";
+
+            // Get actual error message
+            const actualMessage = response.body.errors[0].message;
+
+            // Expect messages to match
+            expect(actualMessage).toBe(expectedMessage);
+        });
+
+        it("should return a Not Found error if no course exists with the given ID", async () => {
+            // Define GraphQL query
+            const query = `
+                mutation ($id:ID!, $courseInput:CourseInput!) {
+                    updateCourse(id:$id, courseInput:$courseInput)
+                }
+            `;
+
+            // Define variables
+            const variables = {
+                courseInput: updateData,
+                id: unusedId,
+            };
+
+            // Define request body
+            const body = {
+                query,
+                variables,
+            };
+
+            // Make request to API
+            const response = await agent(app)
+                .post("/gql")
+                .send(body)
+                .auth("joe@smith.com", "joepassword");
+
+            // Expect there to be 1 GraphQL Error
+            expect(response.body.errors).toHaveLength(1);
+
+            // Define expected error message
+            const expectedMessage = `Course not found with ID "${unusedId}".`;
+
+            // Get actual error message
+            const actualMessage = response.body.errors[0].message;
+
+            // Expect messages to match
+            expect(actualMessage).toBe(expectedMessage);
+        });
+
+        it("should update the course with the given ID when given proper user authentication and valid update data", async () => {
+            // Define GraphQL query
+            const query = `
+                mutation ($id:ID!, $courseInput:CourseInput!) {
+                    updateCourse(id:$id, courseInput:$courseInput)
+                }
+            `;
+
+            // Define variables
+            const variables = {
+                courseInput: updateData,
+                id,
+            };
+
+            // Define request body
+            const body = {
+                query,
+                variables,
+            };
+
+            // Make request to API
+            const response = await agent(app)
+                .post("/gql")
+                .send(body)
+                .auth("joe@smith.com", "joepassword");
+
+            // Expect updateCourse result to be true
+            expect(response.body.data.updateCourse).toBe(true);
+        });
+
+        it("should have successfully applied the updates", async () => {
+            // Define GraphQL query
+            const query = `
+                query ($id:ID!) {
+                    course(id:$id) {
+                        id
+                        title
+                        description
+                        estimatedTime
+                        materialsNeeded
+                    }
+                }
+            `;
+
+            // Define variables
+            const variables = {
+                id,
+            };
+
+            // Define request body
+            const body = {
+                query,
+                variables,
+            };
+
+            // Make request to API
+            const response = await agent(app)
+                .post("/gql")
+                .send(body);
+
+            // Get course data
+            const { course } = response.body.data;
+
+            // Expect course to match update data
+            expect(course.id).toBe(id);
+            expect(course.title).toBe(updateData.title);
+            expect(course.description).toBe(updateData.description);
+        });
     });
 
     describe("deleteCourse query", () => {
-        it.todo("should return a 401 error if no authentication is provided");
-        it.todo(
-            "should return a 403 error if the authenticating user did not create the course to be deleted"
-        );
-        it.todo(
-            "should return a 404 error if no course exists with the given ID"
-        );
-        it.todo(
-            "should delete the course with the given ID when given proper user authentication"
-        );
-        it.todo("should have successfully deleted the course");
+        it("should return an authorization error if no authentication is provided", async () => {
+            // Define GraphQL query
+            const query = `
+                mutation ($id:ID!) {
+                    deleteCourse(id:$id)
+                }
+            `;
+
+            // Define variables
+            const variables = {
+                id,
+            };
+
+            // Define request body
+            const body = {
+                query,
+                variables,
+            };
+
+            // Make request to API
+            const response = await agent(app)
+                .post("/gql")
+                .send(body);
+
+            // Expect there to be 1 GraphQL Error
+            expect(response.body.errors).toHaveLength(1);
+
+            // Define expected error message
+            const expectedMessage =
+                "Credentials are required to perform the requested action.";
+
+            // Get actual error message
+            const actualMessage = response.body.errors[0].message;
+
+            // Expect messages to match
+            expect(actualMessage).toBe(expectedMessage);
+        });
+
+        it("should return a Forbidden error if the authenticating user did not create the course to be deleted", async () => {
+            // Define GraphQL query
+            const query = `
+                mutation ($id:ID!) {
+                    deleteCourse(id:$id)
+                }
+            `;
+
+            // Define variables
+            const variables = {
+                id,
+            };
+
+            // Define request body
+            const body = {
+                query,
+                variables,
+            };
+
+            // Make request to API
+            const response = await agent(app)
+                .post("/gql")
+                .send(body)
+                .auth("sally@jones.com", "sallypassword");
+
+            // Expect there to be 1 GraphQL Error
+            expect(response.body.errors).toHaveLength(1);
+
+            // Define expected error message
+            const expectedMessage =
+                "You are not allowed to modify this resource.";
+
+            // Get actual error message
+            const actualMessage = response.body.errors[0].message;
+
+            // Expect messages to match
+            expect(actualMessage).toBe(expectedMessage);
+        });
+
+        it("should return a Not Found error if no course exists with the given ID", async () => {
+            // Define GraphQL query
+            const query = `
+                mutation ($id:ID!) {
+                    deleteCourse(id:$id)
+                }
+            `;
+
+            // Define variables
+            const variables = {
+                id: unusedId,
+            };
+
+            // Define request body
+            const body = {
+                query,
+                variables,
+            };
+
+            // Make request to API
+            const response = await agent(app)
+                .post("/gql")
+                .send(body)
+                .auth("joe@smith.com", "joepassword");
+
+            // Expect there to be 1 GraphQL Error
+            expect(response.body.errors).toHaveLength(1);
+
+            // Define expected error message
+            const expectedMessage = `Course not found with ID "${unusedId}".`;
+
+            // Get actual error message
+            const actualMessage = response.body.errors[0].message;
+
+            // Expect messages to match
+            expect(actualMessage).toBe(expectedMessage);
+        });
+
+        it("should delete the course with the given ID when given proper user authentication", async () => {
+            // Define GraphQL query
+            const query = `
+                mutation ($id:ID!) {
+                    deleteCourse(id:$id)
+                }
+            `;
+
+            // Define variables
+            const variables = {
+                id,
+            };
+
+            // Define request body
+            const body = {
+                query,
+                variables,
+            };
+
+            // Make request to API
+            const response = await agent(app)
+                .post("/gql")
+                .send(body)
+                .auth("joe@smith.com", "joepassword");
+
+            // Expect deleteCourse result to be true
+            expect(response.body.data.deleteCourse).toBe(true);
+        });
+
+        it("should have successfully deleted the course", async () => {
+            // Define GraphQL query
+            const query = `
+                mutation ($id:ID!) {
+                    deleteCourse(id:$id)
+                }
+            `;
+
+            // Define variables
+            const variables = {
+                id,
+            };
+
+            // Define request body
+            const body = {
+                query,
+                variables,
+            };
+
+            // Make request to API
+            const response = await agent(app)
+                .post("/gql")
+                .send(body)
+                .auth("joe@smith.com", "joepassword");
+
+            // Expect there to be 1 GraphQL Error
+            expect(response.body.errors).toHaveLength(1);
+
+            // Define expected error message
+            const expectedMessage = `Course not found with ID "${id}".`;
+
+            // Get actual error message
+            const actualMessage = response.body.errors[0].message;
+
+            // Expect messages to match
+            expect(actualMessage).toBe(expectedMessage);
+        });
     });
 });
