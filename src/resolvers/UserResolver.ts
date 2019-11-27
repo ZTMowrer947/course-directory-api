@@ -1,8 +1,9 @@
 // Imports
 import { Service } from "typedi";
-import { Authorized, Ctx, Resolver, Query } from "type-graphql";
+import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import User from "../database/entities/User.entity";
 import UserService from "../services/User.service";
+import UserInput from "../models/UserInput";
 
 // Resolver
 @Service()
@@ -18,5 +19,14 @@ export default class UserResolver {
     @Query(() => User)
     public async user(@Ctx("user") user: User): Promise<User> {
         return user;
+    }
+
+    @Mutation(() => Boolean)
+    public async newUser(
+        @Arg("userInput") userInput: UserInput
+    ): Promise<boolean> {
+        await this.userService.create(userInput);
+
+        return true;
     }
 }
