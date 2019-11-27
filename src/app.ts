@@ -13,6 +13,7 @@ import appErrorHandler from "./middleware/appErrorHandler";
 import jsonSerializer from "./middleware/jsonSerializer";
 import env from "./env";
 import CourseResolver from "./resolvers/CourseResolver";
+import UserResolver from "./resolvers/UserResolver";
 
 // Application setup
 const app = new Koa();
@@ -27,7 +28,7 @@ if (env === "staging") {
     // GraphQL schema setup
     const schema = await buildSchema({
         authChecker,
-        resolvers: [CourseResolver],
+        resolvers: [CourseResolver, UserResolver],
         container: Container,
     });
 
