@@ -8,7 +8,7 @@ import auth from "../middleware/auth";
 import AuthState from "../models/AuthState";
 import UserState from "../models/UserState";
 import UserService from "../services/User.service";
-import UserModifyDTO from "../models/UserModifyDTO";
+import UserInput from "../models/UserInput";
 import InvalidRequestError from "../models/InvalidRequestError";
 import AppError from "../models/AppError";
 
@@ -28,8 +28,8 @@ userRouter.get("/", auth, async (ctx: ParameterizedContext<AuthState>) => {
 });
 
 userRouter.post("/", async (ctx: ParameterizedContext<UserState>) => {
-    // Transform request body into UserModifyDTO
-    const userData = plainToClass(UserModifyDTO, ctx.request.body, {
+    // Transform request body into UserInput
+    const userData = plainToClass(UserInput, ctx.request.body, {
         excludeExtraneousValues: true,
     });
 

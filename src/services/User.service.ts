@@ -3,7 +3,7 @@ import { Service } from "typedi";
 import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import User from "../database/entities/User.entity";
-import UserModifyDTO from "../models/UserModifyDTO";
+import UserInput from "../models/UserInput";
 
 // Service
 @Service()
@@ -29,7 +29,7 @@ export default class UserService {
         return user;
     }
 
-    public async create(userData: UserModifyDTO): Promise<void> {
+    public async create(userData: UserInput): Promise<void> {
         // Create user instance
         const user = new User();
 

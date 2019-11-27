@@ -7,10 +7,12 @@ import {
     MaxLength,
     MinLength,
 } from "class-validator";
+import { InputType, Field } from "type-graphql";
 import User from "../database/entities/User.entity";
 
 // DTO
-export default class UserModifyDTO implements Partial<User> {
+@InputType()
+export default class UserInput implements Partial<User> {
     @Expose()
     @IsNotEmpty({ message: "firstName is a required field." })
     @Matches(/^[A-Za-z0-9.,' ]+$/, {
@@ -20,6 +22,7 @@ export default class UserModifyDTO implements Partial<User> {
     @MaxLength(96, {
         message: "firstName must be no more than 96 characters long.",
     })
+    @Field({ nullable: false })
     public firstName!: string;
 
     @Expose()
@@ -31,6 +34,7 @@ export default class UserModifyDTO implements Partial<User> {
     @MaxLength(96, {
         message: "lastName must be no more than 96 characters long.",
     })
+    @Field({ nullable: false })
     public lastName!: string;
 
     @Expose()
@@ -41,10 +45,12 @@ export default class UserModifyDTO implements Partial<User> {
     @MaxLength(127, {
         message: "emailAddress must be no more than 127 characters long.",
     })
+    @Field({ nullable: false })
     public emailAddress!: string;
 
     @Expose()
     @IsNotEmpty({ message: "password is a required field." })
     @MinLength(8, { message: "password must be at least 8 characters long." })
+    @Field({ nullable: false })
     public password!: string;
 }
