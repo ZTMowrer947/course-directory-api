@@ -54,7 +54,8 @@ if (env === "staging") {
 
     app.use(async (ctx, next) => {
         // If testing or accessing GraphQL routes, simply continue middleware chain
-        if (env === "staging" || ctx.path.startsWith("/gql")) await next();
+        if (env === "staging" || ctx.path.startsWith(server.graphqlPath))
+            await next();
         // Otherwise, add logger middleware
         else await logger()(ctx, next);
     });
