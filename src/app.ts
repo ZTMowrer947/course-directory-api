@@ -38,6 +38,7 @@ if (env === "staging") {
         context: ({ ctx }) => {
             return { koaCtx: ctx };
         },
+        tracing: env !== "production",
     });
 
     // Middleware
