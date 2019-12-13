@@ -2,7 +2,7 @@
 import argon2 from "argon2";
 import basicAuth from "basic-auth";
 import { Container } from "typedi";
-import { AuthChecker, Ctx } from "type-graphql";
+import { AuthChecker } from "type-graphql";
 import AppError from "./models/AppError";
 import GraphQLContext from "./models/GraphQLContext";
 import UserService from "./services/User.service";
