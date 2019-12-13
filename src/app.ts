@@ -51,10 +51,13 @@ if (env === "staging") {
     app.use(baseErrorHandler);
     app.use(appErrorHandler);
 
-    if (env !== "staging") {
-        // Only add logger when not testing
-        app.use(logger());
-    }
+    app.use(async (ctx, next) => {
+        // If testing or accessing GraphQL routes, simply continue middleware chain
+        if (env === "staging" || ctx.path.startsWith("/gql")) await next();
+        // Otherwise, add logger middleware
+        else await logger()(ctx, next);
+    });
+
     app.use(bodyParser());
     app.use(
         kcors({
