@@ -7,13 +7,14 @@ import logger from "koa-logger";
 import { Container } from "typedi";
 import { buildSchema } from "type-graphql";
 import authChecker from "./authChecker";
-import apiRouter from "./routes";
+import env from "./env";
 import baseErrorHandler from "./middleware/baseErrorHandler";
 import appErrorHandler from "./middleware/appErrorHandler";
 import jsonSerializer from "./middleware/jsonSerializer";
-import env from "./env";
+import ErrorInterceptor from "./middleware/graphql/ErrorInterceptor";
 import CourseResolver from "./resolvers/CourseResolver";
 import UserResolver from "./resolvers/UserResolver";
+import apiRouter from "./routes";
 
 // Application setup
 const app = new Koa();
@@ -30,6 +31,7 @@ if (env === "staging") {
         authChecker,
         resolvers: [CourseResolver, UserResolver],
         container: Container,
+        globalMiddlewares: [ErrorInterceptor],
     });
 
     // Apollo server setup
