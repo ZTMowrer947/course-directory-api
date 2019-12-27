@@ -6,7 +6,7 @@
     "scripts": {
         "start": "nodemon .",
         "test": "jest --watchAll",
-        "typeorm:ts": "babel-node --extensions '.ts' node_modules/typeorm/cli.js"
+        "typeorm:ts": "node scripts/typeorm-ts.js"
     },
     "keywords": [],
     "author": "",
