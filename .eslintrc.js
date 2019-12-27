@@ -28,4 +28,27 @@ module.exports = {
 
         "import/order": ["error"],
     },
+
+    // Rule overrides
+    overrides: [
+        {
+            // JavaScript files
+            files: ["*.js"],
+            rules: {
+                // Disable rules that shouldn't apply to ES5 JS files
+                "@typescript-eslint/no-var-requires": ["off"],
+            },
+        },
+        {
+            // Test Files
+            files: [
+                "**/__tests__/**/*.[jt]s?(x)",
+                "**/?(*.)+(spec|test).[tj]s?(x)",
+            ],
+            rules: {
+                // Disable no-extraneous-dependencies for tests
+                "import/no-extraneous-dependencies": ["off"],
+            },
+        },
+    ],
 };
