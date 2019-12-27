@@ -1,7 +1,7 @@
 {
     "name": "school-database-api",
-    "version": "1.0.0",
-    "description": "",
+    "version": "1.0.1",
+    "description": "FSJS Techdegree Unit 9 Project",
     "main": "index.js",
     "scripts": {
         "start": "nodemon .",
@@ -12,7 +12,7 @@
         "typeorm:ts": "node scripts/typeorm-ts.js"
     },
     "keywords": [],
-    "author": "",
+    "author": "Zackery Mowrer",
     "license": "MIT",
     "devDependencies": {
         "@babel/register": "^7.7.7",
