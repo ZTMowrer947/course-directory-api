@@ -12,7 +12,6 @@
     "author": "",
     "license": "MIT",
     "devDependencies": {
-        "@babel/node": "^7.5.5",
         "@babel/register": "^7.7.7",
         "@types/jest": "^24.0.18",
         "@types/supertest": "^2.0.8",
