@@ -1,12 +1,12 @@
 // Imports
 import { plainToClass } from "class-transformer";
-import CourseInput from "../../models/CourseInput";
+import CourseModifyDTO from "../../models/CourseModifyDTO";
 import agent from "../../koaTestAgent";
 import app from "../../app";
 
 // Test Suite
 describe("/api/v1/courses", () => {
-    let courseData: CourseInput;
+    let courseData: CourseModifyDTO;
     let id: string;
     let unusedId: string;
 
@@ -19,8 +19,8 @@ describe("/api/v1/courses", () => {
                 "This course is a test course for the course routes within the Koa application.",
         };
 
-        // Convert to CourseInput instance
-        courseData = plainToClass(CourseInput, plainData);
+        // Convert to CourseModifyDTO instance
+        courseData = plainToClass(CourseModifyDTO, plainData);
 
         // Define unused ID
         unusedId = "A".repeat(16);
@@ -90,7 +90,7 @@ describe("/api/v1/courses", () => {
                 description: "",
             };
 
-            const invalidData = plainToClass(CourseInput, invalidPlainData);
+            const invalidData = plainToClass(CourseModifyDTO, invalidPlainData);
 
             // Make API request
             const response = await agent(app)
@@ -148,7 +148,7 @@ describe("/api/v1/courses", () => {
         });
 
         describe("PUT method", () => {
-            let updateData: CourseInput;
+            let updateData: CourseModifyDTO;
 
             // Run before all tests
             beforeAll(() => {
@@ -159,7 +159,7 @@ describe("/api/v1/courses", () => {
                     estimatedTime: "A few seconds",
                 };
 
-                updateData = plainToClass(CourseInput, plainData);
+                updateData = plainToClass(CourseModifyDTO, plainData);
             });
 
             it("should return a 401 error if no authentication is provided", async () => {

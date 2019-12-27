@@ -4,12 +4,12 @@ import argon2 from "argon2";
 import { getRepository } from "typeorm";
 import User from "../../database/entities/User.entity";
 import UserService from "../User.service";
-import UserInput from "../../models/UserInput";
+import UserModifyDTO from "../../models/UserModifyDTO";
 
 // Test Suite
 describe("User service", () => {
     let userService: UserService;
-    let userData: UserInput;
+    let userData: UserModifyDTO;
 
     // Run before all tests
     beforeAll(() => {
@@ -20,7 +20,7 @@ describe("User service", () => {
         userService = new UserService(repository);
 
         // Define user data
-        userData = new UserInput();
+        userData = new UserModifyDTO();
         userData.firstName = "Examply";
         userData.lastName = "Exampleton";
         userData.emailAddress = "exampleton@test.tld";

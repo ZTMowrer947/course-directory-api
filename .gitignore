@@ -62,6 +62,3 @@ typings/
 
 # database
 fsjstd-restapi.db
-
-# build output
-dist/

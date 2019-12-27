@@ -10,28 +10,22 @@ import {
     BeforeInsert,
     BeforeUpdate,
 } from "typeorm";
-import { ObjectType, Field } from "type-graphql";
 import TimestampedEntity from "./TimestampedEntity";
 import Course from "./Course.entity";
-import EntityBase from "./EntityBase";
 
 // Entity
 @Entity("users")
-@ObjectType({ implements: EntityBase })
 export default class User extends TimestampedEntity {
     @Expose()
     @Column({ length: 96, nullable: false })
-    @Field({ nullable: false })
     public firstName!: string;
 
     @Expose()
     @Column({ length: 96, nullable: false })
-    @Field({ nullable: false })
     public lastName!: string;
 
     @Expose()
     @Column({ length: 127, nullable: false, unique: true })
-    @Field({ nullable: false })
     public emailAddress!: string;
 
     private tempPassword!: string;
@@ -40,7 +34,6 @@ export default class User extends TimestampedEntity {
     public password!: string;
 
     @OneToMany(() => Course, course => course.creator)
-    @Field(() => [Course], { nullable: false })
     public createdCourses!: Course[];
 
     @AfterLoad()

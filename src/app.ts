@@ -1,20 +1,13 @@
 // Imports
-import { ApolloServer } from "apollo-server-koa";
 import kcors from "kcors";
 import Koa from "koa";
 import bodyParser from "koa-bodyparser";
 import logger from "koa-logger";
-import { Container } from "typedi";
-import { buildSchema } from "type-graphql";
-import authChecker from "./authChecker";
-import env from "./env";
+import apiRouter from "./routes";
 import baseErrorHandler from "./middleware/baseErrorHandler";
 import appErrorHandler from "./middleware/appErrorHandler";
 import jsonSerializer from "./middleware/jsonSerializer";
-import ErrorInterceptor from "./middleware/graphql/ErrorInterceptor";
-import CourseResolver from "./resolvers/CourseResolver";
-import UserResolver from "./resolvers/UserResolver";
-import apiRouter from "./routes";
+import env from "./env";
 
 // Application setup
 const app = new Koa();
@@ -25,57 +18,25 @@ if (env === "staging") {
     app.silent = true;
 }
 
-(async () => {
-    // GraphQL schema setup
-    const schema = await buildSchema({
-        authChecker,
-        resolvers: [CourseResolver, UserResolver],
-        container: Container,
-        globalMiddlewares: [ErrorInterceptor],
-    });
+// Middleware
+app.use(jsonSerializer);
+app.use(baseErrorHandler);
+app.use(appErrorHandler);
 
-    // Apollo server setup
-    const server = new ApolloServer({
-        schema,
-        context: ({ ctx }) => {
-            return { koaCtx: ctx };
-        },
-        tracing: env !== "production",
-    });
+if (env !== "staging") {
+    // Only add logger when not testing
+    app.use(logger());
+}
+app.use(bodyParser());
+app.use(
+    kcors({
+        exposeHeaders: ["Location"],
+    })
+);
 
-    // Middleware
-    app.use(async (ctx, next) => {
-        if (!ctx.path.startsWith(server.graphqlPath)) {
-            await jsonSerializer(ctx, next);
-        } else {
-            await next();
-        }
-    });
-    app.use(baseErrorHandler);
-    app.use(appErrorHandler);
-
-    app.use(async (ctx, next) => {
-        // If testing or accessing GraphQL routes, simply continue middleware chain
-        if (env === "staging" || ctx.path.startsWith(server.graphqlPath))
-            await next();
-        // Otherwise, add logger middleware
-        else await logger()(ctx, next);
-    });
-
-    app.use(bodyParser());
-    app.use(
-        kcors({
-            exposeHeaders: ["Location"],
-        })
-    );
-
-    // Routes
-    app.use(apiRouter.routes());
-    app.use(apiRouter.allowedMethods());
-
-    // Attach GraphQL server to koa app
-    app.use(server.getMiddleware({ path: "/gql" }));
-})();
+// Routes
+app.use(apiRouter.routes());
+app.use(apiRouter.allowedMethods());
 
 // Export
 export default app;

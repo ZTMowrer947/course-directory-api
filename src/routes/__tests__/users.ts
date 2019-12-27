@@ -1,12 +1,12 @@
 // Imports
 import { plainToClass } from "class-transformer";
-import UserInput from "../../models/UserInput";
+import UserModifyDTO from "../../models/UserModifyDTO";
 import agent from "../../koaTestAgent";
 import app from "../../app";
 
 // Test Suite
 describe("/api/v1/users", () => {
-    let userData: UserInput;
+    let userData: UserModifyDTO;
 
     // Run before all tests
     beforeAll(() => {
@@ -17,7 +17,7 @@ describe("/api/v1/users", () => {
             password: "ch@0schaos",
         };
 
-        userData = plainToClass(UserInput, plainData);
+        userData = plainToClass(UserModifyDTO, plainData);
     });
 
     describe("POST", () => {
@@ -40,7 +40,7 @@ describe("/api/v1/users", () => {
                 password: "nope",
             };
 
-            const invalidData = plainToClass(UserInput, invalidPlainData);
+            const invalidData = plainToClass(UserModifyDTO, invalidPlainData);
 
             // Make API request
             const response = await agent(app)

@@ -4,7 +4,7 @@ import { plainToClass } from "class-transformer";
 import { getRepository } from "typeorm";
 import Course from "../../database/entities/Course.entity";
 import User from "../../database/entities/User.entity";
-import CourseInput from "../../models/CourseInput";
+import CourseModifyDTO from "../../models/CourseModifyDTO";
 import CourseService from "../Course.service";
 import UserService from "../User.service";
 
@@ -46,7 +46,7 @@ describe("Course service", () => {
     });
 
     describe("create method", () => {
-        let courseData: CourseInput;
+        let courseData: CourseModifyDTO;
 
         beforeAll(() => {
             const plainData = {
@@ -55,7 +55,7 @@ describe("Course service", () => {
                     "This is a test course for testing the Course service using Jest.",
             };
 
-            courseData = plainToClass(CourseInput, plainData);
+            courseData = plainToClass(CourseModifyDTO, plainData);
         });
 
         it("should create a course", async () => {
@@ -86,7 +86,7 @@ describe("Course service", () => {
     });
 
     describe("update method", () => {
-        let updateData: CourseInput;
+        let updateData: CourseModifyDTO;
 
         beforeAll(() => {
             const plainData = {
@@ -96,7 +96,7 @@ describe("Course service", () => {
                 estimatedTime: "2 nanoseconds",
             };
 
-            updateData = plainToClass(CourseInput, plainData);
+            updateData = plainToClass(CourseModifyDTO, plainData);
         });
 
         it("should update a course without errors", async () => {
