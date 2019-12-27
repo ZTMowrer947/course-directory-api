@@ -9,6 +9,6 @@
         "DB_ENABLE_LOGGING": "false",
         "ENABLE_GLOBAL_ERROR_LOGGING": "false"
     },
-    "exec": "babel-node --extensions '.ts' src",
+    "exec": "node src/index.dev.js",
     "ext": "ts"
 }
