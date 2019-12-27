@@ -5,6 +5,9 @@
     "main": "index.js",
     "scripts": {
         "start": "nodemon .",
+        "build": "cross-env NODE_ENV=production gulp",
+        "typecheck": "tsc -noEmit",
+        "typecheck:watch": "tsc -noEmit -w",
         "test": "jest --watchAll",
         "typeorm:ts": "node scripts/typeorm-ts.js"
     },
@@ -55,7 +58,7 @@
         "class-transformer": "^0.2.3",
         "class-validator": "^0.10.0",
         "core-js": "3",
-        "cross-env": "^5.2.0",
+        "cross-env": "^6.0.3",
         "hi-base32": "^0.5.0",
         "kcors": "^2.2.2",
         "koa": "^2.8.1",
