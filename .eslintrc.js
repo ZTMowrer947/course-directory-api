@@ -37,6 +37,7 @@ module.exports = {
             rules: {
                 // Disable rules that shouldn't apply to ES5 JS files
                 "@typescript-eslint/no-var-requires": ["off"],
+                "@typescript-eslint/explicit-function-return-type": ["off"],
             },
         },
         {
