@@ -13,6 +13,7 @@
     "license": "MIT",
     "devDependencies": {
         "@babel/node": "^7.5.5",
+        "@babel/register": "^7.7.7",
         "@types/jest": "^24.0.18",
         "@types/supertest": "^2.0.8",
         "@typescript-eslint/eslint-plugin": "^2.0.0",
@@ -35,7 +36,6 @@
         "@babel/plugin-transform-runtime": "^7.5.5",
         "@babel/preset-env": "^7.5.5",
         "@babel/preset-typescript": "^7.3.3",
-        "@babel/register": "^7.5.5",
         "@babel/runtime": "^7.5.5",
         "@types/basic-auth": "^1.1.2",
         "@types/body-parser": "^1.17.1",
