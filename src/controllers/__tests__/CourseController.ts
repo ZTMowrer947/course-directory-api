@@ -1,11 +1,12 @@
 // Imports
 import { plainToClass } from "class-transformer";
+
 import CourseModifyDTO from "../../models/CourseModifyDTO";
 import agent from "../../koaTestAgent";
 import app from "../../app";
 
 // Test Suite
-describe("/api/v1/courses", () => {
+describe("/api/courses", () => {
     let courseData: CourseModifyDTO;
     let id: string;
     let unusedId: string;
@@ -26,7 +27,7 @@ describe("/api/v1/courses", () => {
         unusedId = "A".repeat(16);
     });
 
-    describe("GET method", () => {
+    describe("GET", () => {
         it("should retrieve a list of courses", async () => {
             // Make API request
             const response = await agent(app).get("/api/courses");
@@ -39,7 +40,7 @@ describe("/api/v1/courses", () => {
         });
     });
 
-    describe("POST method", () => {
+    describe("POST", () => {
         it("should return a 401 error if no authentication is provided", async () => {
             // Make API request
             const response = await agent(app)
@@ -48,16 +49,6 @@ describe("/api/v1/courses", () => {
 
             // Expect a 401 response
             expect(response.status).toBe(401);
-
-            // Define expected error message
-            const expectedError =
-                "Credentials are required to access this route.";
-
-            // Get actual error message
-            const actualError = response.body.message;
-
-            // Expect error messages to match
-            expect(actualError).toBe(expectedError);
         });
 
         it("should create a new course given user authentication and valid data", async () => {
@@ -110,7 +101,7 @@ describe("/api/v1/courses", () => {
     });
 
     describe("/:id", () => {
-        describe("GET method", () => {
+        describe("GET", () => {
             it("should return the course with the given ID, if found", async () => {
                 // Make API request
                 const response = await agent(app).get(`/api/courses/${id}`);
@@ -135,19 +126,10 @@ describe("/api/v1/courses", () => {
 
                 // Expect a 404 response
                 expect(response.status).toBe(404);
-
-                // Define expected error message
-                const expectedError = `Course not found with ID "${unusedId}".`;
-
-                // Get actual error message
-                const actualError = response.body.message;
-
-                // Expect error messages to match
-                expect(actualError).toBe(expectedError);
             });
         });
 
-        describe("PUT method", () => {
+        describe("PUT", () => {
             let updateData: CourseModifyDTO;
 
             // Run before all tests
@@ -170,16 +152,6 @@ describe("/api/v1/courses", () => {
 
                 // Expect a 401 response
                 expect(response.status).toBe(401);
-
-                // Define expected error message
-                const expectedError =
-                    "Credentials are required to access this route.";
-
-                // Get actual error message
-                const actualError = response.body.message;
-
-                // Expect error messages to match
-                expect(actualError).toBe(expectedError);
             });
 
             it("should return a 403 error if the authenticating user did not create the course to be updated", async () => {
@@ -191,16 +163,6 @@ describe("/api/v1/courses", () => {
 
                 // Expect a 403 response
                 expect(response.status).toBe(403);
-
-                // Define expected error message
-                const expectedError =
-                    "You are not allowed to modify this resource.";
-
-                // Get actual error message
-                const actualError = response.body.message;
-
-                // Expect error messages to match
-                expect(actualError).toBe(expectedError);
             });
 
             it("should return a 404 error if no course exists with the given ID", async () => {
@@ -211,15 +173,6 @@ describe("/api/v1/courses", () => {
 
                 // Expect a 404 response
                 expect(response.status).toBe(404);
-
-                // Define expected error message
-                const expectedError = `Course not found with ID "${unusedId}".`;
-
-                // Get actual error message
-                const actualError = response.body.message;
-
-                // Expect error messages to match
-                expect(actualError).toBe(expectedError);
             });
 
             it("should update the course with the given ID when given proper user authentication and valid update data", async () => {
@@ -251,23 +204,13 @@ describe("/api/v1/courses", () => {
             });
         });
 
-        describe("DELETE method", () => {
+        describe("DELETE", () => {
             it("should return a 401 error if no authentication is provided", async () => {
                 // Make API request
                 const response = await agent(app).delete(`/api/courses/${id}`);
 
                 // Expect a 401 response
                 expect(response.status).toBe(401);
-
-                // Define expected error message
-                const expectedError =
-                    "Credentials are required to access this route.";
-
-                // Get actual error message
-                const actualError = response.body.message;
-
-                // Expect error messages to match
-                expect(actualError).toBe(expectedError);
             });
 
             it("should return a 403 error if the authenticating user did not create the course to be deleted", async () => {
@@ -278,16 +221,6 @@ describe("/api/v1/courses", () => {
 
                 // Expect a 403 response
                 expect(response.status).toBe(403);
-
-                // Define expected error message
-                const expectedError =
-                    "You are not allowed to modify this resource.";
-
-                // Get actual error message
-                const actualError = response.body.message;
-
-                // Expect error messages to match
-                expect(actualError).toBe(expectedError);
             });
 
             it("should return a 404 error if no course exists with the given ID", async () => {
@@ -298,15 +231,6 @@ describe("/api/v1/courses", () => {
 
                 // Expect a 404 response
                 expect(response.status).toBe(404);
-
-                // Define expected error message
-                const expectedError = `Course not found with ID "${unusedId}".`;
-
-                // Get actual error message
-                const actualError = response.body.message;
-
-                // Expect error messages to match
-                expect(actualError).toBe(expectedError);
             });
 
             it("should delete the course with the given ID when given proper user authentication", async () => {
@@ -325,15 +249,6 @@ describe("/api/v1/courses", () => {
 
                 // Expect a 404 response
                 expect(response.status).toBe(404);
-
-                // Define expected error message
-                const expectedError = `Course not found with ID "${id}".`;
-
-                // Get actual error message
-                const actualError = response.body.message;
-
-                // Expect error messages to match
-                expect(actualError).toBe(expectedError);
             });
         });
     });

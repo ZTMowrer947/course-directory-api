@@ -5,7 +5,7 @@ import agent from "../../koaTestAgent";
 import app from "../../app";
 
 // Test Suite
-describe("/api/v1/users", () => {
+describe("/api/users", () => {
     let userData: UserModifyDTO;
 
     // Run before all tests
@@ -65,16 +65,6 @@ describe("/api/v1/users", () => {
 
             // Expect a 400 response
             expect(response.status).toBe(400);
-
-            // Define expected error message
-            const expectedMessage =
-                "Email address is already in use by another user.";
-
-            // Get actual error message
-            const actualMessage = response.body.message;
-
-            // Expect messages to match
-            expect(actualMessage).toBe(expectedMessage);
         });
     });
 
@@ -85,16 +75,6 @@ describe("/api/v1/users", () => {
 
             // Expect a 401 response
             expect(response.status).toBe(401);
-
-            // Define expected error message
-            const expectedMessage =
-                "Credentials are required to access this route.";
-
-            // Get actual error message
-            const actualMessage = response.body.message;
-
-            // Expect messages to match
-            expect(actualMessage).toBe(expectedMessage);
         });
 
         it("should return the proper user data when proper authentication is provided", async () => {
