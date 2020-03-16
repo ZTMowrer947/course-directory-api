@@ -1,13 +1,12 @@
 // Imports
-import kcors from "kcors";
 import Koa from "koa";
-import bodyParser from "koa-bodyparser";
-import logger from "koa-logger";
-import apiRouter from "./routes";
-import baseErrorHandler from "./middleware/baseErrorHandler";
-import appErrorHandler from "./middleware/appErrorHandler";
-import jsonSerializer from "./middleware/jsonSerializer";
+import { useContainer, useKoaServer } from "routing-controllers";
+import { Container } from "typedi";
+
 import env from "./env";
+import UserController from "./controllers/UserController";
+import authorizationChecker from "./functions/authorizationChecker";
+import currentUserChecker from "./functions/currentUserChecker";
 
 // Application setup
 const app = new Koa();
@@ -18,25 +17,17 @@ if (env === "staging") {
     app.silent = true;
 }
 
-// Middleware
-app.use(jsonSerializer);
-app.use(baseErrorHandler);
-app.use(appErrorHandler);
+// Configure routing-controllers to use TypeDI Container
+useContainer(Container);
 
-if (env !== "staging") {
-    // Only add logger when not testing
-    app.use(logger());
-}
-app.use(bodyParser());
-app.use(
-    kcors({
-        exposeHeaders: ["Location"],
-    })
-);
-
-// Routes
-app.use(apiRouter.routes());
-app.use(apiRouter.allowedMethods());
+// Setup routing-controllers
+useKoaServer(app, {
+    authorizationChecker,
+    currentUserChecker,
+    cors: true,
+    classTransformer: true,
+    controllers: [UserController],
+});
 
 // Export
 export default app;
