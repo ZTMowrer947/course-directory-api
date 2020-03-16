@@ -70,7 +70,6 @@ describe("/api/courses", () => {
             // Get ID from location header
             const idMatch = location.match(/[A-Z2-7]{16}$/g);
             expect(idMatch).not.toBeNull();
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             id = idMatch![0];
         });
 

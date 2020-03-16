@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 // Imports
 import { plainToClass } from "class-transformer";
 import { getRepository } from "typeorm";

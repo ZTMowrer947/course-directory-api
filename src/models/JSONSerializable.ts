@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // Interface
 interface JSONSerializable {
     toJSON(): object;

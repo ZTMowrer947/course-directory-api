@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 // Imports
 import argon2 from "argon2";
 import { getRepository } from "typeorm";
