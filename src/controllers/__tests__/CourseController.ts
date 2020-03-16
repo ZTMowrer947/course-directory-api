@@ -169,7 +169,8 @@ describe("/api/courses", () => {
                 // Make API request
                 const response = await agent(app)
                     .put(`/api/courses/${unusedId}`)
-                    .auth("joe@smith.com", "joepassword");
+                    .auth("joe@smith.com", "joepassword")
+                    .send(updateData);
 
                 // Expect a 404 response
                 expect(response.status).toBe(404);

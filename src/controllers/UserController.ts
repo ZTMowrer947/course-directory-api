@@ -19,6 +19,7 @@ import UserModifyDTO from "../models/UserModifyDTO";
 
 // Controller
 @JsonController("/api/users")
+@UseInterceptor(UserInterceptor)
 export default class UserController {
     private userService: UserService;
 
@@ -28,7 +29,6 @@ export default class UserController {
 
     @Authorized()
     @Get("/")
-    @UseInterceptor(UserInterceptor)
     get(@CurrentUser({ required: true }) user: User): User {
         return user;
     }
