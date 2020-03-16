@@ -1,11 +1,11 @@
 // Imports
 import { plainToClass } from "class-transformer";
 import { getRepository } from "typeorm";
-import Course from "../../database/entities/Course.entity";
-import User from "../../database/entities/User.entity";
+import Course from "../../database/entities/Course";
+import User from "../../database/entities/User";
 import CourseModifyDTO from "../../models/CourseModifyDTO";
-import CourseService from "../Course.service";
-import UserService from "../User.service";
+import CourseService from "../CourseService";
+import UserService from "../UserService";
 
 // Test Suite
 describe("Course service", () => {

@@ -2,7 +2,7 @@
 import { classToPlain, Expose, Type } from "class-transformer";
 import { Column, Entity, ManyToOne } from "typeorm";
 import TimestampedEntity from "./TimestampedEntity";
-import User from "./User.entity";
+import User from "./User";
 
 // Entity
 @Entity("courses")
@@ -25,10 +25,14 @@ export default class Course extends TimestampedEntity {
 
     @Expose()
     @Type(() => User)
-    @ManyToOne(() => User, user => user.createdCourses, {
-        nullable: false,
-        onDelete: "CASCADE",
-    })
+    @ManyToOne(
+        () => User,
+        user => user.createdCourses,
+        {
+            nullable: false,
+            onDelete: "CASCADE",
+        }
+    )
     public creator!: User;
 
     /* istanbul ignore next */

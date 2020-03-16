@@ -4,7 +4,7 @@ import basicAuth from "basic-auth";
 import { Action } from "routing-controllers";
 import { Container } from "typedi";
 
-import UserService from "../services/User.service";
+import UserService from "../services/UserService";
 
 // Auth Checker
 export default async (action: Action): Promise<boolean> => {

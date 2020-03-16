@@ -12,8 +12,8 @@ import {
     UseInterceptor,
 } from "routing-controllers";
 
-import UserService from "../services/User.service";
-import User from "../database/entities/User.entity";
+import UserService from "../services/UserService";
+import User from "../database/entities/User";
 import UserInterceptor from "../interceptors/UserInterceptor";
 import UserModifyDTO from "../models/UserModifyDTO";
 

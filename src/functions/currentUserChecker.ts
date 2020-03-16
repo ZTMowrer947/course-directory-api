@@ -3,8 +3,8 @@ import basicAuth from "basic-auth";
 import { Action, InternalServerError } from "routing-controllers";
 import { Container } from "typedi";
 
-import User from "../database/entities/User.entity";
-import UserService from "../services/User.service";
+import User from "../database/entities/User";
+import UserService from "../services/UserService";
 
 // Current User Checker
 export default async (action: Action): Promise<User | undefined> => {

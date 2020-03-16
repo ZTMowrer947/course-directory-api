@@ -1,8 +1,8 @@
 // Imports
 import argon2 from "argon2";
 import { getRepository } from "typeorm";
-import User from "../../database/entities/User.entity";
-import UserService from "../User.service";
+import User from "../../database/entities/User";
+import UserService from "../UserService";
 import UserModifyDTO from "../../models/UserModifyDTO";
 
 // Test Suite

@@ -2,8 +2,8 @@
 import { Service } from "typedi";
 import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
-import Course from "../database/entities/Course.entity";
-import User from "../database/entities/User.entity";
+import Course from "../database/entities/Course";
+import User from "../database/entities/User";
 import CourseModifyDTO from "../models/CourseModifyDTO";
 
 // Service

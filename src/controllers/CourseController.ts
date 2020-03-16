@@ -17,11 +17,11 @@ import {
     UseInterceptor,
 } from "routing-controllers";
 
-import Course from "../database/entities/Course.entity";
-import User from "../database/entities/User.entity";
+import Course from "../database/entities/Course";
+import User from "../database/entities/User";
 import CourseInterceptor from "../interceptors/CourseInterceptor";
 import CourseModifyDTO from "../models/CourseModifyDTO";
-import CourseService from "../services/Course.service";
+import CourseService from "../services/CourseService";
 
 // Controller
 @JsonController("/api/courses")

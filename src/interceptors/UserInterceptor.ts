@@ -1,7 +1,7 @@
 // Imports
 import { Action, InterceptorInterface } from "routing-controllers";
 
-import User from "../database/entities/User.entity";
+import User from "../database/entities/User";
 
 // Interceptor
 export default class UserInterceptor implements InterceptorInterface {

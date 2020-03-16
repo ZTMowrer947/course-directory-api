@@ -11,7 +11,7 @@ import {
     BeforeUpdate,
 } from "typeorm";
 import TimestampedEntity from "./TimestampedEntity";
-import Course from "./Course.entity";
+import Course from "./Course";
 
 // Entity
 @Entity("users")
@@ -33,7 +33,10 @@ export default class User extends TimestampedEntity {
     @Column({ nullable: false })
     public password!: string;
 
-    @OneToMany(() => Course, course => course.creator)
+    @OneToMany(
+        () => Course,
+        course => course.creator
+    )
     public createdCourses!: Course[];
 
     @AfterLoad()
