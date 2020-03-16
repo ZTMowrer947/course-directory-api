@@ -4,6 +4,7 @@ import { useContainer, useKoaServer } from "routing-controllers";
 import { Container } from "typedi";
 
 import env from "./env";
+import CourseController from "./controllers/CourseController";
 import UserController from "./controllers/UserController";
 import authorizationChecker from "./functions/authorizationChecker";
 import currentUserChecker from "./functions/currentUserChecker";
@@ -26,7 +27,7 @@ useKoaServer(app, {
     currentUserChecker,
     cors: true,
     classTransformer: true,
-    controllers: [UserController],
+    controllers: [CourseController, UserController],
 });
 
 // Export
