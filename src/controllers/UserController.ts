@@ -9,9 +9,12 @@ import {
     Location,
     OnUndefined,
     Post,
+    UseInterceptor,
 } from "routing-controllers";
+
 import UserService from "../services/User.service";
 import User from "../database/entities/User.entity";
+import UserInterceptor from "../interceptors/UserInterceptor";
 import UserModifyDTO from "../models/UserModifyDTO";
 
 // Controller
@@ -23,8 +26,9 @@ export default class UserController {
         this.userService = userService;
     }
 
-    @Get("/")
     @Authorized()
+    @Get("/")
+    @UseInterceptor(UserInterceptor)
     get(@CurrentUser({ required: true }) user: User): User {
         return user;
     }
