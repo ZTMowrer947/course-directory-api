@@ -1,5 +1,6 @@
 // Imports
 import Koa from "koa";
+import logger from "koa-logger";
 import { useContainer, useKoaServer } from "routing-controllers";
 import { Container } from "typedi";
 
@@ -13,9 +14,15 @@ import currentUserChecker from "./functions/currentUserChecker";
 const app = new Koa();
 
 // Configuration
+// In testing environments,
 if (env === "staging") {
-    // Silence log output in testing environment
+    // Silence log output
     app.silent = true;
+}
+// In all other environments,
+else {
+    // Add logger middleware
+    app.use(logger());
 }
 
 // Configure routing-controllers to use TypeDI Container
