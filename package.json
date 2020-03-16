@@ -9,7 +9,8 @@
         "typecheck": "tsc -noEmit",
         "typecheck:watch": "tsc -noEmit -w",
         "test": "jest --watchAll",
-        "typeorm:ts": "node scripts/typeorm-ts.js"
+        "typeorm:ts": "node scripts/typeorm-ts.js",
+        "lint": "eslint --ext .ts,.js src"
     },
     "keywords": [],
     "author": "Zackery Mowrer",
