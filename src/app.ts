@@ -32,7 +32,9 @@ useContainer(Container);
 useKoaServer(app, {
     authorizationChecker,
     currentUserChecker,
-    cors: true,
+    cors: {
+        exposeHeaders: ["Location"],
+    },
     classTransformer: true,
     controllers: [CourseController, UserController],
 });
