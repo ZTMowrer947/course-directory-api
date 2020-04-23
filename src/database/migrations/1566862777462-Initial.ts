@@ -161,15 +161,16 @@ export class Initial1566862777462 implements MigrationInterface {
         const courseTable = await queryRunner.getTable("courses");
 
         // Get foreign key
-        const creatorFk = courseTable!.foreignKeys.find(fk =>
+        const creatorFk = courseTable?.foreignKeys.find(fk =>
             fk.columnNames.includes("creatorId")
         );
 
-        // Drop foreign key
-        await queryRunner.dropForeignKey(courseTable!, creatorFk!);
+        // Drop foreign key if present
+        if (courseTable && creatorFk)
+            await queryRunner.dropForeignKey(courseTable, creatorFk);
 
-        // Drop tables
-        await queryRunner.dropTable(courseTable!);
-        await queryRunner.dropTable(userTable!);
+        // Drop tables if present
+        if (courseTable) await queryRunner.dropTable(courseTable);
+        if (userTable) await queryRunner.dropTable(userTable);
     }
 }
