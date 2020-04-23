@@ -1,12 +1,12 @@
 // Imports
 import { classToPlain, Expose, Type } from "class-transformer";
 import { Column, Entity, ManyToOne } from "typeorm";
-import TimestampedEntity from "./TimestampedEntity";
 import User from "./User";
+import VersionedEntity from "./VersionedEntity";
 
 // Entity
 @Entity("courses")
-export default class Course extends TimestampedEntity {
+export default class Course extends VersionedEntity {
     @Expose()
     @Column({ length: 127, nullable: false })
     public title!: string;

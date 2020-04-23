@@ -10,12 +10,12 @@ import {
     BeforeInsert,
     BeforeUpdate,
 } from "typeorm";
-import TimestampedEntity from "./TimestampedEntity";
 import Course from "./Course";
+import VersionedEntity from "./VersionedEntity";
 
 // Entity
 @Entity("users")
-export default class User extends TimestampedEntity {
+export default class User extends VersionedEntity {
     @Expose()
     @Column({ length: 96, nullable: false })
     public firstName!: string;
