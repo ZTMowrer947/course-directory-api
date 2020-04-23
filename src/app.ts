@@ -1,35 +1,19 @@
 // Imports
-import Koa from "koa";
-import logger from "koa-logger";
-import { useContainer, useKoaServer } from "routing-controllers";
+import { createKoaServer, useContainer } from "routing-controllers";
 import { Container } from "typedi";
 
-import env from "./env";
 import CourseController from "./controllers/CourseController";
 import UserController from "./controllers/UserController";
+import env from "./env";
 import authorizationChecker from "./functions/authorizationChecker";
 import currentUserChecker from "./functions/currentUserChecker";
-
-// Application setup
-const app = new Koa();
-
-// Configuration
-// In testing environments,
-if (env === "staging") {
-    // Silence log output
-    app.silent = true;
-}
-// In all other environments,
-else {
-    // Add logger middleware
-    app.use(logger());
-}
+import LoggerMiddleware from "./middleware/LoggerMiddleware";
 
 // Configure routing-controllers to use TypeDI Container
 useContainer(Container);
 
-// Setup routing-controllers
-useKoaServer(app, {
+// Create Koa application
+const app = createKoaServer({
     authorizationChecker,
     currentUserChecker,
     cors: {
@@ -37,7 +21,11 @@ useKoaServer(app, {
     },
     classTransformer: true,
     controllers: [CourseController, UserController],
+    middlewares: [LoggerMiddleware],
 });
+
+// Silence app if testing
+app.silent = env === "staging";
 
 // Export
 export default app;
