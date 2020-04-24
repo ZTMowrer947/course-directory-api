@@ -8,6 +8,7 @@ import env from "./env";
 import authorizationChecker from "./functions/authorizationChecker";
 import currentUserChecker from "./functions/currentUserChecker";
 import LoggerMiddleware from "./middleware/LoggerMiddleware";
+import JsonInterceptor from "./interceptors/JsonInterceptor";
 
 // Configure routing-controllers to use TypeDI Container
 useContainer(Container);
@@ -22,6 +23,7 @@ const app = createKoaServer({
     classTransformer: true,
     controllers: [CourseController, UserController],
     middlewares: [LoggerMiddleware],
+    interceptors: [JsonInterceptor],
 });
 
 // Silence app if testing

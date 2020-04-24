@@ -9,17 +9,14 @@ import {
     Location,
     OnUndefined,
     Post,
-    UseInterceptor,
 } from "routing-controllers";
 
 import UserService from "../services/UserService";
 import User from "../database/entities/User";
-import UserInterceptor from "../interceptors/UserInterceptor";
 import UserModifyDTO from "../models/UserModifyDTO";
 
 // Controller
 @JsonController("/api/users")
-@UseInterceptor(UserInterceptor)
 export default class UserController {
     private userService: UserService;
 

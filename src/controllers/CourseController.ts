@@ -14,18 +14,15 @@ import {
     Param,
     Post,
     Put,
-    UseInterceptor,
 } from "routing-controllers";
 
 import Course from "../database/entities/Course";
 import User from "../database/entities/User";
-import CourseInterceptor from "../interceptors/CourseInterceptor";
 import CourseModifyDTO from "../models/CourseModifyDTO";
 import CourseService from "../services/CourseService";
 
 // Controller
 @JsonController("/api/courses")
-@UseInterceptor(CourseInterceptor)
 export default class CourseController {
     private courseService: CourseService;
 
