@@ -49,7 +49,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/register", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:7.12.10"],
             ["@types/express", "npm:4.17.9"],
             ["@types/jest", "npm:26.0.15"],
-            ["@types/node", "npm:14.14.7"],
+            ["@types/node", "npm:14.14.14"],
             ["@typescript-eslint/eslint-plugin", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:4.7.0"],
             ["@typescript-eslint/parser", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:4.7.0"],
             ["babel-plugin-module-resolver", "npm:4.0.0"],
@@ -3176,10 +3176,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "HARD",
         }],
-        ["npm:14.14.7", {
-          "packageLocation": "./.yarn/cache/@types-node-npm-14.14.7-e4d93f4d9a-4fc8434bfe.zip/node_modules/@types/node/",
+        ["npm:14.14.14", {
+          "packageLocation": "./.yarn/cache/@types-node-npm-14.14.14-83cbbb70d3-dea8d257d4.zip/node_modules/@types/node/",
           "packageDependencies": [
-            ["@types/node", "npm:14.14.7"]
+            ["@types/node", "npm:14.14.14"]
           ],
           "linkType": "HARD",
         }]
@@ -11818,7 +11818,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/register", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:7.12.10"],
             ["@types/express", "npm:4.17.9"],
             ["@types/jest", "npm:26.0.15"],
-            ["@types/node", "npm:14.14.7"],
+            ["@types/node", "npm:14.14.14"],
             ["@typescript-eslint/eslint-plugin", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:4.7.0"],
             ["@typescript-eslint/parser", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:4.7.0"],
             ["babel-plugin-module-resolver", "npm:4.0.0"],

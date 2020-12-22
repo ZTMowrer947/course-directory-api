@@ -2001,10 +2001,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^14.14.7":
-  version: 14.14.7
-  resolution: "@types/node@npm:14.14.7"
-  checksum: 4fc8434bfe81c2a3102fa76777712ecee9e9177d43ec5929ba0dfd5a77a6c459cf10a37df64ea880a328f06973f6210eabf04b312428e309b2e8998147a6cd63
+"@types/node@npm:^14.14.14":
+  version: 14.14.14
+  resolution: "@types/node@npm:14.14.14"
+  checksum: dea8d257d49d68c65dafa6ebde9453bb61b67febc92ed8d7e38fce8b95f18d32ccffb3ab37021f9be8d1e5c65cd59cdb7dd8981d9b89b2be103b3012aee09fcf
   languageName: node
   linkType: hard
 
@@ -9591,7 +9591,7 @@ resolve@^1.18.1:
     "@babel/register": ~7.12.10
     "@types/express": ^4.17.9
     "@types/jest": ^26.0.15
-    "@types/node": ^14.14.7
+    "@types/node": ^14.14.14
     "@typescript-eslint/eslint-plugin": ^4.7.0
     "@typescript-eslint/parser": ^4.7.0
     babel-plugin-module-resolver: ^4.0.0
