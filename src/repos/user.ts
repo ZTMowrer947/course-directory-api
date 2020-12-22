@@ -1,5 +1,6 @@
 /* eslint class-methods-use-this: ["error", { "exceptMethods": ["findAll"] }] */
 // Imports
+import argon2 from 'argon2';
 import { EntityRepository } from 'typeorm';
 
 import { EntityId } from '../entities/base';
@@ -30,7 +31,10 @@ class UserRepository extends BaseRepository<User> implements IUserRepository {
       .getRawOne<Pick<User, 'emailAddress' | 'password'>>();
 
     // Then, verify user was found and has correct password
-    return !!queryResult?.emailAddress && queryResult?.password === password; // TODO: Compare hash against input password
+    return (
+      !!queryResult?.emailAddress &&
+      argon2.verify(password, queryResult?.password)
+    ); // TODO: Compare hash against input password
   }
 
   findAll(): User[] {

@@ -1,8 +1,10 @@
 // Imports
+import argon2 from 'argon2';
 import { internet, name } from 'faker';
 
-import User from '../entities/user.entity';
-import { getDbConnection } from '../utils/db';
+import User from '@/entities/user.entity';
+import { getDbConnection } from '@/utils/db';
+
 import UserRepository from './user';
 
 // Setup tools
@@ -94,7 +96,8 @@ describe('User repository', () => {
     user.firstName = name.firstName();
     user.lastName = name.lastName();
     user.emailAddress = internet.email(user.firstName, user.lastName);
-    user.password = internet.password();
+    const password = internet.password();
+    user.password = password;
 
     // Attempt to create user and retrieve ID
     const id = await repository.create(user);
@@ -117,7 +120,9 @@ describe('User repository', () => {
       expect(retrievedUser).toHaveProperty('lastName', user.lastName);
       expect(retrievedUser).toHaveProperty('emailAddress', user.emailAddress);
       expect(retrievedUser).toHaveProperty('password', user.password);
-      expect(retrievedUser?.password === user.password).toBeTruthy(); // TODO:ztm Replace with hash verification
+      await expect(
+        argon2.verify(retrievedUser!.password, password)
+      ).resolves.toBeTruthy();
 
       // Expect entity version to be initialized correctly
       const expectedVersion = 1;
@@ -155,7 +160,8 @@ describe('User repository', () => {
         updatingUser.firstName,
         updatingUser.lastName
       );
-      updatingUser.password = internet.password();
+      const updatePassword = internet.password();
+      updatingUser.password = updatePassword;
 
       // Attempt to update user and expect no errors
       await expect(repository.update(id, updatingUser)).resolves.not.toThrow();
@@ -179,7 +185,9 @@ describe('User repository', () => {
         updatingUser.emailAddress
       );
       expect(updatedUser).toHaveProperty('password', updatingUser.password);
-      expect(updatedUser?.password === updatingUser.password).toBeTruthy(); // TODO:ztm Replace with hash verification
+      await expect(
+        argon2.verify(updatedUser!.password, updatePassword)
+      ).resolves.toBeTruthy();
 
       // Expect version column to have been incremented
       expect(updatedUser).toHaveProperty('version');
