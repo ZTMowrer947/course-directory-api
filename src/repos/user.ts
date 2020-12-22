@@ -33,7 +33,7 @@ class UserRepository extends BaseRepository<User> implements IUserRepository {
     // Then, verify user was found and has correct password
     return (
       !!queryResult?.emailAddress &&
-      argon2.verify(password, queryResult?.password)
+      argon2.verify(queryResult?.password, password)
     ); // TODO: Compare hash against input password
   }
 

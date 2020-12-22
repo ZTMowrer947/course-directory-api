@@ -234,4 +234,79 @@ describe('User repository', () => {
         .execute();
     }
   });
+
+  describe('verifyCredentials method', () => {
+    it("should return false if user with given email doesn't exist", async () => {
+      // Setup repository
+      const { repository } = setupRepository();
+
+      // Define email and password of nonexistent user
+      const emailAddress = internet.email();
+      const password = internet.password();
+
+      // Expect verifyCredentials method to resolve to false
+      await expect(
+        repository.verifyCredentials(emailAddress, password)
+      ).resolves.toBeFalsy();
+    });
+
+    it('should return false if password is incorrect', async () => {
+      // Setup repository
+      const { manager, repository } = setupRepository();
+
+      // Generate two different passwords
+      const passwordA = internet.password(16);
+      const passwordB = internet.password(20);
+
+      // Generate test user
+      const user = new User();
+      user.firstName = name.firstName();
+      user.lastName = name.lastName();
+      user.emailAddress = internet.email(user.firstName, user.lastName);
+      user.password = passwordA;
+
+      // Persist user to database
+      const { id } = await manager.save(user);
+      user.id = id;
+
+      try {
+        // Expect verifyCredentials method to resolve to false when using second password
+        await expect(
+          repository.verifyCredentials(user.emailAddress, passwordB)
+        ).resolves.toBeFalsy();
+      } finally {
+        // Remove test user when test is completed
+        await manager.remove(user);
+      }
+    });
+
+    it('should return true if credentials are valid', async () => {
+      // Setup repository
+      const { manager, repository } = setupRepository();
+
+      // Generate password
+      const password = internet.password();
+
+      // Generate test user
+      const user = new User();
+      user.firstName = name.firstName();
+      user.lastName = name.lastName();
+      user.emailAddress = internet.email(user.firstName, user.lastName);
+      user.password = password;
+
+      // Persist user to database
+      const { id } = await manager.save(user);
+      user.id = id;
+
+      try {
+        // Expect verifyCredentials method to resolve to true
+        await expect(
+          repository.verifyCredentials(user.emailAddress, password)
+        ).resolves.toBeTruthy();
+      } finally {
+        // Remove test user when test is completed
+        await manager.remove(user);
+      }
+    });
+  });
 });
