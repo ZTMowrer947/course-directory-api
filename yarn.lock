@@ -1389,6 +1389,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/register@npm:~7.12.10":
+  version: 7.12.10
+  resolution: "@babel/register@npm:7.12.10"
+  dependencies:
+    find-cache-dir: ^2.0.0
+    lodash: ^4.17.19
+    make-dir: ^2.1.0
+    pirates: ^4.0.0
+    source-map-support: ^0.5.16
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  checksum: 871f5f2155b37dc01bde9f6af80c50c11f8c8ea2cd5bc37e6bc1818062277a37756ad81bf7c7c7b281749a92dad5aaa0f7f12856c5e297e98d76184856d2b049
+  languageName: node
+  linkType: hard
+
 "@babel/runtime@npm:^7.8.4":
   version: 7.10.5
   resolution: "@babel/runtime@npm:7.10.5"
@@ -9143,6 +9158,7 @@ resolve@^1.18.1:
     "@babel/plugin-proposal-optional-chaining": ~7.12.1
     "@babel/preset-env": ~7.12.1
     "@babel/preset-typescript": ~7.12.1
+    "@babel/register": ~7.12.10
     "@types/jest": ^26.0.15
     "@types/node": ^14.14.7
     "@typescript-eslint/eslint-plugin": ^4.7.0

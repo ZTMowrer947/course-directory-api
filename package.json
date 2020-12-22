@@ -10,7 +10,8 @@
     "lint": "eslint . --ext .js,.ts,.jsx,.tsx",
     "test": "jest",
     "typecheck": "tsc -p tsconfig.app.json",
-    "typecheck:watch": "tsc -w -p tsconfig.app.json"
+    "typecheck:watch": "tsc -w -p tsconfig.app.json",
+    "typeorm:dev": "node scripts/typeorm-dev.js"
   },
   "repository": {
     "type": "git",
@@ -40,6 +41,7 @@
     "@babel/plugin-proposal-optional-chaining": "~7.12.1",
     "@babel/preset-env": "~7.12.1",
     "@babel/preset-typescript": "~7.12.1",
+    "@babel/register": "~7.12.10",
     "@types/jest": "^26.0.15",
     "@types/node": "^14.14.7",
     "@typescript-eslint/eslint-plugin": "^4.7.0",

@@ -46,6 +46,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/plugin-proposal-optional-chaining", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:7.12.1"],
             ["@babel/preset-env", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:7.12.1"],
             ["@babel/preset-typescript", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:7.12.1"],
+            ["@babel/register", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:7.12.10"],
             ["@types/jest", "npm:26.0.15"],
             ["@types/node", "npm:14.14.7"],
             ["@typescript-eslint/eslint-plugin", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:4.7.0"],
@@ -2480,10 +2481,35 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
+        ["npm:7.12.10", {
+          "packageLocation": "./.yarn/cache/@babel-register-npm-7.12.10-34b1baef6a-871f5f2155.zip/node_modules/@babel/register/",
+          "packageDependencies": [
+            ["@babel/register", "npm:7.12.10"]
+          ],
+          "linkType": "SOFT",
+        }],
         ["virtual:05491574239f6ac112ca678d17300cb3eb932f1acfb2bda9b3c49425321a7e38b7d92a597c4ab86a689f7430c2cfee3cb70efb424e4204d9393ceae6651b111a#npm:7.12.1", {
           "packageLocation": "./.yarn/$$virtual/@babel-register-virtual-f93e9e3b20/0/cache/@babel-register-npm-7.12.1-71e707035d-e52b50e901.zip/node_modules/@babel/register/",
           "packageDependencies": [
             ["@babel/register", "virtual:05491574239f6ac112ca678d17300cb3eb932f1acfb2bda9b3c49425321a7e38b7d92a597c4ab86a689f7430c2cfee3cb70efb424e4204d9393ceae6651b111a#npm:7.12.1"],
+            ["@babel/core", "npm:7.12.3"],
+            ["@types/babel__core", null],
+            ["find-cache-dir", "npm:2.1.0"],
+            ["lodash", "npm:4.17.19"],
+            ["make-dir", "npm:2.1.0"],
+            ["pirates", "npm:4.0.1"],
+            ["source-map-support", "npm:0.5.19"]
+          ],
+          "packagePeers": [
+            "@babel/core",
+            "@types/babel__core"
+          ],
+          "linkType": "HARD",
+        }],
+        ["virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:7.12.10", {
+          "packageLocation": "./.yarn/$$virtual/@babel-register-virtual-d2e809e3e1/0/cache/@babel-register-npm-7.12.10-34b1baef6a-871f5f2155.zip/node_modules/@babel/register/",
+          "packageDependencies": [
+            ["@babel/register", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:7.12.10"],
             ["@babel/core", "npm:7.12.3"],
             ["@types/babel__core", null],
             ["find-cache-dir", "npm:2.1.0"],
@@ -11277,6 +11303,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/plugin-proposal-optional-chaining", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:7.12.1"],
             ["@babel/preset-env", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:7.12.1"],
             ["@babel/preset-typescript", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:7.12.1"],
+            ["@babel/register", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:7.12.10"],
             ["@types/jest", "npm:26.0.15"],
             ["@types/node", "npm:14.14.7"],
             ["@typescript-eslint/eslint-plugin", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:4.7.0"],
