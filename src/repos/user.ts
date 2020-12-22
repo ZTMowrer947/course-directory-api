@@ -30,7 +30,7 @@ class UserRepository extends BaseRepository<User> implements IUserRepository {
       .getRawOne<Pick<User, 'emailAddress' | 'password'>>();
 
     // Then, verify user was found and has correct password
-    return queryResult?.emailAddress && queryResult?.password === password; // TODO: Compare hash against input password
+    return !!queryResult?.emailAddress && queryResult?.password === password; // TODO: Compare hash against input password
   }
 
   findAll(): User[] {
@@ -51,10 +51,10 @@ class UserRepository extends BaseRepository<User> implements IUserRepository {
     }
 
     // Complete and execute query
-    return query.where('user.id = :id', { id }).getOne() ?? null;
+    return (await query.where('user.id = :id', { id }).getOne()) ?? null;
   }
 }
 
 // Exports
 export default UserRepository;
-export { IUserRepository };
+export type { IUserRepository };

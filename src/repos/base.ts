@@ -52,4 +52,4 @@ abstract class BaseRepository<Entity extends EntityBase>
 
 // Exports
 export default BaseRepository;
-export { IRepository, TypeOrPromise };
+export type { IRepository, TypeOrPromise };
