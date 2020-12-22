@@ -110,3 +110,6 @@ dist
 !.yarn/plugins
 !.yarn/sdks
 !.yarn/versions
+
+# Database files
+*.sqlite
