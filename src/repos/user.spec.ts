@@ -1,9 +1,10 @@
 // Imports
 import argon2 from 'argon2';
-import { internet, name } from 'faker';
+import { internet } from 'faker';
 
 import User from '@/entities/user.entity';
 import { getDbConnection } from '@/utils/db';
+import { generateTestUser } from '@/utils/testing/user';
 
 import UserRepository from './user';
 
@@ -50,11 +51,7 @@ describe('User repository', () => {
       const { manager, repository } = setupRepository();
 
       // Generate test user
-      const user = new User();
-      user.firstName = name.firstName();
-      user.lastName = name.lastName();
-      user.emailAddress = internet.email(user.firstName, user.lastName);
-      user.password = internet.password();
+      const user = generateTestUser();
 
       // Persist user to database
       const { id } = await manager.save(user);
@@ -92,12 +89,8 @@ describe('User repository', () => {
     const { manager, repository } = setupRepository();
 
     // Generate test user data
-    const user = new User();
-    user.firstName = name.firstName();
-    user.lastName = name.lastName();
-    user.emailAddress = internet.email(user.firstName, user.lastName);
     const password = internet.password();
-    user.password = password;
+    const user = generateTestUser(password);
 
     // Attempt to create user and retrieve ID
     const id = await repository.create(user);
@@ -138,14 +131,7 @@ describe('User repository', () => {
     const { manager, repository } = setupRepository();
 
     // Generate test user
-    const originalUser = new User();
-    originalUser.firstName = name.firstName();
-    originalUser.lastName = name.lastName();
-    originalUser.emailAddress = internet.email(
-      originalUser.firstName,
-      originalUser.lastName
-    );
-    originalUser.password = internet.password();
+    const originalUser = generateTestUser();
 
     // Persist user to database
     const { id } = await manager.save(originalUser);
@@ -153,15 +139,8 @@ describe('User repository', () => {
 
     try {
       // Generate update data
-      const updatingUser = new User();
-      updatingUser.firstName = name.firstName();
-      updatingUser.lastName = name.lastName();
-      updatingUser.emailAddress = internet.email(
-        updatingUser.firstName,
-        updatingUser.lastName
-      );
       const updatePassword = internet.password();
-      updatingUser.password = updatePassword;
+      const updatingUser = generateTestUser(updatePassword);
 
       // Attempt to update user and expect no errors
       await expect(repository.update(id, updatingUser)).resolves.not.toThrow();
@@ -208,11 +187,7 @@ describe('User repository', () => {
     const { manager, repository } = setupRepository();
 
     // Generate test user
-    const user = new User();
-    user.firstName = name.firstName();
-    user.lastName = name.lastName();
-    user.emailAddress = internet.email(user.firstName, user.lastName);
-    user.password = internet.password();
+    const user = generateTestUser();
 
     // Persist user to database
     const { id } = await manager.save(user);
@@ -259,11 +234,7 @@ describe('User repository', () => {
       const passwordB = internet.password(20);
 
       // Generate test user
-      const user = new User();
-      user.firstName = name.firstName();
-      user.lastName = name.lastName();
-      user.emailAddress = internet.email(user.firstName, user.lastName);
-      user.password = passwordA;
+      const user = generateTestUser(passwordA);
 
       // Persist user to database
       const { id } = await manager.save(user);
@@ -288,11 +259,7 @@ describe('User repository', () => {
       const password = internet.password();
 
       // Generate test user
-      const user = new User();
-      user.firstName = name.firstName();
-      user.lastName = name.lastName();
-      user.emailAddress = internet.email(user.firstName, user.lastName);
-      user.password = password;
+      const user = generateTestUser(password);
 
       // Persist user to database
       const { id } = await manager.save(user);

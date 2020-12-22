@@ -7,5 +7,12 @@
     }
   },
   "include": ["./src/**/*"],
-  "exclude": ["./src/**/__tests__/**/*", "**/*.spec.*", "**/*.test.*", "**/__mocks__/**/*", "./src/testSetup.ts"]
+  "exclude": [
+    "./src/**/__tests__/**/*",
+    "**/*.spec.*",
+    "**/*.test.*",
+    "**/__mocks__/**/*",
+    "./src/testSetup.ts",
+    "./src/utils/testing/**/*"
+  ]
 }

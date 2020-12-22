@@ -41,7 +41,8 @@
       {
         "devDependencies": [
           "**/__tests__/**/*.[jt]s?(x)",
-          "**/?(*.)+(spec|test).[tj]s?(x)"
+          "**/?(*.)+(spec|test).[tj]s?(x)",
+          "./src/utils/testing/**/*.[jt]s?(x)"
         ]
       }
     ]
@@ -70,7 +71,8 @@
     {
       "files": [
         "**/__tests__/**/*.[jt]s?(x)",
-        "**/?(*.)+(spec|test).[tj]s?(x)"
+        "**/?(*.)+(spec|test).[tj]s?(x)",
+        "./src/utils/testing/**/*.[jt]s?(x)"
       ],
       "extends": ["plugin:jest/recommended"],
       "env": {
