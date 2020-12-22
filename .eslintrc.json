@@ -35,7 +35,16 @@
     "sort-imports": "off",
     "import/order": "off",
     "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error"
+    "simple-import-sort/exports": "error",
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "**/__tests__/**/*.[jt]s?(x)",
+          "**/?(*.)+(spec|test).[tj]s?(x)"
+        ]
+      }
+    ]
   },
   "settings": {
     "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
