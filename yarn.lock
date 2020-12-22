@@ -4410,6 +4410,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-plugin-simple-import-sort@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "eslint-plugin-simple-import-sort@npm:7.0.0"
+  peerDependencies:
+    eslint: ">=5.0.0"
+  checksum: 51fc6b675220681fd88e8fb7c0b9ff9b3b38e2c060999c72da7b0dee469cfe3fdbe1284374f2ade5015ee93d4d59eaf2d29c6185d4131b30aa057d9c9dec9483
+  languageName: node
+  linkType: hard
+
 "eslint-scope@npm:^5.0.0, eslint-scope@npm:^5.1.0":
   version: 5.1.0
   resolution: "eslint-scope@npm:5.1.0"
@@ -9597,6 +9606,7 @@ resolve@^1.18.1:
     eslint-plugin-import: ^2.22.1
     eslint-plugin-jest: ^23.17.1
     eslint-plugin-prettier: ^3.1.4
+    eslint-plugin-simple-import-sort: ^7.0.0
     express: ^4.17.1
     express-async-handler: ^1.1.4
     gulp: ^4.0.2
