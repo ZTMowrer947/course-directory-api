@@ -1,12 +1,11 @@
 // Imports
 import 'reflect-metadata';
 
-import add from '@/add';
+import api from '@/api';
 
-// Define addends and compute sum
-const num1 = 5;
-const num2 = 37;
-const sum = add(num1, num2);
+// Server setup
+const port = Number.parseInt(process.env.PORT ?? '5000', 10);
 
-// Print out result
-console.log(`${num1} + ${num2} = ${sum}`); // eslint-disable-line no-console
+api.listen(port, () => {
+  console.log(`Course directory API now running on port ${port}...`);
+});
