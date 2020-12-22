@@ -9,6 +9,11 @@ module.exports = {
 
         // Add polyfills based on usage
         useBuiltIns: 'usage',
+
+        // Target running node version
+        targets: {
+          node: true,
+        },
       },
     ],
 
@@ -25,6 +30,10 @@ module.exports = {
         },
       },
     ],
+
+    // Decorators
+    'transform-typescript-metadata',
+    ['@babel/proposal-decorators', { legacy: true }],
 
     // Class properties
     ['@babel/proposal-class-properties', { loose: true }],

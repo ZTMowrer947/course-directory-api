@@ -1,4 +1,6 @@
 // Imports
+import 'reflect-metadata';
+
 import add from '@/add';
 
 // Define addends and compute sum
