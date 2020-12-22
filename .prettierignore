@@ -1,0 +1,5 @@
+package.json
+tsconfig.json
+tsconfig.*.json
+dist/
+old/

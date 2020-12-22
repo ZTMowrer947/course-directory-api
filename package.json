@@ -1,0 +1,73 @@
+{
+  "name": "school-database-api",
+  "version": "1.1.2",
+  "description": "FSJS Techdegree Unit 9 Project",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node dist",
+    "build": "cross-env NODE_ENV=production gulp",
+    "dev": "nodemon",
+    "lint": "eslint . --ext .js,.ts,.jsx,.tsx",
+    "test": "jest",
+    "typecheck": "tsc -p tsconfig.app.json",
+    "typecheck:watch": "tsc -w -p tsconfig.app.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZTMowrer947/ts-babel-starter.git"
+  },
+  "author": "Zackery Mowrer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ZTMowrer947/ts-babel-starter/issues"
+  },
+  "homepage": "https://github.com/ZTMowrer947/ts-babel-starter#readme",
+  "dependencies": {
+    "core-js": "3",
+    "cross-env": "^7.0.2",
+    "regenerator-runtime": "^0.13.5"
+  },
+  "devDependencies": {
+    "@babel/core": "~7.12.3",
+    "@babel/node": "~7.12.6",
+    "@babel/plugin-proposal-class-properties": "~7.12.1",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "~7.12.1",
+    "@babel/plugin-proposal-object-rest-spread": "~7.12.1",
+    "@babel/plugin-proposal-optional-chaining": "~7.12.1",
+    "@babel/preset-env": "~7.12.1",
+    "@babel/preset-typescript": "~7.12.1",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^14.14.7",
+    "@typescript-eslint/eslint-plugin": "^4.7.0",
+    "@typescript-eslint/parser": "^4.7.0",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "del": "^5.1.0",
+    "eslint": "^7.4.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-import-resolver-typescript": "^2.3.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^23.17.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-terser": "^2.0.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "husky": "^4.2.5",
+    "jest": "^26.6.3",
+    "lint-staged": "^10.2.11",
+    "nodemon": "^2.0.6",
+    "prettier": "^2.0.5",
+    "ts-jest": "^26.4.4",
+    "typescript": "~4.1.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,jsx,tsx}": "eslint --cache --fix",
+    "*.{html,css,json,md}": "prettier --write"
+  }
+}
