@@ -53,6 +53,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:14.14.14"],
             ["@typescript-eslint/eslint-plugin", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:4.7.0"],
             ["@typescript-eslint/parser", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:4.7.0"],
+            ["argon2", "npm:0.27.1"],
             ["babel-plugin-module-resolver", "npm:4.0.0"],
             ["babel-plugin-transform-typescript-metadata", "npm:0.3.1"],
             ["core-js", "npm:3.6.5"],
@@ -2898,6 +2899,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@phc/format", [
+        ["npm:1.0.0", {
+          "packageLocation": "./.yarn/cache/@phc-format-npm-1.0.0-9663606e18-4ad791bb21.zip/node_modules/@phc/format/",
+          "packageDependencies": [
+            ["@phc/format", "npm:1.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@sindresorhus/is", [
         ["npm:0.14.0", {
           "packageLocation": "./.yarn/cache/@sindresorhus-is-npm-0.14.0-9f906ea34b-da26389d6e.zip/node_modules/@sindresorhus/is/",
@@ -3789,6 +3799,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["are-we-there-yet", "npm:1.1.5"],
             ["delegates", "npm:1.0.0"],
             ["readable-stream", "npm:2.3.7"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["argon2", [
+        ["npm:0.27.1", {
+          "packageLocation": "./.yarn/unplugged/argon2-npm-0.27.1-c91fa7d213/node_modules/argon2/",
+          "packageDependencies": [
+            ["argon2", "npm:0.27.1"],
+            ["@phc/format", "npm:1.0.0"],
+            ["node-addon-api", "npm:3.1.0"],
+            ["node-pre-gyp", "npm:0.17.0"],
+            ["opencollective-postinstall", "npm:2.0.3"]
           ],
           "linkType": "HARD",
         }]
@@ -9838,6 +9861,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["node-gyp", "npm:7.1.2"]
           ],
           "linkType": "HARD",
+        }],
+        ["npm:3.1.0", {
+          "packageLocation": "./.yarn/unplugged/node-addon-api-npm-3.1.0-a15037f88c/node_modules/node-addon-api/",
+          "packageDependencies": [
+            ["node-addon-api", "npm:3.1.0"],
+            ["node-gyp", "npm:7.1.2"]
+          ],
+          "linkType": "HARD",
         }]
       ]],
       ["node-environment-flags", [
@@ -9945,6 +9976,23 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/unplugged/node-pre-gyp-npm-0.11.0-df386f4c01/node_modules/node-pre-gyp/",
           "packageDependencies": [
             ["node-pre-gyp", "npm:0.11.0"],
+            ["detect-libc", "npm:1.0.3"],
+            ["mkdirp", "npm:0.5.5"],
+            ["needle", "npm:2.5.2"],
+            ["nopt", "npm:4.0.3"],
+            ["npm-packlist", "npm:1.4.8"],
+            ["npmlog", "npm:4.1.2"],
+            ["rc", "npm:1.2.8"],
+            ["rimraf", "npm:2.7.1"],
+            ["semver", "npm:5.7.1"],
+            ["tar", "npm:4.4.13"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:0.17.0", {
+          "packageLocation": "./.yarn/unplugged/node-pre-gyp-npm-0.17.0-4a1daf9422/node_modules/node-pre-gyp/",
+          "packageDependencies": [
+            ["node-pre-gyp", "npm:0.17.0"],
             ["detect-libc", "npm:1.0.3"],
             ["mkdirp", "npm:0.5.5"],
             ["needle", "npm:2.5.2"],
@@ -11842,6 +11890,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:14.14.14"],
             ["@typescript-eslint/eslint-plugin", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:4.7.0"],
             ["@typescript-eslint/parser", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:4.7.0"],
+            ["argon2", "npm:0.27.1"],
             ["babel-plugin-module-resolver", "npm:4.0.0"],
             ["babel-plugin-transform-typescript-metadata", "npm:0.3.1"],
             ["core-js", "npm:3.6.5"],

@@ -1753,6 +1753,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@phc/format@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@phc/format@npm:1.0.0"
+  checksum: 4ad791bb211e336de79bb5c1dac3d9d073ff8d0e4dc009a8b8a10d92ed628b22c35cd71e38f1fd54abc1749fad894ab1f2d76e354d6066f165465001d6640459
+  languageName: node
+  linkType: hard
+
 "@sindresorhus/is@npm:^0.14.0":
   version: 0.14.0
   resolution: "@sindresorhus/is@npm:0.14.0"
@@ -2466,6 +2473,18 @@ __metadata:
     delegates: ^1.0.0
     readable-stream: ^2.0.6
   checksum: 2d6fdb0ddde9b8cb120b6851b42c75f6b6db78b540b579a00d144ad38cb9e1bdf1248e5454049fcf5b47ef61d1a6f2ea433a8e38984158afd441bc1e0db7a625
+  languageName: node
+  linkType: hard
+
+"argon2@npm:^0.27.1":
+  version: 0.27.1
+  resolution: "argon2@npm:0.27.1"
+  dependencies:
+    "@phc/format": ^1.0.0
+    node-addon-api: ^3.0.2
+    node-pre-gyp: ^0.17.0
+    opencollective-postinstall: ^2.0.3
+  checksum: 8740c49ffde1e7254e342e422dacf2e0365c9ac8d91464f5144aa266081097404acb354b1ce50010a049346f120abb15f76ff018b8d3d02787356eb527f3c2ca
   languageName: node
   linkType: hard
 
@@ -3975,7 +3994,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"detect-libc@npm:^1.0.2":
+"detect-libc@npm:^1.0.2, detect-libc@npm:^1.0.3":
   version: 1.0.3
   resolution: "detect-libc@npm:1.0.3"
   bin:
@@ -7648,7 +7667,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"mkdirp@npm:>=0.5 0, mkdirp@npm:^0.5.0, mkdirp@npm:^0.5.1":
+"mkdirp@npm:>=0.5 0, mkdirp@npm:^0.5.0, mkdirp@npm:^0.5.1, mkdirp@npm:^0.5.5":
   version: 0.5.5
   resolution: "mkdirp@npm:0.5.5"
   dependencies:
@@ -7733,7 +7752,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"needle@npm:^2.2.1":
+"needle@npm:^2.2.1, needle@npm:^2.5.2":
   version: 2.5.2
   resolution: "needle@npm:2.5.2"
   dependencies:
@@ -7773,6 +7792,15 @@ fsevents@^1.2.7:
   dependencies:
     node-gyp: latest
   checksum: 115059b3adef7bb6813ed411289a300f93c81141689bf25f22c453c484a6b8d2d2fd2d2a070bdb749406c65e389f8ee264293f0531a196ecd82c6736e25ec879
+  languageName: node
+  linkType: hard
+
+"node-addon-api@npm:^3.0.2":
+  version: 3.1.0
+  resolution: "node-addon-api@npm:3.1.0"
+  dependencies:
+    node-gyp: latest
+  checksum: 9b5c1f5f24acb9255fd47914b0f0b80c76d735b7b91611366cd30217f8ead5fafcd1cfeb65e467612b40420b6ad3faf1e7fa3666bd4e15a2bdf1762748f3fa8a
   languageName: node
   linkType: hard
 
@@ -7893,6 +7921,26 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
+"node-pre-gyp@npm:^0.17.0":
+  version: 0.17.0
+  resolution: "node-pre-gyp@npm:0.17.0"
+  dependencies:
+    detect-libc: ^1.0.3
+    mkdirp: ^0.5.5
+    needle: ^2.5.2
+    nopt: ^4.0.3
+    npm-packlist: ^1.4.8
+    npmlog: ^4.1.2
+    rc: ^1.2.8
+    rimraf: ^2.7.1
+    semver: ^5.7.1
+    tar: ^4.4.13
+  bin:
+    node-pre-gyp: bin/node-pre-gyp
+  checksum: 9bed997d98ae6f58a1665060e1f9e61806ca48f4cb8fcefe7f8cfe4ddca0abdcfb3fc627c2d3f39522748bd3b8cfce250c4bfa1147aee668317e027982d4bb3b
+  languageName: node
+  linkType: hard
+
 "node-releases@npm:^1.1.58":
   version: 1.1.59
   resolution: "node-releases@npm:1.1.59"
@@ -7938,7 +7986,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"nopt@npm:^4.0.1":
+"nopt@npm:^4.0.1, nopt@npm:^4.0.3":
   version: 4.0.3
   resolution: "nopt@npm:4.0.3"
   dependencies:
@@ -8032,7 +8080,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"npm-packlist@npm:^1.1.6":
+"npm-packlist@npm:^1.1.6, npm-packlist@npm:^1.4.8":
   version: 1.4.8
   resolution: "npm-packlist@npm:1.4.8"
   dependencies:
@@ -8248,7 +8296,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"opencollective-postinstall@npm:^2.0.2":
+"opencollective-postinstall@npm:^2.0.2, opencollective-postinstall@npm:^2.0.3":
   version: 2.0.3
   resolution: "opencollective-postinstall@npm:2.0.3"
   bin:
@@ -9468,7 +9516,7 @@ resolve@^1.18.1:
   languageName: node
   linkType: hard
 
-"rimraf@npm:2, rimraf@npm:^2.6.1":
+"rimraf@npm:2, rimraf@npm:^2.6.1, rimraf@npm:^2.7.1":
   version: 2.7.1
   resolution: "rimraf@npm:2.7.1"
   dependencies:
@@ -9609,6 +9657,7 @@ resolve@^1.18.1:
     "@types/node": ^14.14.14
     "@typescript-eslint/eslint-plugin": ^4.7.0
     "@typescript-eslint/parser": ^4.7.0
+    argon2: ^0.27.1
     babel-plugin-module-resolver: ^4.0.0
     babel-plugin-transform-typescript-metadata: ^0.3.1
     core-js: 3
@@ -10375,7 +10424,7 @@ resolve@^1.18.1:
   languageName: node
   linkType: hard
 
-"tar@npm:^4":
+"tar@npm:^4, tar@npm:^4.4.13":
   version: 4.4.13
   resolution: "tar@npm:4.4.13"
   dependencies:

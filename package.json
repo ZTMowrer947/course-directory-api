@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/ZTMowrer947/ts-babel-starter#readme",
   "dependencies": {
+    "argon2": "^0.27.1",
     "core-js": "3",
     "cross-env": "^7.0.2",
     "express": "^4.17.1",
