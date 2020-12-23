@@ -49,6 +49,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/register", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:7.12.10"],
             ["@types/express", "npm:4.17.9"],
             ["@types/faker", "npm:5.1.5"],
+            ["@types/http-errors", "npm:1.8.0"],
             ["@types/jest", "npm:26.0.15"],
             ["@types/node", "npm:14.14.14"],
             ["@typescript-eslint/eslint-plugin", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:4.7.0"],
@@ -74,6 +75,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["gulp-babel", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:8.0.0"],
             ["gulp-terser", "npm:2.0.0"],
             ["gulp-typescript", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:6.0.0-alpha.1"],
+            ["http-errors", "npm:1.8.0"],
             ["husky", "npm:4.2.5"],
             ["jest", "npm:26.6.3"],
             ["lint-staged", "npm:10.2.11"],
@@ -3090,6 +3092,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@types/graceful-fs", "npm:4.1.3"],
             ["@types/node", "npm:14.0.23"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/http-errors", [
+        ["npm:1.8.0", {
+          "packageLocation": "./.yarn/cache/@types-http-errors-npm-1.8.0-962b3aae39-f6a0cf40d0.zip/node_modules/@types/http-errors/",
+          "packageDependencies": [
+            ["@types/http-errors", "npm:1.8.0"]
           ],
           "linkType": "HARD",
         }]
@@ -7625,6 +7636,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["toidentifier", "npm:1.0.0"]
           ],
           "linkType": "HARD",
+        }],
+        ["npm:1.8.0", {
+          "packageLocation": "./.yarn/cache/http-errors-npm-1.8.0-4399ea3b8d-95ad78508b.zip/node_modules/http-errors/",
+          "packageDependencies": [
+            ["http-errors", "npm:1.8.0"],
+            ["depd", "npm:1.1.2"],
+            ["inherits", "npm:2.0.4"],
+            ["setprototypeof", "npm:1.2.0"],
+            ["statuses", "npm:1.5.0"],
+            ["toidentifier", "npm:1.0.0"]
+          ],
+          "linkType": "HARD",
         }]
       ]],
       ["http-signature", [
@@ -11886,6 +11909,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/register", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:7.12.10"],
             ["@types/express", "npm:4.17.9"],
             ["@types/faker", "npm:5.1.5"],
+            ["@types/http-errors", "npm:1.8.0"],
             ["@types/jest", "npm:26.0.15"],
             ["@types/node", "npm:14.14.14"],
             ["@typescript-eslint/eslint-plugin", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:4.7.0"],
@@ -11911,6 +11935,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["gulp-babel", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:8.0.0"],
             ["gulp-terser", "npm:2.0.0"],
             ["gulp-typescript", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:6.0.0-alpha.1"],
+            ["http-errors", "npm:1.8.0"],
             ["husky", "npm:4.2.5"],
             ["jest", "npm:26.6.3"],
             ["lint-staged", "npm:10.2.11"],
@@ -12064,6 +12089,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/setprototypeof-npm-1.1.1-706b6318ec-0efed4da5a.zip/node_modules/setprototypeof/",
           "packageDependencies": [
             ["setprototypeof", "npm:1.1.1"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:1.2.0", {
+          "packageLocation": "./.yarn/cache/setprototypeof-npm-1.2.0-0fedbdcd3a-7269143985.zip/node_modules/setprototypeof/",
+          "packageDependencies": [
+            ["setprototypeof", "npm:1.2.0"]
           ],
           "linkType": "HARD",
         }]
