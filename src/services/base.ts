@@ -40,7 +40,7 @@ abstract class BaseService<
     // If entity was not found,
     if (!entity) {
       // Throw error
-      throw new Error(`Entity not found with ID "${id}."`);
+      throw new Error(`Entity not found with ID "${id}".`);
     }
 
     // Otherwise, return entity

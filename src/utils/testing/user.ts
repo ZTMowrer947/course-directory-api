@@ -15,7 +15,7 @@ function generateTestUser(password = internet.password()): User {
   return user;
 }
 
-function generateTestUserDto(password: string): UserDto {
+function generateTestUserDto(password = internet.password()): UserDto {
   const user = generateTestUser(password);
 
   return new UserDto(user);
