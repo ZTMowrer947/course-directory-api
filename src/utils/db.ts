@@ -1,5 +1,14 @@
 // Imports
-import { Connection, createConnection, getConnection } from 'typeorm';
+import { Container } from 'typedi';
+import {
+  Connection,
+  createConnection,
+  getConnection,
+  useContainer,
+} from 'typeorm';
+
+// Setup TypeDI container
+useContainer(Container);
 
 // Config name type
 type ConfigName = 'development' | 'testing' | 'production';
@@ -27,4 +36,4 @@ function createDbConnection(): Promise<Connection> {
 }
 
 // Exports
-export { createDbConnection, getDbConnection };
+export { createDbConnection, getConfigNameFromEnv, getDbConnection };

@@ -1,22 +1,25 @@
 // Imports
 import Koa from 'koa';
-import {
-  createKoaServer,
-  useContainer as routingUseContainer,
-} from 'routing-controllers';
+import { createKoaServer, useContainer } from 'routing-controllers';
 import { Container } from 'typedi';
-import { useContainer as ormUseContainer } from 'typeorm';
+
+import UserController from './controllers/user';
+import LoggerMiddleware from './middleware/logger';
+import { authorizationChecker, currentUserChecker } from './utils/auth';
 
 // Setup TypeDI container
-ormUseContainer(Container);
-routingUseContainer(Container);
+useContainer(Container);
 
 // Create Koa application
 const v1Api = createKoaServer({
+  authorizationChecker,
   cors: {
     exposeHeaders: ['Location'],
   },
   classTransformer: true,
+  currentUserChecker,
+  controllers: [UserController],
+  middlewares: [LoggerMiddleware],
 }) as Koa;
 
 // Silence app if testing
