@@ -55,8 +55,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/jest", "npm:26.0.15"],
             ["@types/koa", "npm:2.11.6"],
             ["@types/koa-bodyparser", "npm:4.3.0"],
+            ["@types/koa-logger", "npm:3.1.1"],
             ["@types/koa-router", "npm:7.4.1"],
-            ["@types/logger", "npm:0.0.0"],
             ["@types/node", "npm:14.14.14"],
             ["@typescript-eslint/eslint-plugin", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:4.7.0"],
             ["@typescript-eslint/parser", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:4.7.0"],
@@ -3319,21 +3319,22 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/koa-logger", [
+        ["npm:3.1.1", {
+          "packageLocation": "./.yarn/cache/@types-koa-logger-npm-3.1.1-1ba30bb1d8-554a2a1e5b.zip/node_modules/@types/koa-logger/",
+          "packageDependencies": [
+            ["@types/koa-logger", "npm:3.1.1"],
+            ["@types/koa", "npm:2.11.6"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/koa-router", [
         ["npm:7.4.1", {
           "packageLocation": "./.yarn/cache/@types-koa-router-npm-7.4.1-88ee027ad0-dc57ded1d1.zip/node_modules/@types/koa-router/",
           "packageDependencies": [
             ["@types/koa-router", "npm:7.4.1"],
             ["@types/koa", "npm:2.11.6"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["@types/logger", [
-        ["npm:0.0.0", {
-          "packageLocation": "./.yarn/cache/@types-logger-npm-0.0.0-80d4e97809-424098db6d.zip/node_modules/@types/logger/",
-          "packageDependencies": [
-            ["@types/logger", "npm:0.0.0"]
           ],
           "linkType": "HARD",
         }]
@@ -12611,8 +12612,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/jest", "npm:26.0.15"],
             ["@types/koa", "npm:2.11.6"],
             ["@types/koa-bodyparser", "npm:4.3.0"],
+            ["@types/koa-logger", "npm:3.1.1"],
             ["@types/koa-router", "npm:7.4.1"],
-            ["@types/logger", "npm:0.0.0"],
             ["@types/node", "npm:14.14.14"],
             ["@typescript-eslint/eslint-plugin", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:4.7.0"],
             ["@typescript-eslint/parser", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:4.7.0"],

@@ -2079,6 +2079,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/koa-logger@npm:^3.1.1":
+  version: 3.1.1
+  resolution: "@types/koa-logger@npm:3.1.1"
+  dependencies:
+    "@types/koa": "*"
+  checksum: 554a2a1e5b8991eb1b24a9a137329c38f8424af522aba20bde88d3abc161e98c72a9d5a6142eb605b8c105332d6ceef303ea22f9278453400ccadd8bda01b217
+  languageName: node
+  linkType: hard
+
 "@types/koa-router@npm:^7.4.1":
   version: 7.4.1
   resolution: "@types/koa-router@npm:7.4.1"
@@ -2101,13 +2110,6 @@ __metadata:
     "@types/koa-compose": "*"
     "@types/node": "*"
   checksum: 38887e8baea2db1b3ec9007aa165306ccd84d0f47560712fe197cf26d5eb931e9cd8891f12d77970f0d7f24de29920a764a65f2c31b4491f5cc162e3b9390089
-  languageName: node
-  linkType: hard
-
-"@types/logger@npm:^0.0.0":
-  version: 0.0.0
-  resolution: "@types/logger@npm:0.0.0"
-  checksum: 424098db6d641ff241b078dd32696a54cedc2206c4448b61142c8bd85cefe07b227b9803d0a15ebb559567edcbcf7a12bf1b59b06cf8fc8f4e9929cf489690ab
   languageName: node
   linkType: hard
 
@@ -10278,8 +10280,8 @@ resolve@^1.18.1:
     "@types/jest": ^26.0.15
     "@types/koa": ^2.11.6
     "@types/koa-bodyparser": ^4.3.0
+    "@types/koa-logger": ^3.1.1
     "@types/koa-router": ^7.4.1
-    "@types/logger": ^0.0.0
     "@types/node": ^14.14.14
     "@typescript-eslint/eslint-plugin": ^4.7.0
     "@typescript-eslint/parser": ^4.7.0
