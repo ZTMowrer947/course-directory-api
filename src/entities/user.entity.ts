@@ -1,8 +1,10 @@
+/* eslint-disable import/no-cycle */
 // Imports
 import argon2 from 'argon2';
 import os from 'os';
-import { BeforeInsert, BeforeUpdate, Column, Entity } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany } from 'typeorm';
 
+import Course from './course.entity';
 import VersionedEntity from './versioned-base';
 
 // Entity
@@ -19,6 +21,9 @@ class User extends VersionedEntity {
 
   @Column({ nullable: false, select: false })
   password!: string;
+
+  @OneToMany(() => Course, (course) => course.creator)
+  createdCourses!: Course[];
 
   @BeforeInsert()
   @BeforeUpdate()
