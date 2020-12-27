@@ -29,11 +29,9 @@ abstract class BaseRepository<Entity extends EntityBase>
     includeRelations: boolean
   ): TypeOrPromise<Entity | null>;
 
-  async create(entityData: Entity): Promise<EntityId> {
+  create(entityData: Entity): TypeOrPromise<EntityId> {
     // Persist entity
-    const { id } = await this.manager.save(entityData);
-
-    return id;
+    return this.manager.save(entityData).then(({ id }) => id);
   }
 
   async update(id: EntityId, updateData: Entity): Promise<void> {

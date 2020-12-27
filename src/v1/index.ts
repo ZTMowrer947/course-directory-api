@@ -3,6 +3,7 @@ import Koa from 'koa';
 import { createKoaServer, useContainer } from 'routing-controllers';
 import { Container } from 'typedi';
 
+import CourseController from './controllers/course';
 import UserController from './controllers/user';
 import LoggerMiddleware from './middleware/logger';
 import { authorizationChecker, currentUserChecker } from './utils/auth';
@@ -18,7 +19,7 @@ const v1Api = createKoaServer({
   },
   classTransformer: true,
   currentUserChecker,
-  controllers: [UserController],
+  controllers: [CourseController, UserController],
   middlewares: [LoggerMiddleware],
 }) as Koa;
 
