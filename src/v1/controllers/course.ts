@@ -1,4 +1,5 @@
 // Imports
+import { HttpError } from 'http-errors';
 import { Context } from 'koa';
 import {
   Authorized,
@@ -8,6 +9,7 @@ import {
   Delete,
   ForbiddenError,
   Get,
+  HttpError as RouterHttpError,
   JsonController,
   OnUndefined,
   Param,
@@ -43,8 +45,16 @@ class CourseController {
   }
 
   @Get('/:id')
-  async get(@Param('id') id: EntityId): Promise<Course | undefined> {
-    return this.#courseService.getById(id, true);
+  async get(@Param('id') id: EntityId): Promise<Course> {
+    try {
+      return await this.#courseService.getById(id, true);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        throw new RouterHttpError(error.status, error.message);
+      }
+
+      throw error;
+    }
   }
 
   @Authorized()
@@ -74,7 +84,17 @@ class CourseController {
     @Body() updateData: CourseDto
   ): Promise<void> {
     // Get course by ID
-    const course = await this.#courseService.getById(id, true);
+    let course: Course;
+
+    try {
+      course = await this.#courseService.getById(id, true);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        throw new RouterHttpError(error.status, error.message);
+      }
+
+      throw error;
+    }
 
     // If current user does not own course, throw 403 error
     if (user.id !== course.creator.id)
@@ -92,7 +112,17 @@ class CourseController {
     @CurrentUser({ required: true }) user: User
   ): Promise<void> {
     // Get course by ID
-    const course = await this.#courseService.getById(id, true);
+    let course: Course;
+
+    try {
+      course = await this.#courseService.getById(id, true);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        throw new RouterHttpError(error.status, error.message);
+      }
+
+      throw error;
+    }
 
     // If current user does not own course, throw 403 error
     if (user.id !== course.creator.id)

@@ -1,7 +1,9 @@
 // Imports
-import DtoBase from '../dto/base';
-import EntityBase, { EntityId } from '../entities/base';
-import { IRepository, TypeOrPromise } from '../repos/base';
+import createHttpError from 'http-errors';
+
+import DtoBase from '@/dto/base';
+import EntityBase, { EntityId } from '@/entities/base';
+import { IRepository, TypeOrPromise } from '@/repos/base';
 
 // Base service interface
 interface IService<Entity extends EntityBase, Dto extends DtoBase<Entity>> {
@@ -40,7 +42,9 @@ abstract class BaseService<
     // If entity was not found,
     if (!entity) {
       // Throw error
-      throw new Error(`Entity not found with ID "${id}".`);
+      throw createHttpError(404, {
+        message: `Entity not found with ID "${id}".`,
+      });
     }
 
     // Otherwise, return entity
