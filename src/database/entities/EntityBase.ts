@@ -20,7 +20,7 @@ abstract class EntityBase implements JSONSerializable {
     this.id = base32.encode(bytes);
   }
 
-  public abstract toJSON(): object;
+  public abstract toJSON(): unknown;
 }
 
 // Export

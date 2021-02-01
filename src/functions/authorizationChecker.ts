@@ -1,6 +1,7 @@
 // Imports
 import argon2 from 'argon2';
 import basicAuth from 'basic-auth';
+import { IncomingMessage } from 'http';
 import { Action } from 'routing-controllers';
 import { Container } from 'typedi';
 
@@ -12,7 +13,7 @@ export default async (action: Action): Promise<boolean> => {
   const service = Container.get(UserService);
 
   // Get request data
-  const req = action.request;
+  const req = action.request as IncomingMessage;
 
   // Parse request body for credentials
   const credentials = basicAuth(req);

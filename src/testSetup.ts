@@ -1,10 +1,7 @@
 // Imports
 import { Container } from 'typedi';
-import { Connection, useContainer as ormUseContainer } from 'typeorm';
+import { getConnection, useContainer as ormUseContainer } from 'typeorm';
 import ormBootstrap from './database';
-
-// Define variable to hold connection
-let connection: Connection;
 
 // Run before all tests
 beforeAll(async () => {
@@ -12,11 +9,13 @@ beforeAll(async () => {
   ormUseContainer(Container);
 
   // Setup database connection
-  connection = await ormBootstrap();
+  await ormBootstrap();
 });
 
 // Run after all tests
 afterAll(async () => {
+  const connection = getConnection();
+
   // Close database connection
   await connection.close();
 });

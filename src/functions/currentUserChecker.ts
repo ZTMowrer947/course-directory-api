@@ -1,5 +1,6 @@
 // Imports
 import basicAuth from 'basic-auth';
+import { IncomingMessage } from 'http';
 import { Action, InternalServerError } from 'routing-controllers';
 import { Container } from 'typedi';
 
@@ -12,7 +13,7 @@ export default async (action: Action): Promise<User | undefined> => {
   const service = Container.get(UserService);
 
   // Get request data
-  const req = action.request;
+  const req = action.request as IncomingMessage;
 
   // Parse request body for credentials
   const credentials = basicAuth(req);

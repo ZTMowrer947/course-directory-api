@@ -11,10 +11,10 @@ export default class LoggerMiddleware implements KoaMiddlewareInterface {
     // When not testing,
     if (env !== 'staging') {
       // Delegate to koa-logger middleware
-      return logger()(context, next);
+      await logger()(context, next);
     }
 
     // Otherwise, do nothing
-    return next();
+    await next();
   }
 }

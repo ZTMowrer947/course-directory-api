@@ -9,6 +9,6 @@
     "DB_ENABLE_LOGGING": "false",
     "ENABLE_GLOBAL_ERROR_LOGGING": "false"
   },
-  "exec": "babel-node -x .ts,.js src",
+  "exec": "yarn run babel-node -x .ts,.js src",
   "ext": "ts"
 }

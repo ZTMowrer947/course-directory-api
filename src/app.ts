@@ -1,4 +1,5 @@
 // Imports
+import Koa from 'koa';
 import { createKoaServer, useContainer } from 'routing-controllers';
 import { Container } from 'typedi';
 
@@ -24,7 +25,7 @@ const app = createKoaServer({
   controllers: [CourseController, UserController],
   middlewares: [LoggerMiddleware],
   interceptors: [JsonInterceptor],
-});
+}) as Koa;
 
 // Silence app if testing
 app.silent = env === 'staging';

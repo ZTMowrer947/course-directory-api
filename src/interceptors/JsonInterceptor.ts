@@ -8,7 +8,7 @@ import { isJSONSerializable } from '../models/JSONSerializable';
 export default class JsonInterceptor implements InterceptorInterface {
   intercept(action: Action, result: unknown): unknown {
     // Get Koa context from action
-    const ctx: Context = action.context;
+    const ctx = action.context as Context;
 
     // If the result is not empty, and the client accepts JSON,
     if (result && ctx.accepts('json')) {

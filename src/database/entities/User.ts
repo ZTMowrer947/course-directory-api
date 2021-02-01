@@ -59,7 +59,7 @@ export default class User extends VersionedEntity {
   }
 
   /* istanbul ignore next */
-  public toJSON(): object {
+  public toJSON(): unknown {
     return classToPlain(this, { strategy: 'excludeAll' });
   }
 }

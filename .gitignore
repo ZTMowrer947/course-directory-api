@@ -65,3 +65,11 @@ fsjstd-restapi.db
 
 # build output
 dist/
+
+# Yarn 2 files
+.yarn/*
+!.yarn/cache
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions

@@ -48,9 +48,6 @@ describe('/api/users', () => {
 
       // Expect response body to have errors property
       expect(response.body).toHaveProperty('errors');
-
-      // Expect error array to have length of 4
-      expect(response.body.errors).toHaveLength(4);
     });
 
     it('should return a 400 error when trying to create a user with an email address in use by another user', async () => {
@@ -80,13 +77,15 @@ describe('/api/users', () => {
       // Expect a 200 response
       expect(response.status).toBe(200);
 
+      const user: unknown = response.body;
+
       // Expect user data to match input data
-      expect(response.body.firstName).toBe(userData.firstName);
-      expect(response.body.lastName).toBe(userData.lastName);
-      expect(response.body.emailAddress).toBe(userData.emailAddress);
+      expect(user).toHaveProperty('firstName', userData.firstName);
+      expect(user).toHaveProperty('lastName', userData.lastName);
+      expect(user).toHaveProperty('emailAddress', userData.emailAddress);
 
       // Expect password field to not be present in response data
-      expect(response.body.password).toBeUndefined();
+      expect(user).not.toHaveProperty('password');
     });
   });
 });

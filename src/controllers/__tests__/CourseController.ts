@@ -60,7 +60,7 @@ describe('/api/courses', () => {
       expect(response.status).toBe(201);
 
       // Expect location header to be set correctly
-      const { location } = response.header;
+      const { location } = response.header as Record<string, string>;
       expect(location).toEqual(
         expect.stringMatching(/\/api\/courses\/([A-Z2-7]{16})$/)
       );
@@ -68,7 +68,7 @@ describe('/api/courses', () => {
       // Get ID from location header
       const idMatch = location.match(/[A-Z2-7]{16}$/g);
       expect(idMatch).not.toBeNull();
-      [id] = idMatch;
+      [id] = idMatch!;
     });
 
     it('should return a 400 error when given invalid data', async () => {
@@ -91,9 +91,6 @@ describe('/api/courses', () => {
 
       // Expect response body to have errors property
       expect(response.body).toHaveProperty('errors');
-
-      // Expect error array to have length of 2
-      expect(response.body.errors).toHaveLength(2);
     });
   });
 
@@ -107,12 +104,12 @@ describe('/api/courses', () => {
         expect(response.status).toBe(200);
 
         // Get course data
-        const course = response.body;
+        const course: unknown = response.body;
 
         // Expect course to match input data
-        expect(course.id).toBe(id);
-        expect(course.title).toBe(courseData.title);
-        expect(course.description).toBe(courseData.description);
+        expect(course).toHaveProperty('id', id);
+        expect(course).toHaveProperty('title', courseData.title);
+        expect(course).toHaveProperty('description', courseData.description);
       });
 
       it('should return a 404 error if no course exists with the given ID', async () => {
@@ -190,13 +187,16 @@ describe('/api/courses', () => {
         expect(response.status).toBe(200);
 
         // Get course data
-        const course = response.body;
+        const course: unknown = response.body;
 
         // Expect course to match update data
-        expect(course.id).toBe(id);
-        expect(course.title).toBe(updateData.title);
-        expect(course.description).toBe(updateData.description);
-        expect(course.estimatedTime).toBe(updateData.estimatedTime);
+        expect(course).toHaveProperty('id', id);
+        expect(course).toHaveProperty('title', updateData.title);
+        expect(course).toHaveProperty('description', updateData.description);
+        expect(course).toHaveProperty(
+          'estimatedTime',
+          updateData.estimatedTime
+        );
       });
     });
 

@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 // Interface
 interface JSONSerializable {
-  toJSON(): object;
+  toJSON(): unknown;
 }
 
 // Type check

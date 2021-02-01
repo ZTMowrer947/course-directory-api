@@ -16,6 +16,7 @@ import {
   Put,
 } from 'routing-controllers';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Course from '../database/entities/Course';
 import User from '../database/entities/User';
 import CourseModifyDTO from '../models/CourseModifyDTO';

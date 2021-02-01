@@ -32,7 +32,7 @@ export default class Course extends VersionedEntity {
   public creator!: User;
 
   /* istanbul ignore next */
-  public toJSON(): object {
+  public toJSON(): unknown {
     return classToPlain(this, { strategy: 'excludeAll' });
   }
 }
