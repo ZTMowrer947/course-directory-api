@@ -1,2 +1,4 @@
-# build output
 dist/
+src/index.dev.js
+gulpfile.js
+*.config.js

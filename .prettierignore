@@ -1,2 +1,4 @@
-# build output
+package.json
+tsconfig.json
+tsconfig.*.json
 dist/
