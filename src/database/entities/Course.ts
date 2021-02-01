@@ -16,11 +16,11 @@ export default class Course extends VersionedEntity {
   public description!: string;
 
   @Expose()
-  @Column({ nullable: true, default: null })
+  @Column('varchar', { nullable: true, default: null })
   public estimatedTime!: string | null;
 
   @Expose()
-  @Column({ nullable: true, default: null })
+  @Column('varchar', { nullable: true, default: null })
   public materialsNeeded!: string | null;
 
   @Expose()

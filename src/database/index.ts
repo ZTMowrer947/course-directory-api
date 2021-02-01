@@ -6,7 +6,7 @@ import seed from './seed';
 // Connection factory
 const ormBootstrap = async (): Promise<Connection> => {
   // Create database connection
-  const connection = await createConnection();
+  const connection = await createConnection(env);
 
   // Seed database if not in production
   if (env !== 'production') {

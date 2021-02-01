@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 import Course from '../database/entities/Course';
 import User from '../database/entities/User';
+import env from '../env';
 import CourseModifyDTO from '../models/CourseModifyDTO';
 
 // Service
@@ -11,7 +12,9 @@ import CourseModifyDTO from '../models/CourseModifyDTO';
 export default class CourseService {
   private repository: Repository<Course>;
 
-  public constructor(@InjectRepository(Course) repository: Repository<Course>) {
+  public constructor(
+    @InjectRepository(Course, env) repository: Repository<Course>
+  ) {
     this.repository = repository;
   }
 

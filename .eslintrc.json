@@ -1,7 +1,7 @@
 {
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./tsconfig.json",
+    "project": ["./tsconfig.app.json", "./tsconfig.spec.json"],
     "sourceType": "module",
     "ecmaVersion": 2020
   },
@@ -39,7 +39,7 @@
     },
     "import/resolver": {
       "typescript": {
-        "project": "./tsconfig.json"
+        "project": ["./tsconfig.app.json", "./tsconfig.spec.json"]
       }
     }
   },
@@ -83,9 +83,12 @@
         "jest": true
       },
       "rules": {
-        "import/no-extraneous-dependencies": ["error", {
-          "devDependencies": true
-        }]
+        "import/no-extraneous-dependencies": [
+          "error",
+          {
+            "devDependencies": true
+          }
+        ]
       }
     }
   ]

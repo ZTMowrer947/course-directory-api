@@ -3,6 +3,7 @@ import { Service } from 'typedi';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 import User from '../database/entities/User';
+import env from '../env';
 import UserModifyDTO from '../models/UserModifyDTO';
 
 // Service
@@ -10,7 +11,9 @@ import UserModifyDTO from '../models/UserModifyDTO';
 export default class UserService {
   private repository: Repository<User>;
 
-  public constructor(@InjectRepository(User) repository: Repository<User>) {
+  public constructor(
+    @InjectRepository(User, env) repository: Repository<User>
+  ) {
     this.repository = repository;
   }
 

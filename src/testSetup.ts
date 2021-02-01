@@ -1,4 +1,6 @@
 // Imports
+import 'reflect-metadata';
+
 import { useContainer as routingUseContainer } from 'routing-controllers';
 import { Container } from 'typedi';
 import { getConnection, useContainer as ormUseContainer } from 'typeorm';
@@ -16,8 +18,12 @@ beforeAll(async () => {
 
 // Run after all tests
 afterAll(async () => {
-  const connection = getConnection();
+  try {
+    const connection = getConnection();
 
-  // Close database connection
-  await connection.close();
+    // Close database connection
+    await connection.close();
+  } catch {
+    // If connection is not active, just do nothing
+  }
 });

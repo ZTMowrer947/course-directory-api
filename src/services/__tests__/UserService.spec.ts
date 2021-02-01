@@ -4,6 +4,7 @@ import { getRepository } from 'typeorm';
 import User from '../../database/entities/User';
 import UserService from '../UserService';
 import UserModifyDTO from '../../models/UserModifyDTO';
+import env from '../../env';
 
 // Test Suite
 describe('User service', () => {
@@ -13,7 +14,7 @@ describe('User service', () => {
   // Run before all tests
   beforeAll(() => {
     // Get user repository
-    const repository = getRepository(User);
+    const repository = getRepository(User, env);
 
     // Initialize user service
     userService = new UserService(repository);

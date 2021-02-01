@@ -3,6 +3,7 @@ import { plainToClass } from 'class-transformer';
 import { getRepository } from 'typeorm';
 import Course from '../../database/entities/Course';
 import User from '../../database/entities/User';
+import env from '../../env';
 import CourseModifyDTO from '../../models/CourseModifyDTO';
 import CourseService from '../CourseService';
 import UserService from '../UserService';
@@ -21,13 +22,13 @@ describe('Course service', () => {
     unusedId = 'A'.repeat(16);
 
     // Get course repository
-    const repository = getRepository(Course);
+    const repository = getRepository(Course, env);
 
     // Initialize course service
     courseService = new CourseService(repository);
 
     // Get user service
-    const userRepository = getRepository(User);
+    const userRepository = getRepository(User, env);
     const userService = new UserService(userRepository);
 
     // Find user for testing

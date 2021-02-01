@@ -10,7 +10,7 @@ import UserService from '../services/UserService';
 // Current User Checker
 export default async (action: Action): Promise<User | undefined> => {
   // Get UserService
-  const service = Container.get(UserService);
+  const service: UserService = Container.get(UserService);
 
   // Get request data
   const req = action.request as IncomingMessage;
