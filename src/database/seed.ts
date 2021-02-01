@@ -1,8 +1,8 @@
 // Imports
 import { plainToClass } from 'class-transformer';
 import { Connection } from 'typeorm';
-import User from './entities/User';
-import Course from './entities/Course';
+import User from '@/database/entities/User';
+import Course from '@/database/entities/Course';
 
 // Seeding function
 const seed = async (connection: Connection): Promise<void> => {

@@ -1,7 +1,7 @@
 // Imports
 import { createConnection, Connection } from 'typeorm';
-import env from '../env';
-import seed from './seed';
+import env from '@/env';
+import seed from '@/database/seed';
 
 // Connection factory
 const ormBootstrap = async (): Promise<Connection> => {

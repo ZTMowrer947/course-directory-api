@@ -1,6 +1,6 @@
 // Imports
 import { VersionColumn } from 'typeorm';
-import EntityBase from './EntityBase';
+import EntityBase from '@/database/entities/EntityBase';
 
 // Entity
 abstract class VersionedEntity extends EntityBase {

@@ -1,7 +1,7 @@
 // Imports
 import { Action, InterceptorInterface, Interceptor } from 'routing-controllers';
 import { Context } from 'koa';
-import { isJSONSerializable } from '../models/JSONSerializable';
+import { isJSONSerializable } from '@/models/JSONSerializable';
 
 // Interceptor
 @Interceptor()

@@ -7,7 +7,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import User from '../database/entities/User';
+import User from '@/database/entities/User';
 
 // DTO
 export default class UserModifyDTO implements Partial<User> {

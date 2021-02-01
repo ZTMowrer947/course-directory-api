@@ -4,7 +4,7 @@ import 'reflect-metadata';
 import { useContainer as routingUseContainer } from 'routing-controllers';
 import { Container } from 'typedi';
 import { useContainer as ormUseContainer } from 'typeorm';
-import ormBootstrap from './database';
+import ormBootstrap from '@/database';
 
 // Configure TypeORM and routing-controllers to use TypeDI container
 ormUseContainer(Container);
@@ -16,7 +16,7 @@ ormBootstrap()
   .then(
     () => {
       console.log('Connection successful. Starting web server...');
-      return import('./app');
+      return import('@/app');
     },
     (err: Error) => {
       console.error(

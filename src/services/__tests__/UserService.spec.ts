@@ -1,10 +1,11 @@
 // Imports
 import argon2 from 'argon2';
 import { getRepository } from 'typeorm';
-import User from '../../database/entities/User';
-import UserService from '../UserService';
-import UserModifyDTO from '../../models/UserModifyDTO';
-import env from '../../env';
+
+import User from '@/database/entities/User';
+import UserService from '@/services/UserService';
+import UserModifyDTO from '@/models/UserModifyDTO';
+import env from '@/env';
 
 // Test Suite
 describe('User service', () => {

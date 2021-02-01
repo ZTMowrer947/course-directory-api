@@ -4,8 +4,8 @@ import { IncomingMessage } from 'http';
 import { Action, InternalServerError } from 'routing-controllers';
 import { Container } from 'typedi';
 
-import User from '../database/entities/User';
-import UserService from '../services/UserService';
+import User from '@/database/entities/User';
+import UserService from '@/services/UserService';
 
 // Current User Checker
 export default async (action: Action): Promise<User | undefined> => {

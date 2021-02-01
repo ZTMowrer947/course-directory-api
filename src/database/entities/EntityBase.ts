@@ -3,7 +3,7 @@ import crypto from 'crypto';
 import { Expose } from 'class-transformer';
 import base32 from 'hi-base32';
 import { BeforeInsert, PrimaryColumn } from 'typeorm';
-import JSONSerializable from '../../models/JSONSerializable';
+import JSONSerializable from '@/models/JSONSerializable';
 
 // Entity
 abstract class EntityBase implements JSONSerializable {

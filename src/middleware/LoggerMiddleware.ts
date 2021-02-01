@@ -2,7 +2,7 @@
 import { Context, Next } from 'koa';
 import logger from 'koa-logger';
 import { KoaMiddlewareInterface, Middleware } from 'routing-controllers';
-import env from '../env';
+import env from '@/env';
 
 // Middleware
 @Middleware({ type: 'before' })

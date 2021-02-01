@@ -5,7 +5,7 @@ import { IncomingMessage } from 'http';
 import { Action } from 'routing-controllers';
 import { Container } from 'typedi';
 
-import UserService from '../services/UserService';
+import UserService from '@/services/UserService';
 
 // Auth Checker
 export default async (action: Action): Promise<boolean> => {

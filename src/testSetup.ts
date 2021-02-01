@@ -4,7 +4,8 @@ import 'reflect-metadata';
 import { useContainer as routingUseContainer } from 'routing-controllers';
 import { Container } from 'typedi';
 import { getConnection, useContainer as ormUseContainer } from 'typeorm';
-import ormBootstrap from './database';
+import ormBootstrap from '@/database';
+import env from '@/env';
 
 // Run before all tests
 beforeAll(async () => {
@@ -19,7 +20,7 @@ beforeAll(async () => {
 // Run after all tests
 afterAll(async () => {
   try {
-    const connection = getConnection();
+    const connection = getConnection(env);
 
     // Close database connection
     await connection.close();

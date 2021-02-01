@@ -10,8 +10,8 @@ import {
   BeforeInsert,
   BeforeUpdate,
 } from 'typeorm';
-import Course from './Course';
-import VersionedEntity from './VersionedEntity';
+import Course from '@/database/entities/Course';
+import VersionedEntity from '@/database/entities/VersionedEntity';
 
 // Entity
 @Entity('users')
