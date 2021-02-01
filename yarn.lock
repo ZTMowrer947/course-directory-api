@@ -10425,9 +10425,9 @@ fsevents@^2.1.2:
     routing-controllers: ^0.9.0-alpha.6
     sqlite3: 5.0.0
     supertest: ^6.1.3
-    typedi: ~0.10.0
+    typedi: ^0.7.3
     typeorm: ~0.2.30
-    typeorm-typedi-extensions: ~0.4.0
+    typeorm-typedi-extensions: ^0.4.0
     typescript: ~4.1.3
   languageName: unknown
   linkType: soft
@@ -11685,14 +11685,14 @@ fsevents@^2.1.2:
   languageName: node
   linkType: hard
 
-"typedi@npm:~0.10.0":
-  version: 0.10.0
-  resolution: "typedi@npm:0.10.0"
-  checksum: 20c9df495f03def5110ac81d49c93fd5292b0cb55fcaa5151b82a6771977585a5ef7da74348062087e10f3aeea26d73b2e9743e6b1a12043a455724da714049f
+"typedi@npm:^0.7.3":
+  version: 0.7.3
+  resolution: "typedi@npm:0.7.3"
+  checksum: 397097c54f550b7cbfe20c361558db826a3c818366f2011f2ac03e3676ff8465fe85a17af13d88fadf919b2f84ea482234f3f2fa16af0dbff0fc1b81e0b24469
   languageName: node
   linkType: hard
 
-"typeorm-typedi-extensions@npm:~0.4.0":
+"typeorm-typedi-extensions@npm:^0.4.0":
   version: 0.4.0
   resolution: "typeorm-typedi-extensions@npm:0.4.0"
   peerDependencies:

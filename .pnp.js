@@ -96,7 +96,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["routing-controllers", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:0.9.0-alpha.6"],
             ["sqlite3", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:5.0.0"],
             ["supertest", "npm:6.1.3"],
-            ["typedi", "npm:0.10.0"],
+            ["typedi", "npm:0.7.3"],
             ["typeorm", "npm:0.2.30"],
             ["typeorm-typedi-extensions", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:0.4.0"],
             ["typescript", "patch:typescript@npm%3A4.1.3#builtin<compat/typescript>::version=4.1.3&hash=cc6730"]
@@ -12701,7 +12701,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["routing-controllers", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:0.9.0-alpha.6"],
             ["sqlite3", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:5.0.0"],
             ["supertest", "npm:6.1.3"],
-            ["typedi", "npm:0.10.0"],
+            ["typedi", "npm:0.7.3"],
             ["typeorm", "npm:0.2.30"],
             ["typeorm-typedi-extensions", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:0.4.0"],
             ["typescript", "patch:typescript@npm%3A4.1.3#builtin<compat/typescript>::version=4.1.3&hash=cc6730"]
@@ -14099,10 +14099,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["typedi", [
-        ["npm:0.10.0", {
-          "packageLocation": "./.yarn/cache/typedi-npm-0.10.0-d5771a2dc0-20c9df495f.zip/node_modules/typedi/",
+        ["npm:0.7.3", {
+          "packageLocation": "./.yarn/cache/typedi-npm-0.7.3-e816a55bfa-397097c54f.zip/node_modules/typedi/",
           "packageDependencies": [
-            ["typedi", "npm:0.10.0"]
+            ["typedi", "npm:0.7.3"]
           ],
           "linkType": "HARD",
         }]
@@ -14146,7 +14146,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["typeorm-typedi-extensions", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:0.4.0"],
             ["@types/typedi", null],
             ["@types/typeorm", null],
-            ["typedi", "npm:0.10.0"],
+            ["typedi", "npm:0.7.3"],
             ["typeorm", "npm:0.2.30"]
           ],
           "packagePeers": [
