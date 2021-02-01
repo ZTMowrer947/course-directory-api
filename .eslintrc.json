@@ -14,6 +14,7 @@
     "prettier/@typescript-eslint"
   ],
   "rules": {
+    "no-console": "off",
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "error",
     "no-useless-constructor": "off",
@@ -49,6 +50,7 @@
     {
       "files": ["**/*.ts?(x)"],
       "rules": {
+        "no-undef": "off",
         "@typescript-eslint/explicit-module-boundary-types": "error"
       }
     },

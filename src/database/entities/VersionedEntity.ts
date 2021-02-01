@@ -1,11 +1,11 @@
 // Imports
-import { VersionColumn } from "typeorm";
-import EntityBase from "./EntityBase";
+import { VersionColumn } from 'typeorm';
+import EntityBase from './EntityBase';
 
 // Entity
 abstract class VersionedEntity extends EntityBase {
-    @VersionColumn()
-    public version!: number;
+  @VersionColumn()
+  public version!: number;
 }
 
 // Export

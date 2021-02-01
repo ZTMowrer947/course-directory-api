@@ -1,11 +1,11 @@
 // Interface
 interface JSONSerializable {
-    toJSON(): object;
+  toJSON(): object;
 }
 
 // Type check
 function isJSONSerializable(object: any): object is JSONSerializable {
-    return "toJSON" in object && typeof object.toJSON === "function";
+  return 'toJSON' in object && typeof object.toJSON === 'function';
 }
 
 // Exports

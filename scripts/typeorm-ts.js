@@ -1,7 +1,7 @@
 // Babel registration
-require("@babel/register")({
-    extensions: [".ts"],
+require('@babel/register')({
+  extensions: ['.ts'],
 });
 
 // Load TypeORM CLI
-require("typeorm/cli");
+require('typeorm/cli');

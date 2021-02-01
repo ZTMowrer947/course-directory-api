@@ -1,5 +1,5 @@
-require("@babel/register")({
-    extensions: [".ts"],
+require('@babel/register')({
+  extensions: ['.ts'],
 });
 
-module.exports = require("./ormconfig.ts").default;
+module.exports = require('./ormconfig.ts').default;

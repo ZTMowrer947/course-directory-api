@@ -1,60 +1,60 @@
 // Imports
-import { MigrationInterface, QueryRunner, TableColumn } from "typeorm";
+import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
 
-export class SwitchFromTimestampsToVersion1587675450017
-    implements MigrationInterface {
-    name = "SwitchFromTimestampsToVersion1587675450017";
+export default class SwitchFromTimestampsToVersion1587675450017
+  implements MigrationInterface {
+  name = 'SwitchFromTimestampsToVersion1587675450017';
 
-    public async up(queryRunner: QueryRunner): Promise<void> {
-        // Remove timestamp fields from tables
-        await queryRunner.dropColumn("users", "createdAt");
-        await queryRunner.dropColumn("users", "lastModifiedAt");
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    // Remove timestamp fields from tables
+    await queryRunner.dropColumn('users', 'createdAt');
+    await queryRunner.dropColumn('users', 'lastModifiedAt');
 
-        await queryRunner.dropColumn("courses", "createdAt");
-        await queryRunner.dropColumn("courses", "lastModifiedAt");
+    await queryRunner.dropColumn('courses', 'createdAt');
+    await queryRunner.dropColumn('courses', 'lastModifiedAt');
 
-        // Create version column
-        const versionColumn = new TableColumn({
-            type: "integer",
-            name: "version",
-            isNullable: false,
-            default: "1",
-        });
+    // Create version column
+    const versionColumn = new TableColumn({
+      type: 'integer',
+      name: 'version',
+      isNullable: false,
+      default: '1',
+    });
 
-        // Add version column to tables
-        await queryRunner.addColumn("users", versionColumn);
-        await queryRunner.addColumn("courses", versionColumn);
-    }
+    // Add version column to tables
+    await queryRunner.addColumn('users', versionColumn);
+    await queryRunner.addColumn('courses', versionColumn);
+  }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
-        // Remove version field from tables
-        await queryRunner.dropColumn("users", "version");
-        await queryRunner.dropColumn("courses", "version");
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    // Remove version field from tables
+    await queryRunner.dropColumn('users', 'version');
+    await queryRunner.dropColumn('courses', 'version');
 
-        // Create timestamp columns
-        const createdAtColumn = new TableColumn({
-            name: "createdAt",
-            type: "datetime",
-            isNullable: false,
-            default: "datetime('now')",
-        });
+    // Create timestamp columns
+    const createdAtColumn = new TableColumn({
+      name: 'createdAt',
+      type: 'datetime',
+      isNullable: false,
+      default: "datetime('now')",
+    });
 
-        const lastModifiedAtColumn = new TableColumn({
-            name: "lastModifiedAt",
-            type: "datetime",
-            isNullable: false,
-            default: "datetime('now')",
-        });
+    const lastModifiedAtColumn = new TableColumn({
+      name: 'lastModifiedAt',
+      type: 'datetime',
+      isNullable: false,
+      default: "datetime('now')",
+    });
 
-        // Add timestamp columns to tables
-        await queryRunner.addColumns("users", [
-            createdAtColumn,
-            lastModifiedAtColumn,
-        ]);
+    // Add timestamp columns to tables
+    await queryRunner.addColumns('users', [
+      createdAtColumn,
+      lastModifiedAtColumn,
+    ]);
 
-        await queryRunner.addColumns("courses", [
-            createdAtColumn,
-            lastModifiedAtColumn,
-        ]);
-    }
+    await queryRunner.addColumns('courses', [
+      createdAtColumn,
+      lastModifiedAtColumn,
+    ]);
+  }
 }
