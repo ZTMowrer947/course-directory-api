@@ -4,6 +4,7 @@ import 'reflect-metadata';
 import { useContainer as routingUseContainer } from 'routing-controllers';
 import { Container } from 'typedi';
 import { getConnection, useContainer as ormUseContainer } from 'typeorm';
+
 import ormBootstrap from '@/database';
 import env from '@/env';
 

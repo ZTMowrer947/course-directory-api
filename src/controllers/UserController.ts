@@ -11,9 +11,9 @@ import {
   Post,
 } from 'routing-controllers';
 
-import UserService from '@/services/UserService';
 import User from '@/database/entities/User';
 import UserModifyDTO from '@/models/UserModifyDTO';
+import UserService from '@/services/UserService';
 
 // Controller
 @JsonController('/api/users')

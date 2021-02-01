@@ -1,6 +1,7 @@
 // Imports
 import { classToPlain, Expose, Type } from 'class-transformer';
 import { Column, Entity, ManyToOne } from 'typeorm';
+
 import User from '@/database/entities/User';
 import VersionedEntity from '@/database/entities/VersionedEntity';
 

@@ -7,8 +7,8 @@ import UserController from '@/controllers/UserController';
 import env from '@/env';
 import authorizationChecker from '@/functions/authorizationChecker';
 import currentUserChecker from '@/functions/currentUserChecker';
-import LoggerMiddleware from '@/middleware/LoggerMiddleware';
 import JsonInterceptor from '@/interceptors/JsonInterceptor';
+import LoggerMiddleware from '@/middleware/LoggerMiddleware';
 
 // Create Koa application
 const app = createKoaServer({

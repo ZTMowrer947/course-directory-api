@@ -1,5 +1,6 @@
 // Imports
 import { VersionColumn } from 'typeorm';
+
 import EntityBase from '@/database/entities/EntityBase';
 
 // Entity

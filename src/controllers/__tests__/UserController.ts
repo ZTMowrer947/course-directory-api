@@ -1,8 +1,9 @@
 // Imports
 import { plainToClass } from 'class-transformer';
-import UserModifyDTO from '@/models/UserModifyDTO';
-import agent from '@/koaTestAgent';
+
 import app from '@/app';
+import agent from '@/koaTestAgent';
+import UserModifyDTO from '@/models/UserModifyDTO';
 
 // Test Suite
 describe('/api/users', () => {

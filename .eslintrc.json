@@ -13,6 +13,7 @@
     "plugin:prettier/recommended",
     "prettier/@typescript-eslint"
   ],
+  "plugins": ["simple-import-sort"],
   "rules": {
     "no-console": "off",
     "no-unused-vars": "off",
@@ -30,7 +31,11 @@
         "tsx": "never"
       }
     ],
-    "@typescript-eslint/explicit-module-boundary-types": "off"
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "sort-imports": "off",
+    "import/order": "off",
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error"
   },
   "settings": {
     "import/extensions": [".js", ".jsx", ".ts", ".tsx"],

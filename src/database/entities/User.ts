@@ -1,15 +1,16 @@
 // Imports
-import os from 'os';
 import argon2 from 'argon2';
 import { classToPlain, Expose } from 'class-transformer';
+import os from 'os';
 import {
-  Column,
-  Entity,
-  OneToMany,
   AfterLoad,
   BeforeInsert,
   BeforeUpdate,
+  Column,
+  Entity,
+  OneToMany,
 } from 'typeorm';
+
 import Course from '@/database/entities/Course';
 import VersionedEntity from '@/database/entities/VersionedEntity';
 

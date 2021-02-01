@@ -1,6 +1,7 @@
 // Imports
 import { Expose } from 'class-transformer';
 import { IsNotEmpty, MaxLength } from 'class-validator';
+
 import Course from '@/database/entities/Course';
 
 // Class

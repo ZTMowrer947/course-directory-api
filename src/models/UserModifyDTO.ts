@@ -1,12 +1,13 @@
 // Imports
 import { Expose } from 'class-transformer';
 import {
-  Matches,
-  IsNotEmpty,
   IsEmail,
+  IsNotEmpty,
+  Matches,
   MaxLength,
   MinLength,
 } from 'class-validator';
+
 import User from '@/database/entities/User';
 
 // DTO
