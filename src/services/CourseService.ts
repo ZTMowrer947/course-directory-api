@@ -77,13 +77,15 @@ export default class CourseService {
     const updatedCourse = new Course();
 
     // Set course properties
+    updatedCourse.id = course.id;
     updatedCourse.title = updateData.title;
     updatedCourse.description = updateData.description;
-    updatedCourse.estimatedTime = updateData.estimatedTime || null;
-    updatedCourse.materialsNeeded = updateData.materialsNeeded || null;
+    updatedCourse.estimatedTime = updateData.estimatedTime ?? null;
+    updatedCourse.materialsNeeded = updateData.materialsNeeded ?? null;
+    updatedCourse.creator = course.creator;
 
     // Persist updated course to database
-    await this.repository.save(course);
+    await this.repository.save(updatedCourse);
   }
 
   public async delete(course: Course): Promise<void> {
