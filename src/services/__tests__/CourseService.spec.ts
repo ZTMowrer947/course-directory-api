@@ -33,7 +33,7 @@ describe('Course service', () => {
     const userService = new UserService(userRepository);
 
     // Find user for testing
-    user = (await userService.getUserByEmail('joe@smith.com'))!;
+    user = (await userService.findByEmail('joe@smith.com'))!;
   });
 
   describe('getList method', () => {

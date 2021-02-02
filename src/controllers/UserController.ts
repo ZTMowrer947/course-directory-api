@@ -35,7 +35,7 @@ export default class UserController {
   @OnUndefined(201)
   async post(@Body() userData: UserModifyDTO): Promise<void> {
     // Check if email address is already in use
-    const existingUser = await this.userService.getUserByEmail(
+    const existingUser = await this.userService.findByEmail(
       userData.emailAddress
     );
 

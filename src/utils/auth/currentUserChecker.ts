@@ -25,7 +25,7 @@ export default async (action: Action): Promise<User | undefined> => {
     );
 
   // Otherwise, find user by email address
-  const user = await service.getUserByEmail(credentials.name);
+  const user = await service.findByEmail(credentials.name);
 
   // Return user
   return user;

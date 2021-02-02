@@ -18,7 +18,7 @@ export default class UserService {
     this.repository = repository;
   }
 
-  public async getUserByEmail(emailAddress: string): Promise<User | undefined> {
+  public async findByEmail(emailAddress: string): Promise<User | undefined> {
     // Create query
     const query = this.repository
       .createQueryBuilder('users')

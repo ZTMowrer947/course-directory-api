@@ -56,7 +56,7 @@ describe('User service', () => {
     }
   });
 
-  describe('getUserByEmail method', () => {
+  describe('findByEmail method', () => {
     it('should retrieve the user with the given email if found', async () => {
       // Setup repository and service
       const { repository, service } = setupService();
@@ -70,7 +70,7 @@ describe('User service', () => {
 
       try {
         // Attempt to find user through email
-        const retrievedUser = await service.getUserByEmail(user.emailAddress);
+        const retrievedUser = await service.findByEmail(user.emailAddress);
 
         // Expect user to match input data
         expect(retrievedUser).toHaveProperty('firstName', user.firstName);
@@ -94,9 +94,7 @@ describe('User service', () => {
       const unusedEmail = internet.exampleEmail();
 
       // Expect attempt to find user by email to fail
-      await expect(
-        service.getUserByEmail(unusedEmail)
-      ).resolves.toBeUndefined();
+      await expect(service.findByEmail(unusedEmail)).resolves.toBeUndefined();
     });
   });
 });

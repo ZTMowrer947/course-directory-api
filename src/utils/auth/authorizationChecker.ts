@@ -22,7 +22,7 @@ export default async (action: Action): Promise<boolean> => {
   if (!credentials) return false;
 
   // Otherwise, attempt to find user by email address
-  const user = await service.getUserByEmail(credentials.name);
+  const user = await service.findByEmail(credentials.name);
 
   // If user was not found, deny access
   if (!user) return false;
