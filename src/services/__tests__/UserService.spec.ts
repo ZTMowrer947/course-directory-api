@@ -1,66 +1,102 @@
 // Imports
 import argon2 from 'argon2';
+import { internet } from 'faker';
 import { getRepository } from 'typeorm';
 
 import User from '@/database/entities/User';
 import env from '@/env';
-import UserModifyDTO from '@/models/UserModifyDTO';
 import UserService from '@/services/UserService';
+import { generateTestUser, generateTestUserDto } from '@/utils/testing/user';
+
+// Test utilities
+function setupService() {
+  // Get user repository
+  const repository = getRepository(User, env);
+
+  // Initialize user service
+  const service = new UserService(repository);
+
+  return { repository, service };
+}
 
 // Test Suite
 describe('User service', () => {
-  let userService: UserService;
-  let userData: UserModifyDTO;
+  test('create method should create a user and make it retrievable', async () => {
+    // Setup repository and service
+    const { repository, service } = setupService();
 
-  // Run before all tests
-  beforeAll(() => {
-    // Get user repository
-    const repository = getRepository(User, env);
+    // Generate test user
+    const userData = generateTestUserDto();
 
-    // Initialize user service
-    userService = new UserService(repository);
+    // Attempt to persist test user using service
+    await service.create(userData);
 
-    // Define user data
-    userData = new UserModifyDTO();
-    userData.firstName = 'Examply';
-    userData.lastName = 'Exampleton';
-    userData.emailAddress = 'exampleton@test.tld';
-    userData.password = 'examplepass';
-  });
+    try {
+      // Find created user through email
+      const createdUser = await repository.findOneOrFail({
+        emailAddress: userData.emailAddress,
+      });
 
-  describe('create method', () => {
-    it('should create a user', async () => {
-      // Create user and expect no errors
-      await expect(userService.create(userData)).resolves.toBeUndefined();
-    });
+      // Expect user to match input data
+      expect(createdUser).toHaveProperty('firstName', userData.firstName);
+      expect(createdUser).toHaveProperty('lastName', userData.lastName);
+      expect(createdUser).toHaveProperty('emailAddress', userData.emailAddress);
+      expect(createdUser).toHaveProperty('password');
+      await expect(
+        argon2.verify(createdUser.password, userData.password)
+      ).resolves.toBeTruthy();
+    } finally {
+      // Attempt to find user through email
+      const userToCleanup = await repository.findOne({
+        emailAddress: userData.emailAddress,
+      });
+
+      // If found, remove user
+      if (userToCleanup) await repository.remove(userToCleanup);
+    }
   });
 
   describe('getUserByEmail method', () => {
-    it('should return a user with a matching email', async () => {
-      // Find user by email
-      const user = await userService.getUserByEmail(userData.emailAddress);
+    it('should retrieve the user with the given email if found', async () => {
+      // Setup repository and service
+      const { repository, service } = setupService();
 
-      // Expect user to be defined
-      expect(user).toBeDefined();
+      // Generate test user
+      const user = generateTestUser();
+      const { password } = user;
 
-      // Expect user to match input data
-      expect(user!.firstName).toBe(userData.firstName);
-      expect(user!.lastName).toBe(userData.lastName);
-      expect(user!.emailAddress).toBe(userData.emailAddress);
-      await expect(
-        argon2.verify(user!.password, userData.password)
-      ).resolves.toBeTruthy();
+      // Persist test user
+      await repository.save(user);
+
+      try {
+        // Attempt to find user through email
+        const retrievedUser = await service.getUserByEmail(user.emailAddress);
+
+        // Expect user to match input data
+        expect(retrievedUser).toHaveProperty('firstName', user.firstName);
+        expect(retrievedUser).toHaveProperty('lastName', user.lastName);
+        expect(retrievedUser).toHaveProperty('emailAddress', user.emailAddress);
+        expect(retrievedUser).toHaveProperty('password');
+        await expect(
+          argon2.verify(retrievedUser?.password ?? '', password)
+        ).resolves.toBeTruthy();
+      } finally {
+        // Remove test user
+        await repository.remove(user);
+      }
     });
 
-    it("should return undefined if a user with a matching email wasn't found", async () => {
-      // Define unused email
-      const unusedEmail = 'unused@example.tld';
+    it('should return undefined if no user exists with the given email', async () => {
+      // Setup repository and service
+      const { service } = setupService();
 
-      // Attempt to fetch user by email
-      const user = await userService.getUserByEmail(unusedEmail);
+      // Generate email of nonexistent user
+      const unusedEmail = internet.exampleEmail();
 
-      // Expect user to be undefined
-      expect(user).toBeUndefined();
+      // Expect attempt to find user by email to fail
+      await expect(
+        service.getUserByEmail(unusedEmail)
+      ).resolves.toBeUndefined();
     });
   });
 });
