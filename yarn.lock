@@ -1992,6 +1992,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/tv4@npm:^1.2.29":
+  version: 1.2.29
+  resolution: "@types/tv4@npm:1.2.29"
+  checksum: 025ec9830360bf974bd935543fa5cae9bd780d52898e88486ca4b3d1a470a6933ab4a4760a211cca2433d1d460fd31e5ed5fff6471cb547a9a46598141658315
+  languageName: node
+  linkType: hard
+
 "@types/validator@npm:13.0.0":
   version: 13.0.0
   resolution: "@types/validator@npm:13.0.0"
@@ -10119,6 +10126,7 @@ fsevents@^2.1.2:
     "@types/koa-router": ^7.4.1
     "@types/supertest": ^2.0.8
     "@types/test-listen": ^1.1.0
+    "@types/tv4": ^1.2.29
     "@typescript-eslint/eslint-plugin": ^4.14.1
     "@typescript-eslint/parser": ^4.14.1
     argon2: ^0.27.1
@@ -10165,6 +10173,7 @@ fsevents@^2.1.2:
     supertest: ^6.1.3
     test-listen: ^1.1.0
     ts-jest: ^26.5.0
+    tv4: ^1.3.0
     typedi: ^0.7.3
     typeorm: ~0.2.30
     typeorm-typedi-extensions: ^0.4.0
@@ -11323,6 +11332,13 @@ fsevents@^2.1.2:
   dependencies:
     safe-buffer: ^5.0.1
   checksum: 03db75a4f994fee610d3485c492e95105ed265a9fecd49d14c98e9982f973ecc0220d0c1bc264e37802e423a1274bb63788a873e4e07009408ae3ac517347fd7
+  languageName: node
+  linkType: hard
+
+"tv4@npm:^1.3.0":
+  version: 1.3.0
+  resolution: "tv4@npm:1.3.0"
+  checksum: b42500b93482dea7bffb8ecbf47653a35d35edbd916d163e29d849c93a0510b7d92c7e210c035640d9449ff5859f0371841aadce2508e48a0ec14e4f80bfe375
   languageName: node
   linkType: hard
 

@@ -4,6 +4,7 @@ import { internet } from 'faker';
 import http from 'http';
 import fetch from 'isomorphic-unfetch';
 import listen from 'test-listen';
+import tv4 from 'tv4';
 
 import app from '@/app';
 import { generateTestUserDto } from '@/utils/testing/user';
@@ -124,6 +125,10 @@ describe('User API Routes', () => {
 
         // Get response body
         const body = (await res.json()) as unknown;
+
+        // Expect body to match JSON schema
+        const { default: userSchema } = await import('./user.schema.json');
+        expect(tv4.validate(body, userSchema)).toBeTruthy();
 
         // Expect body to match user data
         expect(body).toHaveProperty(

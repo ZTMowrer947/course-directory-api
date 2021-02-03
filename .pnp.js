@@ -56,6 +56,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/koa-router", "npm:7.4.1"],
             ["@types/supertest", "npm:2.0.10"],
             ["@types/test-listen", "npm:1.1.0"],
+            ["@types/tv4", "npm:1.2.29"],
             ["@typescript-eslint/eslint-plugin", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:4.14.1"],
             ["@typescript-eslint/parser", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:4.14.1"],
             ["argon2", "npm:0.27.1"],
@@ -102,6 +103,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["supertest", "npm:6.1.3"],
             ["test-listen", "npm:1.1.0"],
             ["ts-jest", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:26.5.0"],
+            ["tv4", "npm:1.3.0"],
             ["typedi", "npm:0.7.3"],
             ["typeorm", "npm:0.2.30"],
             ["typeorm-typedi-extensions", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:0.4.0"],
@@ -3220,6 +3222,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@types/test-listen", "npm:1.1.0"],
             ["@types/node", "npm:14.14.22"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/tv4", [
+        ["npm:1.2.29", {
+          "packageLocation": "./.yarn/cache/@types-tv4-npm-1.2.29-6b574bd5c9-025ec98303.zip/node_modules/@types/tv4/",
+          "packageDependencies": [
+            ["@types/tv4", "npm:1.2.29"]
           ],
           "linkType": "HARD",
         }]
@@ -12418,6 +12429,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/koa-router", "npm:7.4.1"],
             ["@types/supertest", "npm:2.0.10"],
             ["@types/test-listen", "npm:1.1.0"],
+            ["@types/tv4", "npm:1.2.29"],
             ["@typescript-eslint/eslint-plugin", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:4.14.1"],
             ["@typescript-eslint/parser", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:4.14.1"],
             ["argon2", "npm:0.27.1"],
@@ -12464,6 +12476,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["supertest", "npm:6.1.3"],
             ["test-listen", "npm:1.1.0"],
             ["ts-jest", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:26.5.0"],
+            ["tv4", "npm:1.3.0"],
             ["typedi", "npm:0.7.3"],
             ["typeorm", "npm:0.2.30"],
             ["typeorm-typedi-extensions", "virtual:232cc059b80187e9677f307076a3bbb010c0bf49fe1ca1ee33f166f1c93683b4b69ab57def0040957368f748aa029ef8c75ee487a57bcb7867657807de809030#npm:0.4.0"],
@@ -13763,6 +13776,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["tunnel-agent", "npm:0.6.0"],
             ["safe-buffer", "npm:5.2.1"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["tv4", [
+        ["npm:1.3.0", {
+          "packageLocation": "./.yarn/cache/tv4-npm-1.3.0-5d3a7b4deb-b42500b934.zip/node_modules/tv4/",
+          "packageDependencies": [
+            ["tv4", "npm:1.3.0"]
           ],
           "linkType": "HARD",
         }]
