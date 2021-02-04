@@ -68,8 +68,6 @@ async function setupTestCourse(url: string, credentials: string) {
   // Get value of Location header
   const location = res.headers.get('location')!;
 
-  console.log(res.ok, res.status, await res.json());
-
   // Extract new course ID from Location header
   const [id] = /[A-Z2-7]{16}$/.exec(location)!;
 
