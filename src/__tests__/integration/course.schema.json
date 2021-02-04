@@ -1,0 +1,32 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "[A-Z2-7]{16}"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "estimatedTime": {
+      "type": ["string", "null"]
+    },
+    "materialsNeeded": {
+      "type": ["string", "null"]
+    },
+    "creator": {
+      "$ref": "userSchema"
+    }
+  },
+  "required": [
+    "id",
+    "title",
+    "description",
+    "estimatedTime",
+    "materialsNeeded",
+    "creator"
+  ]
+}
