@@ -81,7 +81,6 @@
         "**/__tests__/**/*.[jt]s?(x)",
         "**/?(*.)+(spec|test).[tj]s?(x)",
         "./src/testSetup.ts",
-        "./src/koaTestAgent.ts",
         "./src/utils/testing/**/*.[jt]s"
       ],
       "extends": ["plugin:jest/recommended"],

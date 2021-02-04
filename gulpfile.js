@@ -7,12 +7,7 @@ const terser = require('gulp-terser');
 
 // Paths
 const paths = {
-  src: [
-    'src/**/*.ts',
-    '!src/**/__tests__/**/*.ts',
-    '!src/koaTestAgent.ts',
-    '!src/testSetup.ts',
-  ],
+  src: ['src/**/*.ts', '!src/**/__tests__/**/*.ts', '!src/testSetup.ts'],
   dist: 'dist',
 };
 
