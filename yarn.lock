@@ -3610,6 +3610,78 @@ __metadata:
   languageName: node
   linkType: hard
 
+"course-directory-api@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "course-directory-api@workspace:."
+  dependencies:
+    "@babel/core": ~7.12.10
+    "@babel/node": ~7.12.10
+    "@babel/plugin-proposal-class-properties": ~7.12.1
+    "@babel/plugin-proposal-decorators": ~7.12.1
+    "@babel/preset-env": ~7.12.3
+    "@babel/preset-typescript": ~7.12.3
+    "@babel/register": ~7.12.1
+    "@types/basic-auth": ^1.1.2
+    "@types/body-parser": ^1.19.0
+    "@types/cors": ^2.8.9
+    "@types/express": ^4.17.11
+    "@types/faker": ^5.1.6
+    "@types/jest": ^26.0.20
+    "@types/morgan": ^1.9.2
+    "@types/multer": ^1.4.5
+    "@types/test-listen": ^1.1.0
+    "@types/tv4": ^1.2.29
+    "@typescript-eslint/eslint-plugin": ^4.14.1
+    "@typescript-eslint/parser": ^4.14.1
+    argon2: ^0.27.1
+    babel-plugin-module-resolver: ^4.1.0
+    babel-plugin-transform-typescript-metadata: ^0.3.1
+    basic-auth: ^2.0.1
+    body-parser: ^1.19.0
+    class-transformer: ^0.2.3
+    class-validator: ^0.12.2
+    core-js: 3
+    cors: ^2.8.5
+    cross-env: ^6.0.3
+    del: ^5.1.0
+    eslint: ^7.19.0
+    eslint-config-airbnb-base: ^14.2.1
+    eslint-config-prettier: ^7.2.0
+    eslint-import-resolver-node: ^0.3.4
+    eslint-import-resolver-typescript: ^2.3.0
+    eslint-plugin-import: ^2.22.1
+    eslint-plugin-jest: ^24.1.3
+    eslint-plugin-prettier: ^3.3.1
+    eslint-plugin-simple-import-sort: ^7.0.0
+    express: ^4.17.1
+    faker: ^5.2.0
+    gulp: ^4.0.2
+    gulp-babel: ^8.0.0
+    gulp-sourcemaps: ^2.6.5
+    gulp-terser: ^1.2.0
+    hi-base32: ^0.5.0
+    husky: ^4.3.8
+    isomorphic-unfetch: ^3.1.0
+    jest: ^26.6.3
+    lint-staged: ^10.5.3
+    morgan: ^1.10.0
+    multer: ^1.4.2
+    nodemon: ^2.0.7
+    prettier: ^2.2.1
+    reflect-metadata: ^0.1.13
+    regenerator-runtime: ^0.13.3
+    routing-controllers: ^0.9.0-alpha.6
+    sqlite3: 5.0.0
+    test-listen: ^1.1.0
+    ts-jest: ^26.5.0
+    tv4: ^1.3.0
+    typedi: ^0.7.3
+    typeorm: ~0.2.30
+    typeorm-typedi-extensions: ^0.4.0
+    typescript: ~4.1.3
+  languageName: unknown
+  linkType: soft
+
 "cross-env@npm:^6.0.3":
   version: 6.0.3
   resolution: "cross-env@npm:6.0.3"
@@ -10002,78 +10074,6 @@ fsevents@^1.2.7:
   checksum: 6ad14be68da9b84af0fa3de346fd78bd3a8e8a73a462e2852279a1fff1e2619988919294001abe3ecef3783f9498962a0619d960ccca4ec2ca914526fde1acc2
   languageName: node
   linkType: hard
-
-"school-database-api@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "school-database-api@workspace:."
-  dependencies:
-    "@babel/core": ~7.12.10
-    "@babel/node": ~7.12.10
-    "@babel/plugin-proposal-class-properties": ~7.12.1
-    "@babel/plugin-proposal-decorators": ~7.12.1
-    "@babel/preset-env": ~7.12.3
-    "@babel/preset-typescript": ~7.12.3
-    "@babel/register": ~7.12.1
-    "@types/basic-auth": ^1.1.2
-    "@types/body-parser": ^1.19.0
-    "@types/cors": ^2.8.9
-    "@types/express": ^4.17.11
-    "@types/faker": ^5.1.6
-    "@types/jest": ^26.0.20
-    "@types/morgan": ^1.9.2
-    "@types/multer": ^1.4.5
-    "@types/test-listen": ^1.1.0
-    "@types/tv4": ^1.2.29
-    "@typescript-eslint/eslint-plugin": ^4.14.1
-    "@typescript-eslint/parser": ^4.14.1
-    argon2: ^0.27.1
-    babel-plugin-module-resolver: ^4.1.0
-    babel-plugin-transform-typescript-metadata: ^0.3.1
-    basic-auth: ^2.0.1
-    body-parser: ^1.19.0
-    class-transformer: ^0.2.3
-    class-validator: ^0.12.2
-    core-js: 3
-    cors: ^2.8.5
-    cross-env: ^6.0.3
-    del: ^5.1.0
-    eslint: ^7.19.0
-    eslint-config-airbnb-base: ^14.2.1
-    eslint-config-prettier: ^7.2.0
-    eslint-import-resolver-node: ^0.3.4
-    eslint-import-resolver-typescript: ^2.3.0
-    eslint-plugin-import: ^2.22.1
-    eslint-plugin-jest: ^24.1.3
-    eslint-plugin-prettier: ^3.3.1
-    eslint-plugin-simple-import-sort: ^7.0.0
-    express: ^4.17.1
-    faker: ^5.2.0
-    gulp: ^4.0.2
-    gulp-babel: ^8.0.0
-    gulp-sourcemaps: ^2.6.5
-    gulp-terser: ^1.2.0
-    hi-base32: ^0.5.0
-    husky: ^4.3.8
-    isomorphic-unfetch: ^3.1.0
-    jest: ^26.6.3
-    lint-staged: ^10.5.3
-    morgan: ^1.10.0
-    multer: ^1.4.2
-    nodemon: ^2.0.7
-    prettier: ^2.2.1
-    reflect-metadata: ^0.1.13
-    regenerator-runtime: ^0.13.3
-    routing-controllers: ^0.9.0-alpha.6
-    sqlite3: 5.0.0
-    test-listen: ^1.1.0
-    ts-jest: ^26.5.0
-    tv4: ^1.3.0
-    typedi: ^0.7.3
-    typeorm: ~0.2.30
-    typeorm-typedi-extensions: ^0.4.0
-    typescript: ~4.1.3
-  languageName: unknown
-  linkType: soft
 
 "semver-compare@npm:^1.0.0":
   version: 1.0.0
