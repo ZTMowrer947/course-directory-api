@@ -1,16 +1,23 @@
 // Imports
-import { createDbConnection, getDbConnection } from './utils/db';
+import { Container } from 'typedi';
+import { Connection, useContainer as ormUseContainer } from 'typeorm';
 
-// Setup and Teardown
+import ormBootstrap from './database';
+
+// Define variable to hold connection
+let connection: Connection;
+
+// Run before all tests
 beforeAll(async () => {
-  // Initialize database connection
-  await createDbConnection();
+  // Setup TypeDI container
+  ormUseContainer(Container);
+
+  // Setup database connection
+  connection = await ormBootstrap();
 });
 
+// Run after all tests
 afterAll(async () => {
-  // Retrieve open database connection
-  const connection = getDbConnection();
-
-  // Close it
+  // Close database connection
   await connection.close();
 });

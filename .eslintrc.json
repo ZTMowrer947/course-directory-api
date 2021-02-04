@@ -31,21 +31,10 @@
       }
     ],
     "@typescript-eslint/explicit-module-boundary-types": "off",
-    "no-console": "off",
     "sort-imports": "off",
     "import/order": "off",
     "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error",
-    "import/no-extraneous-dependencies": [
-      "error",
-      {
-        "devDependencies": [
-          "**/__tests__/**/*.[jt]s?(x)",
-          "**/?(*.)+(spec|test).[tj]s?(x)",
-          "./src/utils/testing/**/*.[jt]s?(x)"
-        ]
-      }
-    ]
+    "simple-import-sort/exports": "error"
   },
   "settings": {
     "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
@@ -65,24 +54,45 @@
     {
       "files": ["**/*.ts?(x)"],
       "rules": {
+        "no-undef": "off",
         "@typescript-eslint/explicit-module-boundary-types": "error"
+      }
+    },
+    {
+      "files": ["./src/database/entities/**/*.[jt]s"],
+      "rules": {
+        "import/no-cycle": "off"
+      }
+    },
+    {
+      "files": [
+        "./src/interceptors/**/*.[jt]s",
+        "./src/middleware/**/*.[jt]s",
+        "./src/controllers/**/*.[jt]s",
+        "./src/database/migrations/**/*.[jt]s"
+      ],
+      "rules": {
+        "class-methods-use-this": "off"
       }
     },
     {
       "files": [
         "**/__tests__/**/*.[jt]s?(x)",
         "**/?(*.)+(spec|test).[tj]s?(x)",
-        "./src/utils/testing/**/*.[jt]s?(x)"
+        "./src/testSetup.ts",
+        "./src/utils/testing/**/*.[jt]s"
       ],
       "extends": ["plugin:jest/recommended"],
       "env": {
         "jest": true
-      }
-    },
-    {
-      "files": ["./src/migrations/**/*.ts"],
+      },
       "rules": {
-        "class-methods-use-this": "off"
+        "import/no-extraneous-dependencies": [
+          "error",
+          {
+            "devDependencies": true
+          }
+        ]
       }
     }
   ]

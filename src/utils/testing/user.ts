@@ -1,24 +1,31 @@
 // Imports
+import { plainToClass } from 'class-transformer';
 import { internet, name } from 'faker';
 
-import UserDto from '../../dto/user';
-import User from '../../entities/user.entity';
+import User from '@/database/entities/User';
+import UserModifyDTO from '@/models/UserModifyDTO';
 
 // Test utilities
-function generateTestUser(password = internet.password()): User {
-  const user = new User();
-  user.firstName = name.firstName();
-  user.lastName = name.lastName();
-  user.emailAddress = internet.email(user.firstName, user.lastName);
-  user.password = password;
+function generateTestUserData() {
+  const firstName = name.firstName();
+  const lastName = name.lastName();
+  const emailAddress = internet.email(firstName, lastName);
+  const password = internet.password(24);
 
-  return user;
+  return {
+    firstName,
+    lastName,
+    emailAddress,
+    password,
+  };
 }
 
-function generateTestUserDto(password = internet.password()): UserDto {
-  const user = generateTestUser(password);
+function generateTestUserDto(): UserModifyDTO {
+  return plainToClass(UserModifyDTO, generateTestUserData());
+}
 
-  return new UserDto(user);
+function generateTestUser(): User {
+  return plainToClass(User, generateTestUserData());
 }
 
 // Exports

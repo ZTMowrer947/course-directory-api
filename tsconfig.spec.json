@@ -1,18 +1,11 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "types": ["jest"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    "resolveJsonModule": true
   },
-  "include": [
-    "./src/**/__tests__/**/*",
-    "**/*.spec.*",
-    "**/*.test.*",
-    "**/__mocks__/**/*",
-    "./src/testSetup.ts",
-    "./src/utils/testing/**/*"
-  ]
+  "include": ["./src/**/__tests__/**/*", "**/*.spec.*", "**/*.test.*", "**/__mocks__/**/*", "./src/utils/testing/**/*", "./src/testSetup.ts"]
 }

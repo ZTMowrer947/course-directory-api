@@ -1,46 +1,43 @@
 // Imports
 import 'reflect-metadata';
 
-import { createDbConnection } from '@/utils/db';
+import { useContainer as routingUseContainer } from 'routing-controllers';
+import { Container } from 'typedi';
+import { useContainer as ormUseContainer } from 'typeorm';
 
-// Connect to database
+import ormBootstrap from '@/database';
+
+// Configure TypeORM and routing-controllers to use TypeDI container
+ormUseContainer(Container);
+routingUseContainer(Container);
+
+// Bootstrap TypeORM database connection
 console.log('Connecting to database...');
-createDbConnection()
+ormBootstrap()
   .then(
-    async () => {
-      // If successful, inform user of such
-      console.log('Database connection established.');
-      console.log('Starting API server....');
-
-      // Dynamically import Express app
-      const { default: api } = await import('@/api');
-
-      // Pass it down the chain
-      return api;
+    () => {
+      console.log('Connection successful. Starting web server...');
+      return import('@/app');
     },
-    (error) => {
-      // If database connection failed, log error
-      console.error('Failed to connect to database: ', error);
-
-      // Exit with failure status
+    (err: Error) => {
+      console.error(
+        `Error connecting to database: ${err.stack ?? err.message}`
+      );
       process.exit(1);
     }
   )
   .then(
-    (api) => {
-      // If app import was successful, determine port to listen on
-      const port = Number.parseInt(process.env.PORT ?? '5000', 10);
+    ({ default: app }) => {
+      // Get port to listen on
+      const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 8000;
 
-      // Listen on that port
-      api.listen(port, () => {
-        console.log(`Course directory API now running on port ${port}...`);
+      app.listen(port, () => {
+        console.log(`App server now running on port ${port}...`);
       });
     },
-    (error) => {
-      // If API setup failed, log error
-      console.error('Failed to start API server: ', error);
+    (err: Error) => {
+      console.error(`Error starting server: ${err.stack ?? err.message}`);
 
-      // Exit with failure status
       process.exit(1);
     }
   );

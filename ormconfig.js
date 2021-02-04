@@ -2,42 +2,84 @@
 const path = require('path');
 
 // Paths
-const rootDir = process.cwd();
-const srcDir = path.join(rootDir, 'src');
-const distDir = path.join(rootDir, 'dist');
+const projectRoot = path.resolve(__dirname);
+const sourcePath = path.join(projectRoot, 'src');
+const distPath = path.join(projectRoot, 'dist');
+
+const relativeEntityPath = path.join('database', 'entities');
+const relativeMigrationPath = path.join('database', 'migrations');
 
 /**
  * @type {import("typeorm").ConnectionOptions[]}
  */
 module.exports = [
   {
-    name: 'development',
+    name: 'production',
     type: 'sqlite',
-    database: path.join(rootDir, 'coursedir-dev.sqlite'),
-    entities: [path.join(srcDir, 'entities', '**.entity.ts')],
-    migrations: [path.join(srcDir, 'migrations', '**.ts')],
+
+    database: path.join(distPath, 'database', 'fsjstd-restapi.db'),
+
+    entities: [path.join(distPath, relativeEntityPath, '**', '*.js')],
+    migrations: [path.join(distPath, relativeMigrationPath, '**', '*.js')],
+
+    migrationsRun: true,
+
     cli: {
-      entitiesDir: path.join('src', 'entities'),
-      migrationsDir: path.join('src', 'migrations'),
+      entitiesDir: path.join(
+        path.relative(projectRoot, distPath),
+        relativeEntityPath
+      ),
+      migrationsDir: path.join(
+        path.relative(projectRoot, distPath),
+        relativeMigrationPath
+      ),
     },
   },
   {
-    name: 'testing',
+    name: 'staging',
     type: 'sqlite',
+
     database: ':memory:',
-    entities: [path.join(srcDir, 'entities', '**.entity.ts')],
-    migrations: [path.join(srcDir, 'migrations', '**.ts')],
-    migrationsRun: true,
+
+    entities: [
+      path.join(sourcePath, relativeEntityPath, '**', '*.ts'),
+      path.join(sourcePath, relativeEntityPath, '**', '*.js'),
+    ],
+    migrations: [
+      path.join(sourcePath, relativeMigrationPath, '**', '*.ts'),
+      path.join(sourcePath, relativeMigrationPath, '**', '*.js'),
+    ],
+
+    synchronize: true,
+
+    logging: false,
   },
   {
-    name: 'production',
+    name: 'development',
     type: 'sqlite',
-    database: path.join(rootDir, 'coursedir-prod.sqlite'),
-    entities: [path.join(distDir, 'entities', '**.entity.js')],
-    migrations: [path.join(distDir, 'migrations', '**.js')],
+
+    database: path.join(sourcePath, 'database', 'fsjstd-restapi.db'),
+
+    entities: [
+      path.join(sourcePath, relativeEntityPath, '**', '*.ts'),
+      path.join(sourcePath, relativeEntityPath, '**', '*.js'),
+    ],
+    migrations: [
+      path.join(sourcePath, relativeMigrationPath, '**', '*.ts'),
+      path.join(sourcePath, relativeMigrationPath, '**', '*.js'),
+    ],
+
+    migrationsRun: true,
+
     cli: {
-      entitiesDir: path.join('dist', 'entities'),
-      migrationsDir: path.join('dist', 'migrations'),
+      entitiesDir: path.join(
+        path.relative(projectRoot, sourcePath),
+        relativeEntityPath
+      ),
+      migrationsDir: path.join(
+        path.relative(projectRoot, sourcePath),
+        relativeMigrationPath
+      ),
     },
   },
 ];

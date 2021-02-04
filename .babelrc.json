@@ -1,0 +1,34 @@
+{
+  "presets": [
+    [
+      "@babel/env",
+      {
+        "corejs": 3,
+
+        "useBuiltIns": "usage",
+
+        "targets": {
+          "node": true
+        }
+      }
+    ],
+
+    "@babel/typescript"
+  ],
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "alias": {
+          "@": "./src"
+        }
+      }
+    ],
+
+    "transform-typescript-metadata",
+
+    ["@babel/proposal-decorators", { "legacy": true }],
+
+    ["@babel/proposal-class-properties", { "loose": true }]
+  ]
+}

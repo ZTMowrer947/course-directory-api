@@ -1,6 +1,5 @@
 dist/
-src/index.js
+src/index.dev.js
 gulpfile.js
 *config.js
-old/
-scripts/
+scripts/*
