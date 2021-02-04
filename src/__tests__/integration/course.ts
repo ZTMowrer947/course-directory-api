@@ -14,7 +14,7 @@ import { generateTestUserDto } from '@/utils/testing/user';
 function withServer(callback: (url: string) => void | Promise<void>) {
   return async () => {
     // Create HTTP server from app
-    const server = http.createServer(app.callback());
+    const server = http.createServer(app);
 
     // Listen on ephemeral port and retrieve URL
     const url = await listen(server);
@@ -135,7 +135,7 @@ describe('Course API Routes', () => {
         // Expect Location header to be present with path to new course
         expect(res.headers.keys()).toContain('location');
         expect(res.headers.get('location')).toEqual(
-          expect.stringMatching(new RegExp(`^${url}/api/courses/[A-Z2-7]{16}$`))
+          expect.stringMatching(new RegExp(`/api/courses/[A-Z2-7]{16}$`))
         );
       })
     );

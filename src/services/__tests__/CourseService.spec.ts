@@ -99,12 +99,16 @@ describe('Course service', () => {
       const course = generateTestCourse(user);
       await courseRepository.save(course);
 
+      const createdCourse = await courseRepository.findOneOrFail(course.id, {
+        relations: ['creator'],
+      });
+
       try {
         // Retrieve course by ID
         const retrievedCourse = await courseService.getCourseById(course.id);
 
         // Expect courses to match
-        expect(retrievedCourse?.toJSON()).toEqual(course.toJSON());
+        expect(retrievedCourse).toEqual(createdCourse);
       } finally {
         // Remove test course and user
         await courseRepository.remove(course);

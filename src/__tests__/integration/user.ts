@@ -13,7 +13,7 @@ import { generateTestUserDto } from '@/utils/testing/user';
 function withServer(callback: (url: string) => void | Promise<void>) {
   return async () => {
     // Create HTTP server from app
-    const server = http.createServer(app.callback());
+    const server = http.createServer(app);
 
     // Listen on ephemeral port and retrieve URL
     const url = await listen(server);

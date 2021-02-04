@@ -1,9 +1,8 @@
 // Imports
-import { Context } from 'koa';
+import { Request, Response } from 'express';
 import {
   Authorized,
   Body,
-  Ctx,
   CurrentUser,
   Delete,
   ForbiddenError,
@@ -14,6 +13,8 @@ import {
   Param,
   Post,
   Put,
+  Req,
+  Res,
 } from 'routing-controllers';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -45,18 +46,16 @@ export default class CourseController {
   @Post('/')
   @OnUndefined(201)
   async post(
-    @Ctx() ctx: Context,
+    @Req() req: Request,
+    @Res() res: Response,
     @CurrentUser({ required: true }) user: User,
     @Body() courseData: CourseModifyDTO
   ): Promise<void> {
     // Create course and get ID
     const id = await this.courseService.create(user, courseData);
 
-    // Get base URL
-    const baseURL = `${ctx.request.protocol}://${ctx.request.host}`;
-
     // Set Location header
-    ctx.set('Location', `${baseURL}/api/courses/${id}`);
+    res.header('Location', `${req.path}/${id}`);
   }
 
   @Authorized()

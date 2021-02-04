@@ -1,5 +1,4 @@
 // Imports
-import argon2 from 'argon2';
 import basicAuth from 'basic-auth';
 import { IncomingMessage } from 'http';
 import { Action } from 'routing-controllers';
@@ -21,12 +20,6 @@ export default async (action: Action): Promise<boolean> => {
   // If credentials were not found, deny access
   if (!credentials) return false;
 
-  // Otherwise, attempt to find user by email address
-  const user = await service.findByEmail(credentials.name);
-
-  // If user was not found, deny access
-  if (!user) return false;
-
-  // Otherwise, grant access only if password matches
-  return argon2.verify(user.password, credentials.pass);
+  // Otherwise, use service to verify credentials
+  return service.verifyCredentials(credentials.name, credentials.pass);
 };

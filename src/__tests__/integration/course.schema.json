@@ -19,6 +19,10 @@
     },
     "creator": {
       "$ref": "userSchema"
+    },
+    "version": {
+      "type": "number",
+      "minimum": 1
     }
   },
   "required": [
@@ -27,6 +31,8 @@
     "description",
     "estimatedTime",
     "materialsNeeded",
-    "creator"
-  ]
+    "creator",
+    "version"
+  ],
+  "additionalProperties": false
 }

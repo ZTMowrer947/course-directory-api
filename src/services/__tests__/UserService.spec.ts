@@ -33,9 +33,12 @@ describe('User service', () => {
 
     try {
       // Find created user through email
-      const createdUser = await repository.findOneOrFail({
-        emailAddress: userData.emailAddress,
-      });
+      const createdUser = await repository.findOneOrFail(
+        {
+          emailAddress: userData.emailAddress,
+        },
+        { select: ['firstName', 'lastName', 'emailAddress', 'password'] }
+      );
 
       // Expect user to match input data
       expect(createdUser).toHaveProperty('firstName', userData.firstName);
@@ -63,7 +66,6 @@ describe('User service', () => {
 
       // Generate test user
       const user = generateTestUser();
-      const { password } = user;
 
       // Persist test user
       await repository.save(user);
@@ -76,10 +78,7 @@ describe('User service', () => {
         expect(retrievedUser).toHaveProperty('firstName', user.firstName);
         expect(retrievedUser).toHaveProperty('lastName', user.lastName);
         expect(retrievedUser).toHaveProperty('emailAddress', user.emailAddress);
-        expect(retrievedUser).toHaveProperty('password');
-        await expect(
-          argon2.verify(retrievedUser?.password ?? '', password)
-        ).resolves.toBeTruthy();
+        expect(retrievedUser).not.toHaveProperty('password');
       } finally {
         // Remove test user
         await repository.remove(user);

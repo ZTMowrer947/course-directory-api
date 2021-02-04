@@ -1,21 +1,21 @@
 // Imports
-import { Context, Next } from 'koa';
-import logger from 'koa-logger';
-import { KoaMiddlewareInterface, Middleware } from 'routing-controllers';
+import { NextFunction, Request, Response } from 'express';
+import morgan from 'morgan';
+import { ExpressMiddlewareInterface, Middleware } from 'routing-controllers';
 
 import env from '@/env';
 
 // Middleware
 @Middleware({ type: 'before' })
-export default class LoggerMiddleware implements KoaMiddlewareInterface {
-  async use(context: Context, next: Next): Promise<void> {
+export default class LoggerMiddleware implements ExpressMiddlewareInterface {
+  use(req: Request, res: Response, next: NextFunction): void {
     // When not testing,
     if (env !== 'staging') {
-      // Delegate to koa-logger middleware
-      await logger()(context, next);
+      // Delegate to morgan middleware
+      morgan(env === 'production' ? 'combined' : 'dev')(req, res, next);
+    } else {
+      // Otherwise, do nothing
+      next();
     }
-
-    // Otherwise, do nothing
-    await next();
   }
 }

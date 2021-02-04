@@ -4,10 +4,8 @@ import crypto from 'crypto';
 import base32 from 'hi-base32';
 import { BeforeInsert, PrimaryColumn } from 'typeorm';
 
-import JSONSerializable from '@/models/JSONSerializable';
-
 // Entity
-abstract class EntityBase implements JSONSerializable {
+abstract class EntityBase {
   @Expose()
   @PrimaryColumn({ length: 16 })
   public id!: string;
@@ -20,8 +18,6 @@ abstract class EntityBase implements JSONSerializable {
     // Encode as Base32 and store as ID
     this.id = base32.encode(bytes);
   }
-
-  public abstract toJSON(): unknown;
 }
 
 // Export
