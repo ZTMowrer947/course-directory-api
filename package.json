@@ -1,0 +1,19 @@
+{
+  "name": "course-directory-api",
+  "version": "2.0.0",
+  "description": "Treehouse FSJS Techdegree Unit 9 Project - A School database REST API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZTMowrer947/course-directory-api.git"
+  },
+  "author": "ZTMowrer947",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ZTMowrer947/course-directory-api/issues"
+  },
+  "homepage": "https://github.com/ZTMowrer947/course-directory-api#readme"
+}
