@@ -1,11 +1,10 @@
 import Koa from 'koa';
 
+import courseRouter from './routes/course';
+
 const app = new Koa();
 
-app.use((ctx) => {
-  ctx.body = {
-    message: 'Hello!',
-  };
-});
+app.use(courseRouter.routes());
+app.use(courseRouter.allowedMethods());
 
 app.listen(5000);
