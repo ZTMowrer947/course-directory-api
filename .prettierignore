@@ -1,0 +1,5 @@
+v1/
+dist/
+package.json
+tsconfig.json
+tsconfig.*.json
