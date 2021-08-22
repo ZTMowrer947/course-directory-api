@@ -24,7 +24,7 @@ model User {
   id           Int      @id @default(autoincrement())
   firstName    String   @db.VarChar(127)
   lastName     String   @db.VarChar(127)
-  emailAddress String   @db.VarChar(255)
+  emailAddress String   @unique @db.VarChar(255)
   password     String   @db.VarChar(255)
   courses      Course[]
 }
