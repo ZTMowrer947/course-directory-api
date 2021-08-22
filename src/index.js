@@ -1,10 +1,11 @@
-import http from "http";
+import Koa from "koa";
 
-const server = http.createServer((req, res) => {
-  res.writeHead("200", {
-    "Content-Type": "application/json",
-  });
-  res.end(JSON.stringify({ message: "Hello!" }));
+const app = new Koa();
+
+app.use((ctx) => {
+  ctx.body = {
+    message: "Hello!",
+  };
 });
 
-server.listen(5000);
+app.listen(5000);
