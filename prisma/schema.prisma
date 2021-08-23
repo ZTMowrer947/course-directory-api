@@ -16,7 +16,7 @@ model Course {
   description     String  @db.Text
   estimatedTime   String? @db.VarChar(127)
   materialsNeeded String? @db.Text
-  User            User    @relation(fields: [userId], references: [id])
+  user            User    @relation(fields: [userId], references: [id])
   userId          Int
 }
 
