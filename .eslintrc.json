@@ -59,7 +59,8 @@
       "files": ["**/*.ts?(x)"],
       "rules": {
         "no-undef": "off",
-        "@typescript-eslint/explicit-module-boundary-types": "error"
+        "@typescript-eslint/explicit-module-boundary-types": "error",
+        "dot-notation": "off"
       }
     },
     {
