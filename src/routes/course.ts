@@ -1,14 +1,13 @@
 import Router from '@koa/router';
-import { PrismaClient } from '@prisma/client';
 
-const courseRouter = new Router({
+import prismaMiddleware, { PrismaState } from '../middleware/prisma';
+
+const courseRouter = new Router<PrismaState>({
   prefix: '/api/courses',
 });
 
-courseRouter.get('/', async (ctx) => {
-  const prisma = new PrismaClient();
-
-  const courses = await prisma.course.findMany({
+courseRouter.get('/', prismaMiddleware, async (ctx) => {
+  const courses = await ctx.state.prisma.course.findMany({
     select: {
       id: true,
       title: true,
@@ -18,17 +17,25 @@ courseRouter.get('/', async (ctx) => {
   ctx.body = courses;
 });
 
-courseRouter.get('/:id', async (ctx) => {
-  const idString = ctx.params['id'];
+courseRouter.get(
+  '/:id',
+  // Verify ID is valid
+  async (ctx, next) => {
+    const idString = ctx.params['id'];
 
-  if (!idString || Number.isNaN(Number.parseInt(idString, 10))) {
-    ctx.throw(400, 'id must be numeric');
-  } else {
-    const id = Number.parseInt(idString, 10);
+    if (!idString || Number.isNaN(Number.parseInt(idString, 10))) {
+      ctx.throw(400, 'id must be numeric');
+    } else {
+      await next();
+    }
+  },
+  prismaMiddleware,
+  async (ctx) => {
+    const idString = ctx.params['id'];
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const id = Number.parseInt(idString!, 10);
 
-    const prisma = new PrismaClient();
-
-    const course = await prisma.course.findUnique({
+    const course = await ctx.state.prisma.course.findUnique({
       where: {
         id,
       },
@@ -54,6 +61,6 @@ courseRouter.get('/:id', async (ctx) => {
       ctx.body = course;
     }
   }
-});
+);
 
 export default courseRouter;
