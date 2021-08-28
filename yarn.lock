@@ -221,7 +221,7 @@
   resolved "https://registry.yarnpkg.com/@types/http-assert/-/http-assert-1.5.2.tgz#a7fb59a7ca366e141789a084555a633801b9af3b"
   integrity sha512-Ddzuzv/bB2prZnJKlS1sEYhaeT50wfJjhcTTTQLjEsEZJlk3XB4Xohieyq+P4VXIzg7lrQ1Spd/PfRnBpQsdqA==
 
-"@types/http-errors@*":
+"@types/http-errors@*", "@types/http-errors@^1.8.1":
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/@types/http-errors/-/http-errors-1.8.1.tgz#e81ad28a60bee0328c6d2384e029aec626f1ae67"
   integrity sha512-e+2rjEwK6KDaNOm5Aa9wNGgyS9oSZU/4pfSMMPYNOfjvFI0WVXm29+ITRFr6aKDvvKo7uU1jV68MW4ScsfDi7Q==
@@ -1317,7 +1317,7 @@ http-errors@1.7.3, http-errors@~1.7.2:
     statuses ">= 1.5.0 < 2"
     toidentifier "1.0.0"
 
-http-errors@^1.6.3, http-errors@^1.7.3:
+http-errors@^1.6.3, http-errors@^1.7.3, http-errors@^1.8.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/http-errors/-/http-errors-1.8.0.tgz#75d1bbe497e1044f51e4ee9e704a62f28d336507"
   integrity sha512-4I8r0C5JDhT5VkvI47QktDW75rNlGVsUf/8hzjCC/wkWI/jdTRmBb9aI7erSG82r1bjKY3F6k28WnsVxB1C73A==
