@@ -1,4 +1,5 @@
 import Koa from 'koa';
+import bodyParser from 'koa-bodyparser';
 
 import { errorHandler, errorNormalizer } from './middleware/error';
 import courseRouter from './routes/course';
@@ -8,6 +9,7 @@ const app = new Koa();
 
 app.use(errorHandler);
 app.use(errorNormalizer);
+app.use(bodyParser());
 
 app.use(courseRouter.routes());
 app.use(courseRouter.allowedMethods());
