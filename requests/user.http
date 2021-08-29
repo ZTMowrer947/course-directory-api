@@ -1,0 +1,66 @@
+@hostname = localhost
+@port = 5000
+@host = {{hostname}}:{{port}}
+@contentType = application/json
+
+@email = joe@smith.com
+@password = joepassword
+
+# GET User - No auth
+# Expected result: 401 error
+GET http://{{host}}/api/users HTTP/1.1
+Host: {{host}}
+Accept: {{contentType}}
+
+###
+
+# GET User - With auth
+# Expected result: Authenticated user data
+GET http://{{host}}/api/users HTTP/1.1
+Host: {{host}}
+Authorization: Basic {{email}} {{password}}
+Accept: {{contentType}}
+
+
+###
+
+# POST User - Empty body
+# Expected result: 400 with validation errors
+POST http://{{host}}/api/users HTTP/1.1
+Host: {{host}}
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{}
+
+###
+
+# POST User - Valid body
+# Expected result: 201 with created user data
+POST http://{{host}}/api/users HTTP/1.1
+Host: {{host}}
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{
+  "firstName": "John",
+  "lastName": "Smith",
+  "emailAddress": "john@smith.com",
+  "password": "johnpassword"
+}
+
+###
+
+# POST User - Existing email address
+# Expected result: 400 (after POSTing previous request)
+POST http://{{host}}/api/users HTTP/1.1
+Host: {{host}}
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{
+  "firstName": "John",
+  "lastName": "Smith",
+  "emailAddress": "john@smith.com",
+  "password": "johnpassword"
+}
