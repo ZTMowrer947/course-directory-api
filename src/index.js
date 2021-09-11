@@ -16,4 +16,6 @@ app.use(courseRouter.allowedMethods());
 app.use(userRouter.routes());
 app.use(userRouter.allowedMethods());
 
-app.listen(5000);
+app.listen(5000, () => {
+  console.log('course-directory-api now running on port 5000');
+});
