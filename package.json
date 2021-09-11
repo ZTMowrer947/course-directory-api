@@ -4,7 +4,8 @@
   "description": "Treehouse FSJS Techdegree Unit 9 Project - A School database REST API",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node -P tsconfig.json src"
   },
   "repository": {
     "type": "git",
