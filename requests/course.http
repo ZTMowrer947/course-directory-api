@@ -1,0 +1,72 @@
+@hostname = localhost
+@port = 5000
+@host = {{hostname}}:{{port}}
+@contentType = application/json
+
+@email = joe@smith.com
+@password = joepassword
+
+# GET Courses
+# Expected Result: List of courses
+GET http://{{host}}/api/courses HTTP/1.1
+Host: {{host}}
+Accept: {{contentType}}
+
+###
+
+# GET Course
+# Expected result: data for course
+@id = 1
+
+GET http://{{host}}/api/courses/{{id}} HTTP/1.1
+Host: {{host}}
+Accept: {{contentType}}
+
+
+###
+
+# GET Course - Non-existent ID
+# Expected result: 404
+@unusedId = 101010
+
+GET http://{{host}}/api/courses/{{unusedId}} HTTP/1.1
+Host: {{host}}
+Accept: {{contentType}}
+
+###
+
+# POST Course - No auth
+# Expected result: 401
+POST http://{{host}}/api/courses HTTP/1.1
+Host: {{host}}
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{}
+
+###
+
+# POST Course - Empty data
+# Expected result: 400
+POST http://{{host}}/api/courses HTTP/1.1
+Host: {{host}}
+Authorization: Basic {{email}} {{password}}
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{}
+
+###
+
+# POST Course - Minimal data
+# Expected result: Created course
+POST http://{{host}}/api/courses HTTP/1.1
+Host: {{host}}
+Authorization: Basic {{email}} {{password}}
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{
+  "title": "Test Course 1",
+  "description": "Test Course 1 description"
+}
