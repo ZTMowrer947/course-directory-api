@@ -1,0 +1,12 @@
+{
+  "restartabke": "rs",
+  "execMap": {
+    "js": "ts-node -P tsconfig.json",
+    "ts": "ts-node -P tsconfig.json"
+  },
+  "watch": ["src"],
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "ext": "ts,js"
+}
