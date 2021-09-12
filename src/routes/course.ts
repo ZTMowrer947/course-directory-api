@@ -15,6 +15,10 @@ interface CourseState {
 type CourseRouterState = PrismaState & AuthState & CourseState;
 
 // File-level middleware
+/**
+ * Verifies that the ID within the route parameters is numeric.
+ * @throws 400 if the ID is invalid
+ */
 const validateId: Middleware<
   CourseRouterState,
   RouterParamContext<CourseRouterState>
@@ -28,6 +32,10 @@ const validateId: Middleware<
   }
 };
 
+/**
+ * Retrieves the data for a course given the ID within the route parameters.
+ * @throws 404 if the course with said ID cannot be found
+ */
 const retrieveCourseById: Middleware<
   CourseRouterState,
   RouterParamContext<CourseRouterState>
@@ -65,6 +73,10 @@ const retrieveCourseById: Middleware<
   }
 };
 
+/**
+ * Authorizes that the user may modify the retrieved course, in terms of updating or deleting it.
+ * @throws 403 if authenticated user is not authorized to perform modifications
+ */
 const validateCourseToAlter: Middleware<
   CourseRouterState,
   RouterParamContext<CourseRouterState>
@@ -81,6 +93,10 @@ const courseRouter = new Router<CourseRouterState>({
   prefix: '/api/courses',
 });
 
+/**
+ * GET /api/courses: Retrieves a list of course titles and IDs.
+ * @returns A list of course preview data
+ */
 courseRouter.get('/', prismaMiddleware, async (ctx) => {
   const courses = await ctx.state.prisma.course.findMany({
     select: {
@@ -92,6 +108,11 @@ courseRouter.get('/', prismaMiddleware, async (ctx) => {
   ctx.body = courses;
 });
 
+/**
+ * GET /api/courses/:id: Retrieves a single course by its ID.
+ * @throws 404 if not found
+ * @returns The course with the given ID
+ */
 courseRouter.get(
   '/:id',
   validateId,
@@ -102,6 +123,11 @@ courseRouter.get(
   }
 );
 
+/**
+ * POST /api/courses: Creates a new course owned by the authenticated user.
+ * @throws 401 if not authenticated, 400 if body is invalid
+ * @returns 201 with the created course
+ */
 courseRouter.post(
   '/',
   prismaMiddleware,
@@ -145,6 +171,11 @@ courseRouter.post(
   }
 );
 
+/**
+ * PUT /api/courses/:id: Updates the data of an existing course in full.
+ * @throws 401 if not authenticated, 403 if user does not own course, 404 if course is not found, 400 if body is invalid
+ * @returns 204
+ */
 courseRouter.put(
   '/:id',
   validateId,
@@ -172,6 +203,11 @@ courseRouter.put(
   }
 );
 
+/**
+ * DELETE /api/courses/:id: Deletes an existing course.
+ * @throws 401 if not authenticated, 403 if user does not own course, 404 if course is not found
+ * @returns 204
+ */
 courseRouter.delete(
   '/:id',
   validateId,
