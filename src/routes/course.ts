@@ -172,4 +172,22 @@ courseRouter.put(
   }
 );
 
+courseRouter.delete(
+  '/:id',
+  validateId,
+  prismaMiddleware,
+  auth,
+  retrieveCourseById,
+  validateCourseToAlter,
+  async (ctx) => {
+    await ctx.state.prisma.course.delete({
+      where: {
+        id: ctx.state.course.id,
+      },
+    });
+
+    ctx.status = 204;
+  }
+);
+
 export default courseRouter;

@@ -139,3 +139,38 @@ Authorization: Basic {{email}} {{password}}
   "title": "Test Course 1, 2nd edition",
   "description": "Updated course description"
 }
+
+###
+
+# DELETE Course - No auth
+# Expected result: 401
+DELETE http://{{host}}/api/courses/4 HTTP/1.1
+Host: {{host}}
+Accept: {{contentType}}
+
+###
+
+# DELETE Course - Auth with different user than course creator
+# Expected result: 403
+DELETE http://{{host}}/api/courses/4 HTTP/1.1
+Host: {{host}}
+Accept: {{contentType}}
+Authorization: Basic {{email2}} {{password2}}
+
+###
+
+# DELETE Course - Valid Auth
+# Expected result: 204
+DELETE http://{{host}}/api/courses/4 HTTP/1.1
+Host: {{host}}
+Accept: {{contentType}}
+Authorization: Basic {{email}} {{password}}
+
+###
+
+# DELETE Course - Nonexistent course
+# Expected result: 404
+DELETE http://{{host}}/api/courses/{{unusedId}} HTTP/1.1
+Host: {{host}}
+Accept: {{contentType}}
+Authorization: Basic {{email}} {{password}}
