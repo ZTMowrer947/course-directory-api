@@ -4,7 +4,7 @@ Treehouse FSJS Techdegree Unit 9 Project - A School database REST API
 
 ## Project Description
 
-This project is a REST API for a school database. It allows users to view, create, update, and delete courses.
+This project is a REST API for an online course directory. It allows users to view, create, update, and delete basic information regarding courses.
 
 ## API Docs
 
@@ -22,7 +22,7 @@ This project is a REST API for a school database. It allows users to view, creat
       - `lastName` (required) - The last name of the new user.
       - `emailAddress` (required, must be unique) - The unique e-mail address of the new user.
       - `password` (required) - The password of the new user.
-    - Successful status code: `201`, returns no content
+    - Successful status code: `201`, returns created user
     - Possible failure codes:
       - `400`: If body validation fails or it the provided e-mail address is in use by another user.
 
@@ -38,7 +38,7 @@ This project is a REST API for a school database. It allows users to view, creat
       - `description` (required) - The description of the new course.
       - `estimatedTime` (optional) - The estimated time that the course will take.
       - `materialsNeeded` (optional) - The set of needed materials for the course.
-    - Successful status code: `201`, returns no content
+    - Successful status code: `201`, returns created course
     - Possible failure codes:
       - `400`: If body validation fails.
       - `401`: If authentication credentials are not provided or the provided password is incorrect.
@@ -76,22 +76,18 @@ This project is a REST API for a school database. It allows users to view, creat
 
 ## Running the app
 
-Nothing special here, just the standard 1,2,3
+This project requires a MySQL database. Spin one up, clone this repository, and in the local folder for the cloned repo, set the DATABASE_URL envvar accordingly in a .env file in the following format:
 
-```shell
-git clone https://github.com/ZTMowrer947/SchoolDatabaseAPI
-yarn # or npm install
-yarn start # or npm start
+```
+DATABASE_URL=mysql://user:password@hostname:port/database
 ```
 
-The server will tell you which port the server is running at.
+Once that is set up, run the following in order:
 
-## Running tests
+```shell
+yarn                      # Install dep
+yarn prisma migrate dev   # Migrate and seed database
+yarn start                # Run the app
+```
 
-This project includes the following tests:
-
-- Tests for the User and Course services, testing CRUD operations with User and Course models
-- Tests for user and course endpoints for the API, testing the integration between the API and the entity services
-- Tests for the authentication middleware, testing that the middleware functions as expected
-
-To run these tests, simply run `yarn test` (or `npm test` if you prefer).
+The server will tell you which port the server is running at, by default 5000.
