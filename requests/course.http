@@ -70,3 +70,72 @@ Content-Type: {{contentType}}
   "title": "Test Course 1",
   "description": "Test Course 1 description"
 }
+
+###
+
+# PUT Course - No auth
+# Expected result: 401
+PUT http://{{host}}/api/courses/4 HTTP/1.1
+Host: {{host}}
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+
+{}
+
+###
+
+@email2 = sally@jones.com
+@password2 = sallypassword
+
+# PUT Course - Auth with different user than course creator
+# Expected result: 403
+PUT http://{{host}}/api/courses/4 HTTP/1.1
+Host: {{host}}
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+Authorization: Basic {{email2}} {{password2}}
+
+{}
+
+###
+
+# PUT Course - Empty body
+# Expected result: 400
+PUT http://{{host}}/api/courses/4 HTTP/1.1
+Host: {{host}}
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+Authorization: Basic {{email}} {{password}}
+
+{}
+
+###
+
+# PUT Course - Minimal body
+# Expected result: 204
+PUT http://{{host}}/api/courses/4 HTTP/1.1
+Host: {{host}}
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+Authorization: Basic {{email}} {{password}}
+
+{
+  "title": "Test Course 1, 2nd edition",
+  "description": "Updated course description"
+}
+
+###
+
+
+# PUT Course - Nonexistent course
+# Expected result: 404
+PUT http://{{host}}/api/courses/{{unusedId}} HTTP/1.1
+Host: {{host}}
+Accept: {{contentType}}
+Content-Type: {{contentType}}
+Authorization: Basic {{email}} {{password}}
+
+{
+  "title": "Test Course 1, 2nd edition",
+  "description": "Updated course description"
+}
