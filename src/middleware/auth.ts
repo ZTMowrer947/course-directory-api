@@ -6,9 +6,17 @@ import { Middleware } from 'koa';
 import { PrismaState } from './prisma';
 
 interface AuthState {
+  /**
+   * The user who has been authenticated for this request.
+   */
   user: Pick<User, 'id' | 'firstName' | 'lastName' | 'emailAddress'>;
 }
 
+/**
+ * Attempts to authenticate the current request via basic authentication.
+ *
+ * @throws 401 if authorization credentials are not found or are invalid
+ */
 const auth: Middleware<AuthState & PrismaState> = async (ctx, next) => {
   const credentials = basicAuth(ctx.req);
 

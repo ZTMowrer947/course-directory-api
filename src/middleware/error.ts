@@ -2,6 +2,11 @@ import { STATUS_CODES } from 'http';
 import createHttpError, { HttpError, isHttpError } from 'http-errors';
 import { Middleware } from 'koa';
 
+/**
+ * A simple HTTP error handler that clearly responds to the client with
+ * JSON data describing the error, unless said error is to remain
+ * unexposed.
+ */
 const errorHandler: Middleware = async (ctx, next) => {
   try {
     await next();
@@ -25,7 +30,10 @@ const errorHandler: Middleware = async (ctx, next) => {
   }
 };
 
-const errorNormalizer: Middleware = async (_ctx, next) => {
+/**
+ * Coerces any type of error into an HTTP error if it is not one already.
+ */
+const errorNormalizer: Middleware = async (ctx, next) => {
   try {
     await next();
   } catch (err) {
