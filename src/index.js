@@ -7,10 +7,12 @@ import userRouter from './routes/user';
 
 const app = new Koa();
 
+// App-wide middleware
 app.use(errorHandler);
 app.use(errorNormalizer);
 app.use(bodyParser());
 
+// Routing
 app.use(courseRouter.routes());
 app.use(courseRouter.allowedMethods());
 app.use(userRouter.routes());
