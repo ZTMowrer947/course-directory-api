@@ -1,3 +1,4 @@
+import cors from 'kcors';
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 
@@ -10,6 +11,13 @@ const app = new Koa();
 // App-wide middleware
 app.use(errorHandler);
 app.use(errorNormalizer);
+app.use(
+  cors({
+    credentials: true,
+    origin: '*',
+    exposeHeaders: ['Location'],
+  })
+);
 app.use(bodyParser());
 
 // Routing
