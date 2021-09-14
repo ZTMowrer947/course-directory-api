@@ -216,7 +216,7 @@
     "@types/keygrip" "*"
     "@types/node" "*"
 
-"@types/etag@*":
+"@types/etag@*", "@types/etag@^1.8.1":
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/@types/etag/-/etag-1.8.1.tgz#593ca8ddb43acb3db049bd0955fd64d281ab58b9"
   integrity sha512-bsKkeSqN7HYyYntFRAmzcwx/dKW4Wa+KVMTInANlI72PWLQmOpZu96j0OqHZGArW4VQwCmJPteQlXaUDeOB0WQ==

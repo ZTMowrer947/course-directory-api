@@ -1,5 +1,6 @@
 import Router, { RouterParamContext } from '@koa/router';
 import { Course, User } from '@prisma/client';
+import etag from 'etag';
 import { Middleware } from 'koa';
 
 import auth, { AuthState } from '../middleware/auth';
@@ -100,6 +101,32 @@ const validateCourseToAlter: Middleware<
   }
 };
 
+const ifMatchEtagCheck: Middleware<
+  CourseRouterState,
+  RouterParamContext<CourseRouterState>
+> = async (ctx, next) => {
+  // If not If-Match header is attached to this request, skip the check and continue
+  if (!ctx.headers['if-match']) {
+    await next();
+    return;
+  }
+
+  // Get Etag from request and from course data
+  const reqEtag = ctx.headers['if-match'];
+  const courseEtag = etag(JSON.stringify(ctx.state.course));
+
+  if (reqEtag !== courseEtag) {
+    // ETags don't match, respond with 412 error
+    ctx.throw(
+      412,
+      'course has been modified in another session, remove "if-match" header to force modification'
+    );
+  } else {
+    // Etags are good, proceed
+    await next();
+  }
+};
+
 // Routes
 const courseRouter = new Router<CourseRouterState>({
   prefix: '/api/courses',
@@ -196,6 +223,7 @@ courseRouter.put(
   retrieveCourseById,
   validateCourseToAlter,
   validateBody(CourseSchema),
+  ifMatchEtagCheck,
   async (ctx) => {
     const courseData = ctx.request.body as CourseInput;
 
@@ -227,6 +255,7 @@ courseRouter.delete(
   auth,
   retrieveCourseById,
   validateCourseToAlter,
+  ifMatchEtagCheck,
   async (ctx) => {
     await ctx.state.prisma.course.delete({
       where: {
