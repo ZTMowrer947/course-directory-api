@@ -1,5 +1,5 @@
 import Router, { RouterParamContext } from '@koa/router';
-import { Course } from '@prisma/client';
+import { Course, User } from '@prisma/client';
 import { Middleware } from 'koa';
 
 import auth, { AuthState } from '../middleware/auth';
@@ -8,8 +8,20 @@ import validateBody from '../middleware/validate-body';
 import CourseSchema, { CourseInput } from '../validation/course';
 
 // State
+type CourseWithUser = Pick<
+  Course,
+  | 'id'
+  | 'title'
+  | 'description'
+  | 'estimatedTime'
+  | 'materialsNeeded'
+  | 'userId'
+> & {
+  user: Pick<User, 'firstName' | 'lastName'>;
+};
+
 interface CourseState {
-  course: Course;
+  course: CourseWithUser;
 }
 
 type CourseRouterState = PrismaState & AuthState & CourseState;
@@ -43,7 +55,7 @@ const retrieveCourseById: Middleware<
   const idString = ctx.params['id'];
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const id = Number.parseInt(idString!, 10);
+  const id = Number.parseInt(idString, 10);
 
   const course = await ctx.state.prisma.course.findUnique({
     where: {
