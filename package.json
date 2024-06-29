@@ -3,6 +3,7 @@
   "version": "2.1.9",
   "description": "Treehouse FSJS Techdegree Unit 9 Project - A School database REST API",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon src/index.ts"

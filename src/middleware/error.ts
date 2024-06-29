@@ -1,5 +1,9 @@
 import { STATUS_CODES } from 'http';
-import createHttpError, { HttpError, isHttpError } from 'http-errors';
+import createHttpError, {
+  HttpError,
+  isHttpError,
+  UnknownError,
+} from 'http-errors';
 import { Middleware } from 'koa';
 
 /**
@@ -37,7 +41,9 @@ const errorNormalizer: Middleware = async (ctx, next) => {
   try {
     await next();
   } catch (err) {
-    const httpError = isHttpError(err) ? err : createHttpError(500, err);
+    const httpError = isHttpError(err)
+      ? err
+      : createHttpError(500, err as UnknownError);
 
     throw httpError;
   }
