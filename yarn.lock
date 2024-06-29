@@ -648,15 +648,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/yaml@npm:^1.9.7":
-  version: 1.9.7
-  resolution: "@types/yaml@npm:1.9.7"
-  dependencies:
-    yaml: "npm:*"
-  checksum: 10c0/0bbb3015ecf4e483a5431b35a8029374cd944eac67f74973814e287d7075adaa86b30aa40efc53666b4b0a462bdd0b8846a86792039ac600560f29f35821a83b
-  languageName: node
-  linkType: hard
-
 "@typescript-eslint/eslint-plugin@npm:7.14.1":
   version: 7.14.1
   resolution: "@typescript-eslint/eslint-plugin@npm:7.14.1"
@@ -1292,7 +1283,6 @@ __metadata:
     "@types/koa-etag": "npm:^3.0.0"
     "@types/koa__router": "npm:^8.0.7"
     "@types/node": "npm:^16.7.1"
-    "@types/yaml": "npm:^1.9.7"
     "@typescript-eslint/eslint-plugin": "npm:^4.29.2"
     "@typescript-eslint/parser": "npm:^4.29.2"
     argon2: "npm:^0.28.2"
@@ -1313,7 +1303,7 @@ __metadata:
     tsx: "npm:^4.16.0"
     typescript: "npm:^5.5.2"
     typescript-eslint: "npm:^7.14.1"
-    yaml: "npm:^1.10.2"
+    yaml: "npm:^2.4.5"
     yup: "npm:^0.32.9"
   languageName: unknown
   linkType: soft
@@ -3804,10 +3794,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:*, yaml@npm:^1.10.2":
-  version: 1.10.2
-  resolution: "yaml@npm:1.10.2"
-  checksum: 10c0/5c28b9eb7adc46544f28d9a8d20c5b3cb1215a886609a2fd41f51628d8aaa5878ccd628b755dbcd29f6bb4921bd04ffbc6dcc370689bb96e594e2f9813d2605f
+"yaml@npm:^2.4.5":
+  version: 2.4.5
+  resolution: "yaml@npm:2.4.5"
+  bin:
+    yaml: bin.mjs
+  checksum: 10c0/e1ee78b381e5c710f715cc4082fd10fc82f7f5c92bd6f075771d20559e175616f56abf1c411f545ea0e9e16e4f84a83a50b42764af5f16ec006328ba9476bb31
   languageName: node
   linkType: hard
 
