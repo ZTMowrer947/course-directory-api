@@ -1,12 +1,12 @@
 import { PrismaClient } from '@prisma/client';
 import argon2 from 'argon2';
-import fs from 'fs/promises';
-import os from 'os';
-import path from 'path';
-import YAML from 'yaml';
+import { readFile } from 'node:fs/promises';
+import os from 'node:os';
+import { resolve } from 'node:path';
+import { parse as yamlParse } from 'yaml';
 
 const prisma = new PrismaClient();
-const seederFilePath = path.join(__dirname, 'seeder_data.yaml');
+const seederFilePath = resolve('prisma', 'seeder_data.yaml');
 
 const hashOptions = {
   type: argon2.argon2id,
@@ -48,8 +48,8 @@ async function main() {
   // If database has any courses, no seeding is required
   if (firstCourse) return;
 
-  const seederFile = YAML.parse(
-    await fs.readFile(seederFilePath, { encoding: 'utf-8' })
+  const seederFile = yamlParse(
+    await readFile(seederFilePath, { encoding: 'utf-8' })
   ) as SeederData;
 
   // Map each password to a hashing operation
