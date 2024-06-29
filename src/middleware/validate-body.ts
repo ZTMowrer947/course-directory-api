@@ -1,6 +1,6 @@
-import { Middleware } from 'koa';
+import type { Middleware } from 'koa';
 import { ValidationError } from 'yup';
-import { MixedSchema } from 'yup/lib/mixed';
+import type { MixedSchema } from 'yup/lib/mixed';
 
 /**
  * Validates the request body according to the provided schema.

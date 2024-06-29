@@ -1,12 +1,12 @@
-import Router, { RouterParamContext } from '@koa/router';
-import { Course, User } from '@prisma/client';
+import Router, { type RouterParamContext } from '@koa/router';
+import type { Course, User } from '@prisma/client';
 import etag from 'etag';
-import { Middleware } from 'koa';
+import type { Middleware } from 'koa';
 
-import auth, { AuthState } from '../middleware/auth';
-import prismaMiddleware, { PrismaState } from '../middleware/prisma';
+import auth, { type AuthState } from '../middleware/auth';
+import prismaMiddleware, { type PrismaState } from '../middleware/prisma';
 import validateBody from '../middleware/validate-body';
-import CourseSchema, { CourseInput } from '../validation/course';
+import CourseSchema, { type CourseInput } from '../validation/course';
 
 // State
 type CourseWithUser = Pick<
@@ -55,7 +55,6 @@ const retrieveCourseById: Middleware<
 > = async (ctx, next) => {
   const idString = ctx.params['id'];
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const id = Number.parseInt(idString, 10);
 
   const course = await ctx.state.prisma.course.findUnique({

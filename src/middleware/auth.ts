@@ -1,9 +1,9 @@
-import { User } from '@prisma/client';
+import type { User } from '@prisma/client';
 import argon2 from 'argon2';
 import basicAuth from 'basic-auth';
-import { Middleware } from 'koa';
+import type { Middleware } from 'koa';
 
-import { PrismaState } from './prisma';
+import type { PrismaState } from './prisma';
 
 interface AuthState {
   /**
@@ -43,6 +43,7 @@ const auth: Middleware<AuthState & PrismaState> = async (ctx, next) => {
     return;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { password, ...user } = result;
 
   ctx.state.user = user;

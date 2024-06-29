@@ -3,10 +3,10 @@ import argon2 from 'argon2';
 import os from 'os';
 import { ValidationError } from 'yup';
 
-import auth, { AuthState } from '../middleware/auth';
-import prismaMiddleware, { PrismaState } from '../middleware/prisma';
+import auth, { type AuthState } from '../middleware/auth';
+import prismaMiddleware, { type PrismaState } from '../middleware/prisma';
 import validateBody from '../middleware/validate-body';
-import UserSchema, { UserInput } from '../validation/user';
+import UserSchema, { type UserInput } from '../validation/user';
 
 // Password hashing config
 const hashOptions = {

@@ -2,9 +2,9 @@ import { STATUS_CODES } from 'http';
 import createHttpError, {
   HttpError,
   isHttpError,
-  UnknownError,
+  type UnknownError,
 } from 'http-errors';
-import { Middleware } from 'koa';
+import type { Middleware } from 'koa';
 
 /**
  * A simple HTTP error handler that clearly responds to the client with

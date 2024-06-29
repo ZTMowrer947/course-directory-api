@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { Middleware } from 'koa';
+import type { Middleware } from 'koa';
 
 interface PrismaState {
   /**
