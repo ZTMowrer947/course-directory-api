@@ -1287,6 +1287,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^4.29.2"
     argon2: "npm:^0.28.2"
     basic-auth: "npm:^2.0.1"
+    esbuild: "npm:^0.21.5"
     eslint: "npm:^9.6.0"
     eslint-config-prettier: "npm:^9.1.0"
     eslint-plugin-simple-import-sort: "npm:^12.1.0"
@@ -1470,7 +1471,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:~0.21.5":
+"esbuild@npm:^0.21.5, esbuild@npm:~0.21.5":
   version: 0.21.5
   resolution: "esbuild@npm:0.21.5"
   dependencies:
