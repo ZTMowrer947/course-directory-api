@@ -132,21 +132,6 @@ const courseRouter = new Router<CourseRouterState>({
 });
 
 /**
- * GET /api/courses: Retrieves a list of course titles and IDs.
- * @returns A list of course preview data
- */
-courseRouter.get('/', prismaMiddleware, async (ctx) => {
-  const courses = await ctx.state.prisma.course.findMany({
-    select: {
-      id: true,
-      title: true,
-    },
-  });
-
-  ctx.body = courses;
-});
-
-/**
  * GET /api/courses/:id: Retrieves a single course by its ID.
  * @throws 404 if not found
  * @returns The course with the given ID
