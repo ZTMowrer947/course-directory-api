@@ -1,37 +1,19 @@
-import cors from 'kcors';
-import Koa from 'koa';
-import bodyParser from 'koa-bodyparser';
-import conditional from 'koa-conditional-get';
-import etag from 'koa-etag';
+import { createServer } from 'node:http';
+
+import { createApp, fromNodeMiddleware,toNodeListener } from 'h3';
 import prexit from 'prexit';
 
-import { errorHandler, errorNormalizer } from './middleware/error';
-import courseRouter from './routes/course';
-import userRouter from './routes/user';
+import koaApp from './app';
 
-const app = new Koa();
+const h3App = createApp();
 
-// App-wide middleware
-app.use(errorHandler);
-app.use(errorNormalizer);
-app.use(conditional());
-app.use(etag());
-app.use(
-  cors({
-    credentials: true,
-    origin: '*',
-    exposeHeaders: ['Location'],
-  })
-);
-app.use(bodyParser());
+// Send incoming requests to Koa app for now
+h3App.use(fromNodeMiddleware(koaApp.callback()));
 
-// Routing
-app.use(courseRouter.routes());
-app.use(courseRouter.allowedMethods());
-app.use(userRouter.routes());
-app.use(userRouter.allowedMethods());
+// Setup HTTP server
+const server = createServer(toNodeListener(h3App));
 
-const server = app.listen(5000, () => {
+server.listen(5000, () => {
   console.log('course-directory-api now running on port 5000');
 });
 
