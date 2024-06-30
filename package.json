@@ -34,8 +34,6 @@
     "@types/koa": "^2.13.4",
     "@types/koa-bodyparser": "^4.3.3",
     "@types/koa__router": "^8.0.7",
-    "@typescript-eslint/eslint-plugin": "^4.29.2",
-    "@typescript-eslint/parser": "^4.29.2",
     "esbuild": "^0.21.5",
     "eslint": "^9.6.0",
     "eslint-config-prettier": "^9.1.0",
