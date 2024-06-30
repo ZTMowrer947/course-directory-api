@@ -43,7 +43,8 @@
     "prisma": "^5.16.1",
     "tsx": "^4.16.0",
     "typescript": "^5.5.2",
-    "typescript-eslint": "^7.14.1"
+    "typescript-eslint": "^7.14.1",
+    "yaml": "^2.4.5"
   },
   "dependencies": {
     "@koa/router": "^10.1.0",
@@ -57,7 +58,6 @@
     "koa-bodyparser": "^4.3.0",
     "koa-conditional-get": "^3.0.0",
     "koa-etag": "^4.0.0",
-    "yaml": "^2.4.5",
     "yup": "^0.32.9"
   },
   "packageManager": "pnpm@9.4.0"
