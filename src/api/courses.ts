@@ -2,7 +2,7 @@ import { STATUS_CODES } from 'node:http';
 
 import { createError, createRouter, eventHandler } from 'h3';
 
-import { prisma } from '../prisma-client.ts';
+import usePrisma from '~/composables/prisma.ts';
 
 const courses = createRouter();
 
@@ -10,6 +10,8 @@ const courses = createRouter();
 courses.get(
   '/courses',
   eventHandler(async () => {
+    const prisma = usePrisma();
+
     return prisma.course.findMany({
       select: {
         id: true,
@@ -25,6 +27,9 @@ courses.get(
     // Parse ID route parameter
     const idParam = event.context.params?.id ?? '';
     const id = Number.parseInt(idParam, 10);
+
+    // Retrieve course from database
+    const prisma = usePrisma();
 
     const course = await prisma.course.findUnique({
       where: {
@@ -46,6 +51,7 @@ courses.get(
       },
     });
 
+    // Return retrieved course, or error if not found
     return (
       course ??
       createError({
