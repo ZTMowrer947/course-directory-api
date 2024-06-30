@@ -17,6 +17,9 @@ importers:
       basic-auth:
         specifier: ^2.0.1
         version: 2.0.1
+      email-validator-rfc-5322:
+        specifier: ^1.1.4
+        version: 1.1.4
       h3:
         specifier: ^1.12.0
         version: 1.12.0
@@ -495,6 +498,10 @@ packages:
   dir-glob@3.0.1:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
     engines: {node: '>=8'}
+
+  email-validator-rfc-5322@1.1.4:
+    resolution: {integrity: sha512-BsKqUXzDnbdqAaL6Nnr8NDHHgnxoqHdyAvLsqeG5+xVC/MDkaqfOxWY/j5smkWN+lM/OSPQUAK2mLYX9aYVWtQ==}
+    engines: {node: '>4.0'}
 
   emoji-regex@10.3.0:
     resolution: {integrity: sha512-QpLs9D9v9kArv4lfDEgg1X/gN5XLnf/A6l9cs8SPZLRZR3ZkY9+kwIQTxm+fsSej5UMYGE8fdoaZVIBlqG0XTw==}
@@ -1386,6 +1393,8 @@ snapshots:
   dir-glob@3.0.1:
     dependencies:
       path-type: 4.0.0
+
+  email-validator-rfc-5322@1.1.4: {}
 
   emoji-regex@10.3.0: {}
 
