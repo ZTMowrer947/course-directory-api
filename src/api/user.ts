@@ -1,8 +1,17 @@
 import { STATUS_CODES } from 'node:http';
 
-import { createError, createRouter, eventHandler, getHeader } from 'h3';
+import { Prisma } from '@prisma/client';
+import argon2 from 'argon2';
+import {
+  createError,
+  createRouter,
+  eventHandler,
+  getHeader,
+  setResponseStatus,
+} from 'h3';
 
 import { getUserOrFail } from '~/composables/auth';
+import usePrisma from '~/composables/prisma';
 import readValidatedBody from '~/composables/validate';
 import { UserInput } from '~/validation/user';
 
@@ -22,14 +31,55 @@ users.get(
 users.post(
   '/users',
   eventHandler(async (event) => {
-    const userData = await readValidatedBody(event, UserInput);
+    // Validate request body
+    const { firstName, lastName, emailAddress, password } =
+      await readValidatedBody(event, UserInput);
 
-    console.log(userData);
+    const prisma = usePrisma();
 
-    throw createError({
-      status: 501,
-      message: STATUS_CODES[501],
-    });
+    try {
+      // Attempt to create new user
+      await prisma.user.create({
+        data: {
+          firstName,
+          lastName,
+          emailAddress,
+          password: await argon2.hash(password, {
+            parallelism: 4,
+            memoryCost: 2 ** 16,
+            timeCost: 6,
+            type: argon2.argon2id,
+          }),
+        },
+      });
+    } catch (err) {
+      if (
+        !(err instanceof Prisma.PrismaClientKnownRequestError) ||
+        err.code !== 'P2002'
+      ) {
+        throw err;
+      }
+
+      // Handle the case of a duplicated email specially
+      throw createError({
+        statusCode: 400,
+        statusMessage: STATUS_CODES[400],
+        message: 'Validation failure when processing request data',
+        data: {
+          errors: {
+            emailAddress: ['Email address is already in use'],
+          },
+        },
+      });
+    }
+
+    // Return 201 result if successful
+    setResponseStatus(event, 201, STATUS_CODES[201]);
+
+    return {
+      statusCode: 201,
+      statusMessage: STATUS_CODES[201],
+    };
   })
 );
 
