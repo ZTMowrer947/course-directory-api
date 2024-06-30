@@ -132,21 +132,6 @@ const courseRouter = new Router<CourseRouterState>({
 });
 
 /**
- * GET /api/courses/:id: Retrieves a single course by its ID.
- * @throws 404 if not found
- * @returns The course with the given ID
- */
-courseRouter.get(
-  '/:id',
-  validateId,
-  prismaMiddleware,
-  retrieveCourseById,
-  (ctx) => {
-    ctx.body = ctx.state.course;
-  }
-);
-
-/**
  * POST /api/courses: Creates a new course owned by the authenticated user.
  * @throws 401 if not authenticated, 400 if body is invalid
  * @returns 201 with the created course
