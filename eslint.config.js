@@ -5,7 +5,7 @@ import globals from 'globals';
 import tselint from 'typescript-eslint';
 
 export default tselint.config(
-  { ignores: ['dist/', 'node_modules'] },
+  { ignores: ['dist/', 'node_modules', 'src/koa/'] },
   {
     languageOptions: {
       globals: globals.node,
