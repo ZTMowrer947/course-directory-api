@@ -1,15 +1,15 @@
 import eslint from '@eslint/js';
-import globals from 'globals';
-import tselint from 'typescript-eslint';
 import configPrettier from 'eslint-config-prettier';
 import pluginImportSort from 'eslint-plugin-simple-import-sort';
+import globals from 'globals';
+import tselint from 'typescript-eslint';
 
 export default tselint.config(
-  { ignores: ['dist/', 'node_modules' ] },
+  { ignores: ['dist/', 'node_modules'] },
   {
     languageOptions: {
-      globals: globals.node
-    }
+      globals: globals.node,
+    },
   },
   eslint.configs.recommended,
   ...tselint.configs.recommended,
@@ -19,8 +19,8 @@ export default tselint.config(
     },
     rules: {
       'simple-import-sort/imports': 'warn',
-      'simple-import-sort/exports': 'warn'
-    }
+      'simple-import-sort/exports': 'warn',
+    },
   },
   configPrettier
-)
+);

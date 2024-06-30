@@ -1,8 +1,9 @@
-import { PrismaClient } from '@prisma/client';
-import argon2 from 'argon2';
 import { readFile } from 'node:fs/promises';
 import os from 'node:os';
 import { resolve } from 'node:path';
+
+import { PrismaClient } from '@prisma/client';
+import argon2 from 'argon2';
 import { parse as yamlParse } from 'yaml';
 
 const prisma = new PrismaClient();
@@ -66,6 +67,7 @@ async function main() {
 
     const courses = seederFile.courses
       .filter((course) => course.userId === tempId)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .map(({ userId, ...course }) => course);
 
     const password = hashedPasswords[idx]!;
@@ -94,7 +96,7 @@ main()
     console.error(e);
     process.exit(1);
   })
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+
   .finally(async () => {
     await prisma.$disconnect();
   });

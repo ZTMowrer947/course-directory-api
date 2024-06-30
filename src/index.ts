@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
 
-import { createApp, fromNodeMiddleware,toNodeListener } from 'h3';
+import { createApp, fromNodeMiddleware, toNodeListener } from 'h3';
 import prexit from 'prexit';
 
 import koaApp from './app';
@@ -19,7 +19,10 @@ server.listen(5000, () => {
 
 // Shutdown handler
 prexit(async () => {
-  const closeAsync = () => new Promise<void>((resolve, reject) => server.close(err => err ? reject(err) : resolve()));
+  const closeAsync = () =>
+    new Promise<void>((resolve, reject) =>
+      server.close((err) => (err ? reject(err) : resolve()))
+    );
 
   await closeAsync();
-})
+});
