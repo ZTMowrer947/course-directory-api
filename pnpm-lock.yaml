@@ -41,6 +41,9 @@ importers:
       koa-etag:
         specifier: ^4.0.0
         version: 4.0.0
+      prexit:
+        specifier: ^2.2.0
+        version: 2.2.0
       yup:
         specifier: ^0.32.9
         version: 0.32.11
@@ -1147,6 +1150,9 @@ packages:
     resolution: {integrity: sha512-rAVeHYMcv8ATV5d508CFdn+8/pHPpXeIid1DdrPwXnaAdH7cqjVbpJaT5eq4yRAFU/lsbwYwSF/n5iNrdJHPQA==}
     engines: {node: '>=14'}
     hasBin: true
+
+  prexit@2.2.0:
+    resolution: {integrity: sha512-MrkWg5/0XFTM0txQtPFZlhk3qhMtyd+bP1vXJKQqOOYcdQ8/Wl5+G0Utxv69TLfH0PMm/ushn0YTYQ2SH2WzJg==}
 
   prisma@5.16.1:
     resolution: {integrity: sha512-Z1Uqodk44diztImxALgJJfNl2Uisl9xDRvqybMKEBYJLNKNhDfAHf+ZIJbZyYiBhLMbKU9cYGdDVG5IIXEnL2Q==}
@@ -2433,6 +2439,8 @@ snapshots:
   prelude-ls@1.2.1: {}
 
   prettier@3.3.2: {}
+
+  prexit@2.2.0: {}
 
   prisma@5.16.1:
     dependencies:
