@@ -21,6 +21,7 @@ courses.get(
   })
 );
 
+// GET /api/courses/:id, retrieves a single course or 404's if not found
 courses.get(
   '/courses/:id',
   eventHandler(async (event) => {
@@ -61,6 +62,28 @@ courses.get(
       })
     );
   })
+);
+
+// PUT /api/courses/:id, updates a course's data
+courses.put(
+  '/courses/:id',
+  eventHandler(() =>
+    createError({
+      status: 501,
+      message: STATUS_CODES[501],
+    })
+  )
+);
+
+// DELETE /api/courses/:id, deletes a course
+courses.delete(
+  '/courses/:id',
+  eventHandler(() =>
+    createError({
+      status: 501,
+      message: STATUS_CODES[501],
+    })
+  )
 );
 
 export default courses;
