@@ -15,6 +15,8 @@ const Email = refine(
 );
 
 export const UserInput = object({
+  firstName: nonempty(string()),
+  lastName: nonempty(string()),
   emailAddress: Email,
   password: size(string(), 8, Infinity),
 });
