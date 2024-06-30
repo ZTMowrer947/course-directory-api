@@ -3,7 +3,7 @@ import { createServer } from 'node:http';
 import { createApp, fromNodeMiddleware, toNodeListener } from 'h3';
 import prexit from 'prexit';
 
-import koaApp from './app';
+import koaApp from './koa/app';
 
 const h3App = createApp();
 
