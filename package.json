@@ -7,6 +7,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "esbuild src/index.ts --bundle --platform=node --target=node20 --packages=external --outdir=dist --format=esm --minify",
+    "lint:es": "eslint --cache --fix .",
+    "lint:pretty": "prettier --cache --write .",
     "dev": "tsx watch src/index.ts",
     "prepare": "husky"
   },
