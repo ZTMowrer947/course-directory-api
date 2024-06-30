@@ -2,7 +2,7 @@ import { STATUS_CODES } from 'node:http';
 
 import { createError, createRouter, eventHandler, getHeader } from 'h3';
 
-import getUser from '~/composables/auth';
+import { getUserOrFail } from '~/composables/auth';
 
 const users = createRouter();
 
@@ -12,17 +12,7 @@ users.get(
   eventHandler(async (event) => {
     const authHeader = getHeader(event, 'Authorization') ?? '';
 
-    const user = await getUser(authHeader);
-
-    if (user) {
-      return user;
-    } else {
-      throw createError({
-        status: 401,
-        statusMessage: STATUS_CODES[401],
-        message: 'Incorrect or invalid credentials',
-      });
-    }
+    return getUserOrFail(authHeader);
   })
 );
 

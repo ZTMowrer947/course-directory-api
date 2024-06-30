@@ -1,6 +1,9 @@
+import { STATUS_CODES } from 'node:http';
+
 import type { User } from '@prisma/client';
 import argon2 from 'argon2';
 import basicAuth from 'basic-auth';
+import { createError } from 'h3';
 
 import usePrisma from './prisma';
 
@@ -43,4 +46,18 @@ export default async function getUser(
   const isValid = await argon2.verify(password, credentials.pass);
 
   return isValid ? user : null;
+}
+
+export async function getUserOrFail(header: string): Promise<AuthedUser> {
+  const user = await getUser(header);
+
+  if (!user) {
+    throw createError({
+      status: 401,
+      statusMessage: STATUS_CODES[401],
+      message: 'Incorrect or invalid credentials',
+    });
+  } else {
+    return user;
+  }
 }
