@@ -6,7 +6,8 @@ import users from './api/users.ts';
 const routes = createRouter();
 
 // Forward API routes to respective handlers
-routes.use('/api/**', useBase('/api', courses.handler));
-routes.use('/api/**', useBase('/api', users.handler));
+routes.use('/api/courses', useBase('/api', courses.handler));
+routes.use('/api/courses/**', useBase('/api', courses.handler));
+routes.use('/api/users/**', useBase('/api', users.handler));
 
 export default routes;
