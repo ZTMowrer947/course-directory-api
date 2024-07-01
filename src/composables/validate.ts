@@ -15,9 +15,13 @@ export class ValidationError extends Error {
     this.errors = structErr
       .failures()
       .reduce((errs: Record<string, string[]>, failure) => {
+        const message = !failure.value
+          ? `${failure.key} required but not provided`
+          : failure.message;
+
         return {
           ...errs,
-          [failure.key]: [...(errs[failure.key] ?? []), failure.message],
+          [failure.key]: [...(errs[failure.key] ?? []), message],
         };
       }, {});
     this.name = 'ValidationError';
