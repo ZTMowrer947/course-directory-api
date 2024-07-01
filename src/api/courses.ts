@@ -1,7 +1,8 @@
 import { STATUS_CODES } from 'node:http';
 
-import { createError, createRouter, eventHandler } from 'h3';
+import { createError, createRouter, eventHandler, getHeader } from 'h3';
 
+import { getUserOrFail } from '~/composables/auth';
 import usePrisma from '~/composables/prisma.ts';
 
 // Route-specific composables
@@ -85,12 +86,36 @@ courses.put(
 // DELETE /api/courses/:id, deletes a course
 courses.delete(
   '/courses/:id',
-  eventHandler(() =>
-    createError({
-      status: 501,
-      message: STATUS_CODES[501],
-    })
-  )
+  eventHandler(async (event) => {
+    const authHeader = getHeader(event, 'Authorization') ?? '';
+
+    const user = await getUserOrFail(authHeader);
+
+    // Parse ID route parameter
+    const idParam = event.context.params?.id ?? '';
+    const id = Number.parseInt(idParam, 10);
+
+    // Retrieve course from database
+    const courseToDelete = await fetchCourseById(id);
+
+    if (!courseToDelete)
+      throw createError({ status: 404, statusMessage: 'Course not found' });
+    else if (courseToDelete.userId !== user.id)
+      throw createError({
+        status: 403,
+        statusMessage: 'Not allowed to modify course of another user',
+      });
+
+    const prisma = usePrisma();
+
+    await prisma.course.delete({
+      where: {
+        id: courseToDelete.id,
+      },
+    });
+
+    return null;
+  })
 );
 
 export default courses;
