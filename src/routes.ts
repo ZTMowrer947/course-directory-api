@@ -1,7 +1,7 @@
 import { createRouter, useBase } from 'h3';
 
 import courses from './api/courses.ts';
-import users from './api/user.ts';
+import users from './api/users.ts';
 
 const routes = createRouter();
 

@@ -10,7 +10,7 @@ import {
   setResponseStatus,
 } from 'h3';
 
-import { type AuthedUser,getUserOrFail } from '~/composables/auth';
+import { type AuthedUser, getUserOrFail } from '~/composables/auth';
 import usePrisma from '~/composables/prisma';
 import readValidatedBody from '~/composables/validate';
 import { UserInput } from '~/validation/user';
