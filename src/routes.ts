@@ -8,6 +8,6 @@ const routes = createRouter();
 // Forward API routes to respective handlers
 routes.use('/api/courses', useBase('/api', courses.handler));
 routes.use('/api/courses/**', useBase('/api', courses.handler));
-routes.use('/api/users/**', useBase('/api', users.handler));
+routes.use('/api/users', useBase('/api', users.handler));
 
 export default routes;
