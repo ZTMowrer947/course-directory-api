@@ -10,7 +10,7 @@ import {
   setResponseStatus,
 } from 'h3';
 
-import { getUserOrFail } from '~/composables/auth';
+import { type AuthedUser,getUserOrFail } from '~/composables/auth';
 import usePrisma from '~/composables/prisma';
 import readValidatedBody from '~/composables/validate';
 import { UserInput } from '~/validation/user';
@@ -37,9 +37,11 @@ users.post(
 
     const prisma = usePrisma();
 
+    let newUser: AuthedUser;
+
     try {
       // Attempt to create new user
-      await prisma.user.create({
+      newUser = await prisma.user.create({
         data: {
           firstName,
           lastName,
@@ -50,6 +52,12 @@ users.post(
             timeCost: 6,
             type: argon2.argon2id,
           }),
+        },
+        select: {
+          id: true,
+          firstName: true,
+          lastName: true,
+          emailAddress: true,
         },
       });
     } catch (err) {
@@ -79,6 +87,7 @@ users.post(
     return {
       statusCode: 201,
       statusMessage: STATUS_CODES[201],
+      data: newUser,
     };
   })
 );
