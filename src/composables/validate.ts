@@ -4,8 +4,7 @@ import {
   type H3Event,
   readBody,
 } from 'h3';
-import { STATUS_CODES } from 'http';
-import { assert, type Struct,StructError } from 'superstruct';
+import { assert, type Struct, StructError } from 'superstruct';
 
 export class ValidationError extends Error {
   readonly errors: Record<string, string[]>;
@@ -57,8 +56,7 @@ export default async function readValidatedBody<T>(
 
     throw createError({
       status: 400,
-      statusMessage: STATUS_CODES[400],
-      message: err.message,
+      statusMessage: err.message,
       data: err,
     });
   }

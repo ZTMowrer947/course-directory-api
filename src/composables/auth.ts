@@ -1,5 +1,3 @@
-import { STATUS_CODES } from 'node:http';
-
 import type { User } from '@prisma/client';
 import argon2 from 'argon2';
 import basicAuth from 'basic-auth';
@@ -54,8 +52,7 @@ export async function getUserOrFail(header: string): Promise<AuthedUser> {
   if (!user) {
     throw createError({
       status: 401,
-      statusMessage: STATUS_CODES[401],
-      message: 'Incorrect or invalid credentials',
+      statusMessage: 'Incorrect or invalid credentials',
     });
   } else {
     return user;

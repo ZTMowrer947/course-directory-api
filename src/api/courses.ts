@@ -65,8 +65,7 @@ courses.get(
     } else {
       throw createError({
         status: 404,
-        statusMessage: STATUS_CODES[404],
-        message: 'Course not found',
+        statusMessage: 'Course not found',
       });
     }
   })

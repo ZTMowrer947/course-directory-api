@@ -1,5 +1,3 @@
-import { STATUS_CODES } from 'node:http';
-
 import { Prisma } from '@prisma/client';
 import argon2 from 'argon2';
 import {
@@ -71,8 +69,7 @@ users.post(
       // Handle the case of a duplicated email specially
       throw createError({
         statusCode: 400,
-        statusMessage: STATUS_CODES[400],
-        message: 'Validation failure when processing request data',
+        statusMessage: 'Validation failure when processing request data',
         data: {
           errors: {
             emailAddress: ['Email address is already in use'],
@@ -82,13 +79,9 @@ users.post(
     }
 
     // Return 201 result if successful
-    setResponseStatus(event, 201, STATUS_CODES[201]);
+    setResponseStatus(event, 201, 'Created');
 
-    return {
-      statusCode: 201,
-      statusMessage: STATUS_CODES[201],
-      data: newUser,
-    };
+    return newUser;
   })
 );
 
