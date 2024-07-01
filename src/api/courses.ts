@@ -1,9 +1,18 @@
 import { STATUS_CODES } from 'node:http';
 
-import { createError, createRouter, eventHandler, getHeader } from 'h3';
+import {
+  createError,
+  createRouter,
+  eventHandler,
+  getHeader,
+  setResponseHeader,
+  setResponseStatus,
+} from 'h3';
 
 import { getUserOrFail } from '~/composables/auth';
 import usePrisma from '~/composables/prisma.ts';
+import readValidatedBody from '~/composables/validate';
+import { CourseInput } from '~/validation/course';
 
 // Route-specific composables
 async function fetchCourseById(id: number) {
@@ -45,6 +54,54 @@ courses.get(
         title: true,
       },
     });
+  })
+);
+
+// POST /api/courses/:id, creates a new post
+courses.post(
+  '/courses',
+  eventHandler(async (event) => {
+    const authHeader = getHeader(event, 'Authorization') ?? '';
+
+    // Validate authentication, then course data
+    const user = await getUserOrFail(authHeader);
+    const courseData = await readValidatedBody(event, CourseInput);
+
+    // Attempt to create course, attaching to authenticated user
+    const prisma = usePrisma();
+    const newCourse = await prisma.course.create({
+      data: {
+        ...courseData,
+        user: {
+          connect: {
+            id: user.id,
+          },
+        },
+      },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        estimatedTime: true,
+        materialsNeeded: true,
+        userId: true,
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+    });
+
+    setResponseStatus(event, 201, 'Created');
+    setResponseHeader(
+      event,
+      'Location',
+      `/api/courses/${encodeURIComponent(newCourse.id)}`
+    );
+
+    return newCourse;
   })
 );
 
