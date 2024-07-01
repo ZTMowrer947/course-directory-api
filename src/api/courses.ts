@@ -1,5 +1,3 @@
-import { STATUS_CODES } from 'node:http';
-
 import {
   createError,
   createRouter,
@@ -131,12 +129,41 @@ courses.get(
 // PUT /api/courses/:id, updates a course's data
 courses.put(
   '/courses/:id',
-  eventHandler(() =>
-    createError({
-      status: 501,
-      message: STATUS_CODES[501],
-    })
-  )
+  eventHandler(async (event) => {
+    1;
+    const authHeader = getHeader(event, 'Authorization') ?? '';
+
+    const user = await getUserOrFail(authHeader);
+
+    // Parse ID route parameter
+    const idParam = event.context.params?.id ?? '';
+    const id = Number.parseInt(idParam, 10);
+
+    // Retrieve course from database
+    const courseToUpdate = await fetchCourseById(id);
+
+    if (!courseToUpdate)
+      throw createError({ status: 404, statusMessage: 'Course not found' });
+    else if (courseToUpdate.userId !== user.id)
+      throw createError({
+        status: 403,
+        statusMessage: 'Not allowed to modify course of another user',
+      });
+
+    // Parse request body for update data
+    const updateData = await readValidatedBody(event, CourseInput);
+    const prisma = usePrisma();
+
+    // Perform the update, return 204 if successful
+    await prisma.course.update({
+      where: {
+        id: courseToUpdate.id,
+      },
+      data: updateData,
+    });
+
+    return null;
+  })
 );
 
 // DELETE /api/courses/:id, deletes a course
