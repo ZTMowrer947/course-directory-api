@@ -1,32 +1,41 @@
 import 'dotenv/config';
 
+import $ from 'dax-sh';
 import mysql from 'mysql2/promise';
+import type { GlobalSetupContext } from 'vitest/node';
 
-// Function to initialize MySQL connection
-async function initConnection() {
-  const url = new URL(process.env.DATABASE_URL!);
-
-  return mysql.createConnection({
-    host: url.hostname,
-    user: url.username,
-    password: url.password,
-    port: Number.parseInt(url.port ?? '3306'),
-  });
-}
-
-export async function setup() {
-  const conn = await initConnection();
-
-  // Create test database
-  try {
-    await conn.execute('CREATE DATABASE coursedir_test;');
-  } finally {
-    await conn.end();
+declare module 'vitest' {
+  export interface ProvidedContext {
+    testDatabaseUrl: string;
   }
 }
 
+// Test database URL setup
+const testDatabaseUrl = new URL(process.env.DATABASE_URL!);
+testDatabaseUrl.pathname = '/coursedir_test';
+
+export async function setup({ provide }: GlobalSetupContext) {
+  console.log('Initializing test database...\n');
+
+  // Create and initialize test database
+  process.env.DATABASE_URL = testDatabaseUrl.toString();
+  await $`pnpm prisma migrate deploy`.env(
+    'DATABASE_URL',
+    testDatabaseUrl.toString()
+  );
+
+  // Provide URL to test database for test usage
+  provide('testDatabaseUrl', testDatabaseUrl.toString());
+
+  console.log(
+    '\nSuccessfully initialized test database, now starting tests...'
+  );
+}
+
 export async function teardown() {
-  const conn = await initConnection();
+  console.log('\nDeleting test database...');
+
+  const conn = await mysql.createConnection(testDatabaseUrl.toString());
 
   // Drop test database
   try {
@@ -34,4 +43,6 @@ export async function teardown() {
   } finally {
     await conn.end();
   }
+
+  console.log('Test database deleted successfully.');
 }
