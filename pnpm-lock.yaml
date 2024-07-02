@@ -39,6 +39,9 @@ importers:
       '@types/node':
         specifier: ^20.14.9
         version: 20.14.9
+      dax-sh:
+        specifier: ^0.41.0
+        version: 0.41.0
       esbuild:
         specifier: ^0.21.5
         version: 0.21.5
@@ -86,6 +89,12 @@ importers:
         version: 2.4.5
 
 packages:
+
+  '@deno/shim-deno-test@0.5.0':
+    resolution: {integrity: sha512-4nMhecpGlPi0cSzT67L+Tm+GOJqvuk8gqHBziqcUQOarnuIax1z96/gJHCSIz2Z0zhxE6Rzwb3IZXPtFh51j+w==}
+
+  '@deno/shim-deno@0.19.2':
+    resolution: {integrity: sha512-q3VTHl44ad8T2Tw2SpeAvghdGOjlnLPDNO2cpOxwMrBE/PVas6geWpbpIgrM+czOCH0yejp0yi8OaTuB+NU40Q==}
 
   '@esbuild/aix-ppc64@0.21.5':
     resolution: {integrity: sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ==}
@@ -616,6 +625,9 @@ packages:
       uWebSockets.js:
         optional: true
 
+  dax-sh@0.41.0:
+    resolution: {integrity: sha512-qHiw1GFj23+/vgkxS9Jnz6Hbm7aLEiaGsATUc2igg5qZZgtzAs8xP4N3hHMVUmS7gJDQ1ErHZYkFDvBJweL6lA==}
+
   debug@4.3.5:
     resolution: {integrity: sha512-pt0bNEmneDIvdL1Xsd9oDQ/wrQRkXDT4AUWlNZNPKvW5x/jyO9VFXkJUP07vQ2upmw5PlaITaPKc31jK13V+jg==}
     engines: {node: '>=6.0'}
@@ -861,6 +873,10 @@ packages:
 
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
+
+  isexe@3.1.1:
+    resolution: {integrity: sha512-LpB/54B+/2J5hqQ7imZHfdU31OlgQqx7ZicVlkm9kzg9/w8GKLEcFfJl/t7DCEDueOyBAD6zCCwTO6Fzs0NoEQ==}
+    engines: {node: '>=16'}
 
   js-tokens@9.0.0:
     resolution: {integrity: sha512-WriZw1luRMlmV3LGJaR6QOJjWwgLUTf89OwT2lUOyjX2dJGBwgmIkbcz+7WFZjrZM635JOIR517++e/67CP9dQ==}
@@ -1342,6 +1358,11 @@ packages:
     engines: {node: '>= 8'}
     hasBin: true
 
+  which@4.0.0:
+    resolution: {integrity: sha512-GlaYyEb07DPxYCKhKzplCWBJtvxZcZMrL+4UkrTSJHHPyZU4mYYTv3qaOe77H7EODLSSopAUFAc6W8U4yqvscg==}
+    engines: {node: ^16.13.0 || >=18.0.0}
+    hasBin: true
+
   why-is-node-running@2.2.2:
     resolution: {integrity: sha512-6tSwToZxTOcotxHeA+qGCq1mVzKR3CwcJGmVcY+QE8SHy6TnpFnh8PAvPNHYr7EcuVeG0QSMxtYCuO1ta/G/oA==}
     engines: {node: '>=8'}
@@ -1369,6 +1390,13 @@ packages:
     engines: {node: '>=12.20'}
 
 snapshots:
+
+  '@deno/shim-deno-test@0.5.0': {}
+
+  '@deno/shim-deno@0.19.2':
+    dependencies:
+      '@deno/shim-deno-test': 0.5.0
+      which: 4.0.0
 
   '@esbuild/aix-ppc64@0.21.5':
     optional: true
@@ -1815,6 +1843,11 @@ snapshots:
 
   crossws@0.2.4: {}
 
+  dax-sh@0.41.0:
+    dependencies:
+      '@deno/shim-deno': 0.19.2
+      undici-types: 5.26.5
+
   debug@4.3.5:
     dependencies:
       ms: 2.1.2
@@ -2086,6 +2119,8 @@ snapshots:
   is-stream@3.0.0: {}
 
   isexe@2.0.0: {}
+
+  isexe@3.1.1: {}
 
   js-tokens@9.0.0: {}
 
@@ -2536,6 +2571,10 @@ snapshots:
   which@2.0.2:
     dependencies:
       isexe: 2.0.0
+
+  which@4.0.0:
+    dependencies:
+      isexe: 3.1.1
 
   why-is-node-running@2.2.2:
     dependencies:
