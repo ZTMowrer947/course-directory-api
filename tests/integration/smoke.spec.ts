@@ -1,7 +1,16 @@
 import { faker } from '@faker-js/faker';
 import type { Prisma } from '@prisma/client';
 import argon2 from 'argon2';
-import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import mysql from 'mysql2/promise';
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  inject,
+  test,
+  vi,
+} from 'vitest';
 
 import { getAppHandler, prismaMock } from './utils.ts';
 
@@ -12,8 +21,28 @@ describe('Integration API tests', () => {
   });
 
   // Clear mock
-  afterEach(() => {
+  afterEach(async () => {
     vi.clearAllMocks();
+
+    const conn = await mysql.createConnection(inject('testDatabaseUrl'));
+
+    try {
+      // Truncate tables, dropping and re-creating foreign key
+      await conn.execute('TRUNCATE TABLE `Course`;');
+      await conn.execute(
+        'ALTER TABLE `Course` DROP FOREIGN KEY `course_ibfk_1`;'
+      );
+      await conn.execute('TRUNCATE TABLE `User`;');
+      await conn.execute(
+        'ALTER TABLE `Course` ADD FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;'
+      );
+
+      // Restart primary key numbering
+      await conn.execute('ALTER TABLE `Course` AUTO_INCREMENT=1;');
+      await conn.execute('ALTER TABLE `User` AUTO_INCREMENT=1;');
+    } finally {
+      await conn.end();
+    }
   });
 
   test('GET /api/courses retrieves course listing', async () => {
