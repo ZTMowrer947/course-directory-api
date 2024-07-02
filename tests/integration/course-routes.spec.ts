@@ -1,6 +1,3 @@
-import { faker } from '@faker-js/faker';
-import type { Prisma } from '@prisma/client';
-import argon2 from 'argon2';
 import mysql from 'mysql2/promise';
 import {
   afterEach,
@@ -12,6 +9,7 @@ import {
   vi,
 } from 'vitest';
 
+import { fakeCourses, fakeUser } from './fake.ts';
 import { getAppHandler, prismaMock } from './utils.ts';
 
 describe('Integration API tests', () => {
@@ -49,23 +47,9 @@ describe('Integration API tests', () => {
     // Seed database with test data
     const { prisma } = await import('~/prisma-client.ts');
 
-    const [firstName, lastName] = [
-      faker.person.firstName(),
-      faker.person.lastName(),
-    ];
-    const userData = {
-      firstName,
-      lastName,
-      emailAddress: faker.internet.email({ firstName, lastName }),
-      password: await argon2.hash(faker.internet.password({ length: 12 })),
-    } satisfies Prisma.UserCreateWithoutCoursesInput;
+    const userData = await fakeUser();
 
-    const courseData = Array.from({ length: 2 }, () => {
-      return {
-        title: faker.lorem.words(3),
-        description: faker.lorem.paragraph(),
-      } satisfies Prisma.CourseCreateManyUserInput;
-    });
+    const courseData = fakeCourses();
 
     const { courses: expectedCourses } = await prisma.user.create({
       data: {
@@ -104,33 +88,9 @@ describe('Integration API tests', () => {
     // Seed database with test data
     const { prisma } = await import('~/prisma-client.ts');
 
-    const [firstName, lastName] = [
-      faker.person.firstName(),
-      faker.person.lastName(),
-    ];
-    const userData = {
-      firstName,
-      lastName,
-      emailAddress: faker.internet.email({ firstName, lastName }),
-      password: await argon2.hash(faker.internet.password({ length: 12 })),
-    } satisfies Prisma.UserCreateWithoutCoursesInput;
+    const userData = await fakeUser();
 
-    const courseData = Array.from({ length: 2 }, (_, index) => {
-      return {
-        title: faker.lorem.words(3),
-        description: faker.lorem.paragraph(),
-        estimatedTime:
-          index % 2 === 0
-            ? null
-            : `${faker.number.int({ min: 2, max: 10 })} hours`,
-        materialsNeeded:
-          index % 2 === 0
-            ? null
-            : Array.from({ length: 3 }, () => `- ${faker.lorem.words(3)}`).join(
-                '\n'
-              ),
-      } satisfies Prisma.CourseCreateManyUserInput;
-    });
+    const courseData = fakeCourses();
 
     const { courses } = await prisma.user.create({
       data: {
