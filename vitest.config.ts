@@ -5,5 +5,6 @@ export default defineConfig({
   plugins: [tsPaths()],
   test: {
     include: ['tests/**/*.{spec,test}.?(c|m)[jt]s?(x)'],
+    globalSetup: ['tests/global-setup.ts'],
   },
 });
