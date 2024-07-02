@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest",
     "build": "esbuild src/index.ts --bundle --platform=node --target=node20 --packages=external --outdir=dist --format=esm --minify",
     "lint:es": "eslint --cache --fix .",
     "lint:pretty": "prettier --cache --write .",
@@ -41,6 +41,8 @@
     "tsx": "^4.16.0",
     "typescript": "^5.5.2",
     "typescript-eslint": "^7.14.1",
+    "vite-tsconfig-paths": "^4.3.2",
+    "vitest": "^1.6.0",
     "yaml": "^2.4.5"
   },
   "dependencies": {
