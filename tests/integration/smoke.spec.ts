@@ -1,29 +1,11 @@
-import { PrismaClient } from '@prisma/client';
-import { toWebHandler } from 'h3';
-import {
-  afterEach,
-  beforeEach,
-  describe,
-  expect,
-  inject,
-  test,
-  vi,
-} from 'vitest';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+
+import { getAppHandler, prismaMock } from './utils.ts';
 
 describe('Integration API tests', () => {
   beforeEach(() => {
     // Mock Prisma Client to point to test database
-    vi.doMock(`~/prisma-client.ts`, () => {
-      return {
-        prisma: new PrismaClient({
-          datasources: {
-            db: {
-              url: inject('testDatabaseUrl'),
-            },
-          },
-        }),
-      };
-    });
+    vi.doMock(`~/prisma-client.ts`, prismaMock);
   });
 
   // Clear mock
@@ -33,8 +15,7 @@ describe('Integration API tests', () => {
 
   test('GET /api/courses retrieves course listing', async () => {
     // Setup web handler
-    const { default: app } = await import('~/app.ts');
-    const handler = toWebHandler(app);
+    const handler = await getAppHandler();
 
     // Query for course list
     const url = new URL('/api/courses', 'http://localhost:5000');
