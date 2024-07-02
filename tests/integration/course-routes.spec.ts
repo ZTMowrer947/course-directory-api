@@ -12,7 +12,7 @@ import {
 import { fakeCourses, fakeUser } from './fake.ts';
 import { getAppHandler, prismaMock } from './utils.ts';
 
-describe('Integration API tests', () => {
+describe('API Integration tests, course-related routes', () => {
   beforeEach(() => {
     // Mock Prisma Client to point to test database
     vi.doMock(`~/prisma-client.ts`, prismaMock);
