@@ -1,17 +1,49 @@
+import { PrismaClient } from '@prisma/client';
 import { toWebHandler } from 'h3';
-import { describe, expect,test } from 'vitest';
-
-import app from '~/app';
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  inject,
+  test,
+  vi,
+} from 'vitest';
 
 describe('Integration API tests', () => {
-  test('API is accessible', async () => {
+  beforeEach(() => {
+    // Mock Prisma Client to point to test database
+    vi.doMock(`~/prisma-client.ts`, () => {
+      return {
+        prisma: new PrismaClient({
+          datasources: {
+            db: {
+              url: inject('testDatabaseUrl'),
+            },
+          },
+        }),
+      };
+    });
+  });
+
+  // Clear mock
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  test('GET /api/courses retrieves course listing', async () => {
+    // Setup web handler
+    const { default: app } = await import('~/app.ts');
     const handler = toWebHandler(app);
 
-    const url = new URL('/', 'http://localhost:5000');
+    // Query for course list
+    const url = new URL('/api/courses', 'http://localhost:5000');
 
     const res = await handler(new Request(url));
 
-    expect(res.ok).toBe(false);
-    expect(res.status).toBe(404);
+    // Expect a successful JSON response with the correct course listing
+    expect(res.ok).toBe(true);
+    expect(res.headers.get('Content-Type')).toBe('application/json');
+    await expect(res.json()).resolves.toStrictEqual([]);
   });
 });
