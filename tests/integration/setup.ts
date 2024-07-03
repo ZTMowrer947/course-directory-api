@@ -1,10 +1,11 @@
-import { beforeEach } from 'node:test';
-
 import { createId } from '@paralleldrive/cuid2';
 import { PrismaClient } from '@prisma/client';
+import { asValue } from 'awilix';
 import $ from 'dax-sh';
 import mysql from 'mysql2/promise';
-import { beforeAll, inject, vi } from 'vitest';
+import { beforeAll, inject } from 'vitest';
+
+import { container } from '~/container';
 
 interface IntegrationContext {
   databaseUrl: string;
@@ -26,6 +27,19 @@ export default function setupTestDatabase() {
       .env('DATABASE_URL', testDatabaseUrl.toString())
       .quiet('stdout');
 
+    // Setup DI dependencies for tests
+    container.register({
+      prisma: asValue(
+        new PrismaClient({
+          datasources: {
+            db: {
+              url: testDatabaseUrl.toString(),
+            },
+          },
+        })
+      ),
+    });
+
     return async () => {
       const conn = await mysql.createConnection(testDatabaseUrl.toString());
 
@@ -35,25 +49,6 @@ export default function setupTestDatabase() {
       } finally {
         await conn.end();
       }
-    };
-  });
-
-  beforeEach(async () => {
-    // Point prisma to correct database by mocking, clear mock after test
-    vi.doMock(`~/prisma-client.ts`, () => {
-      return {
-        prisma: new PrismaClient({
-          datasources: {
-            db: {
-              url: testDatabaseUrl.toString(),
-            },
-          },
-        }),
-      };
-    });
-
-    return () => {
-      vi.doUnmock(`~/prisma-client.ts`);
     };
   });
 

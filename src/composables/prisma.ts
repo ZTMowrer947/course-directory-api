@@ -1,5 +1,5 @@
-import { prisma } from '~/prisma-client.ts';
+import { container } from '~/container.ts';
 
-export default function usePrisma(): typeof prisma {
-  return prisma;
+export default function usePrisma() {
+  return container.resolve('prisma');
 }
