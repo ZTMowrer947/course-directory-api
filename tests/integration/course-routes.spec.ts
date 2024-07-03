@@ -1,22 +1,14 @@
-import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import { afterEach, describe, expect, test } from 'vitest';
 
 import { fakeCourses, fakeUser } from './fake.ts';
-import {
-  endpoint,
-  getAppHandler,
-  prismaMock,
-  truncateTestDatabaseTables,
-} from './utils.ts';
+import setupTestDatabase from './setup.ts';
+import { endpoint, getAppHandler } from './utils.ts';
+
+const { clearTables } = setupTestDatabase();
 
 describe('API Integration tests, course-related routes', () => {
-  beforeEach(() => {
-    // Mock Prisma Client to point to test database
-    vi.doMock(`~/prisma-client.ts`, prismaMock);
-  });
-
   afterEach(async () => {
-    vi.clearAllMocks();
-    await truncateTestDatabaseTables();
+    await clearTables();
   });
 
   test('GET /api/courses retrieves course listing', async () => {
