@@ -149,4 +149,8 @@ describe('API Integration tests, course-related routes', () => {
     expect(res.ok).toBe(false);
     expect(res.status).toBe(404);
   });
+
+  test.todo('POST /api/courses');
+  test.todo('PUT /api/courses/:id');
+  test.todo('DELETE /api/courses/:id');
 });
