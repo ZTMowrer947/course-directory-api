@@ -10,7 +10,7 @@ import {
 } from 'vitest';
 
 import { fakeCourses, fakeUser } from './fake.ts';
-import { getAppHandler, prismaMock } from './utils.ts';
+import { endpoint, getAppHandler, prismaMock } from './utils.ts';
 
 describe('API Integration tests, course-related routes', () => {
   beforeEach(() => {
@@ -74,9 +74,7 @@ describe('API Integration tests, course-related routes', () => {
     const handler = await getAppHandler();
 
     // Query for course list
-    const url = new URL('/api/courses', 'http://localhost:5000');
-
-    const res = await handler(new Request(url));
+    const res = await handler(new Request(endpoint('/api/courses')));
 
     // Expect a successful JSON response with the correct course listing
     expect(res.ok).toBe(true);
@@ -125,12 +123,9 @@ describe('API Integration tests, course-related routes', () => {
 
     // Get course details for each created course
     for (const course of courses) {
-      const url = new URL(
-        `/api/courses/${encodeURIComponent(course.id)}`,
-        'http://localhost:3000'
-      );
+      const path = `/api/courses/${encodeURIComponent(course.id)};`;
 
-      const res = await handler(new Request(url));
+      const res = await handler(new Request(endpoint(path)));
 
       // Expect each course request to result in a successful JSON response with the correct data
       expect(res.ok).toBe(true);
@@ -143,8 +138,7 @@ describe('API Integration tests, course-related routes', () => {
     // Request the data for a course without any existing in the database
     const handler = await getAppHandler();
 
-    const url = new URL('/api/courses/1', 'http://localhost:5000');
-    const res = await handler(new Request(url));
+    const res = await handler(new Request(endpoint('/api/courses/1')));
 
     expect(res.ok).toBe(false);
     expect(res.status).toBe(404);
