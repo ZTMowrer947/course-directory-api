@@ -1,16 +1,12 @@
-import mysql from 'mysql2/promise';
-import {
-  afterEach,
-  beforeEach,
-  describe,
-  expect,
-  inject,
-  test,
-  vi,
-} from 'vitest';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
 import { fakeCourses, fakeUser } from './fake.ts';
-import { endpoint, getAppHandler, prismaMock } from './utils.ts';
+import {
+  endpoint,
+  getAppHandler,
+  prismaMock,
+  truncateTestDatabaseTables,
+} from './utils.ts';
 
 describe('API Integration tests, course-related routes', () => {
   beforeEach(() => {
@@ -18,29 +14,9 @@ describe('API Integration tests, course-related routes', () => {
     vi.doMock(`~/prisma-client.ts`, prismaMock);
   });
 
-  // Clear mock
   afterEach(async () => {
     vi.clearAllMocks();
-
-    const conn = await mysql.createConnection(inject('testDatabaseUrl'));
-
-    try {
-      // Truncate tables, dropping and re-creating foreign key
-      await conn.execute('TRUNCATE TABLE `Course`;');
-      await conn.execute(
-        'ALTER TABLE `Course` DROP FOREIGN KEY `course_ibfk_1`;'
-      );
-      await conn.execute('TRUNCATE TABLE `User`;');
-      await conn.execute(
-        'ALTER TABLE `Course` ADD FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;'
-      );
-
-      // Restart primary key numbering
-      await conn.execute('ALTER TABLE `Course` AUTO_INCREMENT=1;');
-      await conn.execute('ALTER TABLE `User` AUTO_INCREMENT=1;');
-    } finally {
-      await conn.end();
-    }
+    await truncateTestDatabaseTables();
   });
 
   test('GET /api/courses retrieves course listing', async () => {
