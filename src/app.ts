@@ -1,10 +1,30 @@
-import { createApp } from 'h3';
+import type { AwilixContainer } from 'awilix';
+import { createApp, eventHandler } from 'h3';
 
+import type { RootDeps } from './container.ts';
 import routes from './routes.ts';
 
-const app = createApp();
+export default function initApp(container: AwilixContainer<RootDeps>) {
+  const app = createApp();
 
-// Handle routing
-app.use(routes);
+  // Create scope for DI injections
+  app.use(
+    eventHandler((event) => {
+      event.context.scope = container.createScope();
+    })
+  );
 
-export default app;
+  // Handle routing
+  app.use(routes);
+
+  return app;
+}
+
+type FullDeps = RootDeps;
+
+// Augment context to include DI scope
+declare module 'h3' {
+  interface H3EventContext {
+    scope: AwilixContainer<FullDeps>;
+  }
+}

@@ -4,7 +4,7 @@ import { asValue } from 'awilix';
 import { toNodeListener } from 'h3';
 import prexit from 'prexit';
 
-import app from './app.ts';
+import initApp from './app.ts';
 import { container } from './container.ts';
 import { prisma } from './prisma-client.ts';
 
@@ -14,6 +14,7 @@ container.register({
 });
 
 // Setup HTTP server
+const app = initApp(container);
 const server = createServer(toNodeListener(app));
 
 server.listen(5000, () => {
