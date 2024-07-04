@@ -10,6 +10,7 @@ import {
 import { getUserOrFail } from '~/composables/auth.ts';
 import { getDependency } from '~/composables/di.ts';
 import readValidatedBody from '~/composables/validate.ts';
+import { courseDetail, coursePreview } from '~/selects/course';
 import { CourseInput } from '~/validation/course.ts';
 
 // Route-specific composables
@@ -21,20 +22,7 @@ async function fetchCourseById(event: H3Event, id: number) {
     where: {
       id,
     },
-    select: {
-      id: true,
-      title: true,
-      description: true,
-      estimatedTime: true,
-      materialsNeeded: true,
-      userId: true,
-      user: {
-        select: {
-          firstName: true,
-          lastName: true,
-        },
-      },
-    },
+    select: courseDetail(),
   });
 }
 
@@ -47,10 +35,7 @@ courses.get(
     const prisma = getDependency(event, 'prisma');
 
     return prisma.course.findMany({
-      select: {
-        id: true,
-        title: true,
-      },
+      select: coursePreview(),
     });
   })
 );
@@ -74,20 +59,7 @@ courses.post(
           },
         },
       },
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        estimatedTime: true,
-        materialsNeeded: true,
-        userId: true,
-        user: {
-          select: {
-            firstName: true,
-            lastName: true,
-          },
-        },
-      },
+      select: courseDetail(),
     });
 
     setResponseStatus(event, 201, 'Created');

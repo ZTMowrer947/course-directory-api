@@ -1,14 +1,10 @@
-import type { User } from '@prisma/client';
 import argon2 from 'argon2';
 import basicAuth from 'basic-auth';
-import { createError, getHeader,H3Event } from 'h3';
+import { createError, getHeader, H3Event } from 'h3';
+
+import { type AuthedUser,userInfo } from '~/selects/user.ts';
 
 import { getDependency } from './di.ts';
-
-export type AuthedUser = Pick<
-  User,
-  'id' | 'firstName' | 'lastName' | 'emailAddress'
->;
 
 export default async function getUser(
   event: H3Event
@@ -30,10 +26,7 @@ export default async function getUser(
       },
     },
     select: {
-      id: true,
-      firstName: true,
-      lastName: true,
-      emailAddress: true,
+      ...userInfo(),
       password: true,
     },
   });

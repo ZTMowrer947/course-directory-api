@@ -5,6 +5,7 @@ import { createError, createRouter, eventHandler, setResponseStatus } from 'h3';
 import { type AuthedUser, getUserOrFail } from '~/composables/auth.ts';
 import { getDependency } from '~/composables/di.ts';
 import readValidatedBody from '~/composables/validate.ts';
+import { userInfo } from '~/selects/user.ts';
 import { UserInput } from '~/validation/user.ts';
 
 const users = createRouter();
@@ -38,12 +39,7 @@ users.post(
             type: argon2.argon2id,
           }),
         },
-        select: {
-          id: true,
-          firstName: true,
-          lastName: true,
-          emailAddress: true,
-        },
+        select: userInfo(),
       });
     } catch (err) {
       if (
