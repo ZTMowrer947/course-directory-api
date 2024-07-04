@@ -23,3 +23,11 @@ export function courseDetail() {
     },
   } satisfies Prisma.CourseSelect;
 }
+
+type CoursePayloadOf<T extends (...args: unknown[]) => Prisma.CourseSelect> =
+  Prisma.CourseGetPayload<{
+    select: ReturnType<T>;
+  }>;
+
+export type CoursePreview = CoursePayloadOf<typeof coursePreview>;
+export type CourseDetail = CoursePayloadOf<typeof courseDetail>;

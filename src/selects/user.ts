@@ -8,3 +8,7 @@ export function userInfo() {
     emailAddress: true,
   } satisfies Prisma.UserSelect;
 }
+
+export type AuthedUser = Prisma.UserGetPayload<{
+  select: ReturnType<typeof userInfo>;
+}>;
