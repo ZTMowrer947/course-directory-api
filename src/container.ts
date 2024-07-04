@@ -1,8 +1,11 @@
 import type { PrismaClient } from '@prisma/client';
 import { createContainer, InjectionMode } from 'awilix';
 
+import type { ICourseService } from './services/course';
+
 export interface RootDeps {
   prisma: PrismaClient;
+  courseService: ICourseService;
 }
 
 export type FullDeps = RootDeps;

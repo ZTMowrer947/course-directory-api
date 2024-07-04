@@ -1,16 +1,18 @@
 import { createServer } from 'node:http';
 
-import { asValue } from 'awilix';
+import { asClass, asValue } from 'awilix';
 import { toNodeListener } from 'h3';
 import prexit from 'prexit';
 
 import initApp from './app.ts';
 import { container } from './container.ts';
 import { prisma } from './prisma-client.ts';
+import { CourseService } from './services/course.ts';
 
 // Set DI dependencies for root container
 container.register({
   prisma: asValue(prisma),
+  courseService: asClass(CourseService).scoped(),
 });
 
 // Setup HTTP server

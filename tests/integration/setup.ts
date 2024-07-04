@@ -1,11 +1,12 @@
 import { createId } from '@paralleldrive/cuid2';
 import { PrismaClient } from '@prisma/client';
-import { asValue } from 'awilix';
+import { asClass, asValue } from 'awilix';
 import $ from 'dax-sh';
 import mysql from 'mysql2/promise';
 import { beforeAll, inject } from 'vitest';
 
 import { container } from '~/container';
+import { CourseService } from '~/services/course';
 
 interface IntegrationContext {
   databaseUrl: string;
@@ -38,6 +39,7 @@ export default function setupTestDatabase() {
           },
         })
       ),
+      courseService: asClass(CourseService),
     });
 
     return async () => {
