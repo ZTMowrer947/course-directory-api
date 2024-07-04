@@ -1,7 +1,7 @@
 import type { AwilixContainer } from 'awilix';
 import { createApp, eventHandler } from 'h3';
 
-import type { RootDeps } from './container.ts';
+import type { FullDeps, RootDeps } from './container.ts';
 import routes from './routes.ts';
 
 export default function initApp(container: AwilixContainer<RootDeps>) {
@@ -19,8 +19,6 @@ export default function initApp(container: AwilixContainer<RootDeps>) {
 
   return app;
 }
-
-type FullDeps = RootDeps;
 
 // Augment context to include DI scope
 declare module 'h3' {
