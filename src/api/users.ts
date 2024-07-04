@@ -8,10 +8,10 @@ import {
   setResponseStatus,
 } from 'h3';
 
-import { type AuthedUser, getUserOrFail } from '~/composables/auth';
-import usePrisma from '~/composables/prisma';
-import readValidatedBody from '~/composables/validate';
-import { UserInput } from '~/validation/user';
+import { type AuthedUser, getUserOrFail } from '~/composables/auth.ts';
+import { getDependency } from '~/composables/di.ts';
+import readValidatedBody from '~/composables/validate.ts';
+import { UserInput } from '~/validation/user.ts';
 
 const users = createRouter();
 
@@ -33,7 +33,7 @@ users.post(
     const { firstName, lastName, emailAddress, password } =
       await readValidatedBody(event, UserInput);
 
-    const prisma = usePrisma();
+    const prisma = getDependency(event, 'prisma');
 
     let newUser: AuthedUser;
 

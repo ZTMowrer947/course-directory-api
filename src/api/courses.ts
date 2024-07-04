@@ -3,19 +3,20 @@ import {
   createRouter,
   eventHandler,
   getHeader,
+  H3Event,
   setResponseHeader,
   setResponseStatus,
 } from 'h3';
 
-import { getUserOrFail } from '~/composables/auth';
-import usePrisma from '~/composables/prisma.ts';
-import readValidatedBody from '~/composables/validate';
-import { CourseInput } from '~/validation/course';
+import { getUserOrFail } from '~/composables/auth.ts';
+import { getDependency } from '~/composables/di.ts';
+import readValidatedBody from '~/composables/validate.ts';
+import { CourseInput } from '~/validation/course.ts';
 
 // Route-specific composables
-async function fetchCourseById(id: number) {
+async function fetchCourseById(event: H3Event, id: number) {
   // Retrieve course from database
-  const prisma = usePrisma();
+  const prisma = getDependency(event, 'prisma');
 
   return prisma.course.findUnique({
     where: {
@@ -43,8 +44,8 @@ const courses = createRouter();
 // GET /api/courses: Retrive list of all courses
 courses.get(
   '/courses',
-  eventHandler(async () => {
-    const prisma = usePrisma();
+  eventHandler(async (event) => {
+    const prisma = getDependency(event, 'prisma');
 
     return prisma.course.findMany({
       select: {
@@ -66,7 +67,7 @@ courses.post(
     const courseData = await readValidatedBody(event, CourseInput);
 
     // Attempt to create course, attaching to authenticated user
-    const prisma = usePrisma();
+    const prisma = getDependency(event, 'prisma');
     const newCourse = await prisma.course.create({
       data: {
         ...courseData,
@@ -112,7 +113,7 @@ courses.get(
     const id = Number.parseInt(idParam, 10);
 
     // Retrieve course from database
-    const course = await fetchCourseById(id);
+    const course = await fetchCourseById(event, id);
 
     // Return retrieved course, or error if not found
     if (course) {
@@ -140,7 +141,7 @@ courses.put(
     const id = Number.parseInt(idParam, 10);
 
     // Retrieve course from database
-    const courseToUpdate = await fetchCourseById(id);
+    const courseToUpdate = await fetchCourseById(event, id);
 
     if (!courseToUpdate)
       throw createError({ status: 404, statusMessage: 'Course not found' });
@@ -152,7 +153,7 @@ courses.put(
 
     // Parse request body for update data
     const updateData = await readValidatedBody(event, CourseInput);
-    const prisma = usePrisma();
+    const prisma = getDependency(event, 'prisma');
 
     // Perform the update, return 204 if successful
     await prisma.course.update({
@@ -179,7 +180,7 @@ courses.delete(
     const id = Number.parseInt(idParam, 10);
 
     // Retrieve course from database
-    const courseToDelete = await fetchCourseById(id);
+    const courseToDelete = await fetchCourseById(event, id);
 
     if (!courseToDelete)
       throw createError({ status: 404, statusMessage: 'Course not found' });
@@ -189,7 +190,7 @@ courses.delete(
         statusMessage: 'Not allowed to modify course of another user',
       });
 
-    const prisma = usePrisma();
+    const prisma = getDependency(event, 'prisma');
 
     await prisma.course.delete({
       where: {
