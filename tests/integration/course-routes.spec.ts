@@ -1,19 +1,50 @@
-import { afterEach, describe, expect, test } from 'vitest';
+import { PrismaClient } from '@prisma/client';
+import { asValue, type AwilixContainer } from 'awilix';
+import { type App,toWebHandler } from 'h3';
+import { afterEach, beforeAll, describe, expect, test } from 'vitest';
+
+import initApp from '~/app.ts';
+import { container, type FullDeps } from '~/container.ts';
 
 import { fakeCourses, fakeUser } from './fake.ts';
 import setupTestDatabase from './setup.ts';
-import { endpoint, getAppHandler } from './utils.ts';
+import { endpoint } from './utils.ts';
 
-const { clearTables } = setupTestDatabase();
+const { databaseUrl, clearTables } = setupTestDatabase();
 
 describe('API Integration tests, course-related routes', () => {
+  let app: App;
+  let scope: AwilixContainer<FullDeps>;
+
+  beforeAll(async () => {
+    // Create DI scope for test suite
+    scope = container.createScope();
+
+    // Provide Prisma database client specific for this suite
+    scope.register(
+      'prisma',
+      asValue(
+        new PrismaClient({
+          datasources: {
+            db: {
+              url: databaseUrl,
+            },
+          },
+        })
+      )
+    );
+
+    // Initialize app under test with scoped container
+    app = initApp(scope);
+  });
+
   afterEach(async () => {
     await clearTables();
   });
 
   test('GET /api/courses retrieves course listing', async () => {
     // Seed database with test data
-    const { prisma } = await import('~/prisma-client.ts');
+    const prisma = scope.resolve('prisma');
 
     const userData = await fakeUser();
 
@@ -39,7 +70,7 @@ describe('API Integration tests, course-related routes', () => {
     });
 
     // Setup web handler
-    const handler = await getAppHandler();
+    const handler = toWebHandler(app);
 
     // Query for course list
     const res = await handler(new Request(endpoint('/api/courses')));
@@ -52,7 +83,7 @@ describe('API Integration tests, course-related routes', () => {
 
   test('GET /api/courses/:id retrieves full course details for courses that exist', async () => {
     // Seed database with test data
-    const { prisma } = await import('~/prisma-client.ts');
+    const prisma = scope.resolve('prisma');
 
     const userData = await fakeUser();
 
@@ -87,7 +118,7 @@ describe('API Integration tests, course-related routes', () => {
       },
     });
 
-    const handler = await getAppHandler();
+    const handler = toWebHandler(app);
 
     // Get course details for each created course
     for (const course of courses) {
@@ -104,7 +135,7 @@ describe('API Integration tests, course-related routes', () => {
 
   test('GET /api/courses/:id returns 404 for a nonexistent course', async () => {
     // Request the data for a course without any existing in the database
-    const handler = await getAppHandler();
+    const handler = toWebHandler(app);
 
     const res = await handler(new Request(endpoint('/api/courses/1')));
 

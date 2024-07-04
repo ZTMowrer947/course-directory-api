@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import { toWebHandler } from 'h3';
 import mysql from 'mysql2/promise';
 import { inject } from 'vitest';
 
@@ -13,12 +12,6 @@ export function prismaMock() {
       },
     }),
   };
-}
-
-export async function getAppHandler() {
-  const { default: app } = await import('~/app.ts');
-
-  return toWebHandler(app);
 }
 
 export function endpoint(path: string): URL {
