@@ -1,10 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 import { asValue, type AwilixContainer } from 'awilix';
-import { type App,toWebHandler } from 'h3';
+import { type App, toWebHandler } from 'h3';
 import { afterEach, beforeAll, describe, expect, test } from 'vitest';
 
 import initApp from '~/app.ts';
 import { container, type FullDeps } from '~/container.ts';
+import { courseDetail, coursePreview } from '~/selects/course.ts';
 
 import { fakeCourses, fakeUser } from './fake.ts';
 import setupTestDatabase from './setup.ts';
@@ -61,10 +62,7 @@ describe('API Integration tests, course-related routes', () => {
       },
       select: {
         courses: {
-          select: {
-            id: true,
-            title: true,
-          },
+          select: coursePreview(),
         },
       },
     });
@@ -100,20 +98,7 @@ describe('API Integration tests, course-related routes', () => {
       },
       select: {
         courses: {
-          select: {
-            id: true,
-            title: true,
-            description: true,
-            estimatedTime: true,
-            materialsNeeded: true,
-            userId: true,
-            user: {
-              select: {
-                firstName: true,
-                lastName: true,
-              },
-            },
-          },
+          select: courseDetail(),
         },
       },
     });
