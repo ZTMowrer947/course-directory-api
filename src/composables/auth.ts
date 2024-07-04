@@ -1,9 +1,9 @@
 import type { User } from '@prisma/client';
 import argon2 from 'argon2';
 import basicAuth from 'basic-auth';
-import { createError } from 'h3';
+import { createError, getHeader,H3Event } from 'h3';
 
-import usePrisma from './prisma';
+import { getDependency } from './di.ts';
 
 export type AuthedUser = Pick<
   User,
@@ -11,9 +11,10 @@ export type AuthedUser = Pick<
 >;
 
 export default async function getUser(
-  header: string
+  event: H3Event
 ): Promise<AuthedUser | null> {
-  const prisma = usePrisma();
+  const prisma = getDependency(event, 'prisma');
+  const header = getHeader(event, 'Authorization') ?? '';
 
   // Parse header
   const credentials = basicAuth.parse(header);
@@ -46,8 +47,8 @@ export default async function getUser(
   return isValid ? user : null;
 }
 
-export async function getUserOrFail(header: string): Promise<AuthedUser> {
-  const user = await getUser(header);
+export async function getUserOrFail(event: H3Event): Promise<AuthedUser> {
+  const user = await getUser(event);
 
   if (!user) {
     throw createError({

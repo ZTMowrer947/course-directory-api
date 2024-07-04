@@ -2,7 +2,6 @@ import {
   createError,
   createRouter,
   eventHandler,
-  getHeader,
   H3Event,
   setResponseHeader,
   setResponseStatus,
@@ -60,10 +59,8 @@ courses.get(
 courses.post(
   '/courses',
   eventHandler(async (event) => {
-    const authHeader = getHeader(event, 'Authorization') ?? '';
-
     // Validate authentication, then course data
-    const user = await getUserOrFail(authHeader);
+    const user = await getUserOrFail(event);
     const courseData = await readValidatedBody(event, CourseInput);
 
     // Attempt to create course, attaching to authenticated user
@@ -131,10 +128,7 @@ courses.get(
 courses.put(
   '/courses/:id',
   eventHandler(async (event) => {
-    1;
-    const authHeader = getHeader(event, 'Authorization') ?? '';
-
-    const user = await getUserOrFail(authHeader);
+    const user = await getUserOrFail(event);
 
     // Parse ID route parameter
     const idParam = event.context.params?.id ?? '';
@@ -171,9 +165,7 @@ courses.put(
 courses.delete(
   '/courses/:id',
   eventHandler(async (event) => {
-    const authHeader = getHeader(event, 'Authorization') ?? '';
-
-    const user = await getUserOrFail(authHeader);
+    const user = await getUserOrFail(event);
 
     // Parse ID route parameter
     const idParam = event.context.params?.id ?? '';

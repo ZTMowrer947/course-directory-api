@@ -1,12 +1,6 @@
 import { Prisma } from '@prisma/client';
 import argon2 from 'argon2';
-import {
-  createError,
-  createRouter,
-  eventHandler,
-  getHeader,
-  setResponseStatus,
-} from 'h3';
+import { createError, createRouter, eventHandler, setResponseStatus } from 'h3';
 
 import { type AuthedUser, getUserOrFail } from '~/composables/auth.ts';
 import { getDependency } from '~/composables/di.ts';
@@ -16,14 +10,7 @@ import { UserInput } from '~/validation/user.ts';
 const users = createRouter();
 
 // GET /api/users: Retrieves authenticated user, or 401's if authentication fails.
-users.get(
-  '/users',
-  eventHandler(async (event) => {
-    const authHeader = getHeader(event, 'Authorization') ?? '';
-
-    return getUserOrFail(authHeader);
-  })
-);
+users.get('/users', eventHandler(getUserOrFail));
 
 // POST /api/users: Creates a new user, 400's if data is invalid.
 users.post(
