@@ -1,46 +1,62 @@
-import { PrismaClient } from '@prisma/client';
-import { asValue, type AwilixContainer } from 'awilix';
-import { type App, toWebHandler } from 'h3';
+import { asClass, asFunction, type AwilixContainer } from 'awilix';
+import { toWebHandler, type WebHandler } from 'h3';
+import {
+  dropTestDb,
+  generateTestDbUrl,
+  initTestDb,
+  makeTestPrismaClient,
+  truncateTables,
+} from 'tests/db.ts';
 import { afterEach, beforeAll, describe, expect, test } from 'vitest';
 
 import initApp from '~/app.ts';
 import { container, type FullDeps } from '~/container.ts';
 import { courseDetail, coursePreview } from '~/selects/course.ts';
+import { CourseService } from '~/services/course.ts';
+import { UserService } from '~/services/user.ts';
 
 import { fakeCourses, fakeUser } from './fake.ts';
-import setupTestDatabase from './setup.ts';
 import { endpoint } from './utils.ts';
 
-const { databaseUrl, clearTables } = setupTestDatabase();
-
 describe('API Integration tests, course-related routes', () => {
-  let app: App;
+  let databaseUrl: string;
+  let handler: WebHandler;
   let scope: AwilixContainer<FullDeps>;
 
   beforeAll(async () => {
+    // Generate unique database URL and initalize test database
+    databaseUrl = generateTestDbUrl();
+
+    await initTestDb(databaseUrl);
+
     // Create DI scope for test suite
     scope = container.createScope();
 
     // Provide Prisma database client specific for this suite
     scope.register(
       'prisma',
-      asValue(
-        new PrismaClient({
-          datasources: {
-            db: {
-              url: databaseUrl,
-            },
-          },
-        })
-      )
+      asFunction(makeTestPrismaClient)
+        .inject(() => ({ url: databaseUrl }))
+        .scoped()
     );
 
+    // Register other services
+    scope.register({
+      userService: asClass(UserService).scoped(),
+      courseService: asClass(CourseService).scoped(),
+    });
+
     // Initialize app under test with scoped container
-    app = initApp(scope);
+    const app = initApp(scope);
+    handler = toWebHandler(app);
+
+    return async () => {
+      await dropTestDb(databaseUrl);
+    };
   });
 
   afterEach(async () => {
-    await clearTables();
+    await truncateTables(databaseUrl);
   });
 
   test('GET /api/courses retrieves course listing', async () => {
@@ -66,9 +82,6 @@ describe('API Integration tests, course-related routes', () => {
         },
       },
     });
-
-    // Setup web handler
-    const handler = toWebHandler(app);
 
     // Query for course list
     const res = await handler(new Request(endpoint('/api/courses')));
@@ -103,8 +116,6 @@ describe('API Integration tests, course-related routes', () => {
       },
     });
 
-    const handler = toWebHandler(app);
-
     // Get course details for each created course
     for (const course of courses) {
       const path = `/api/courses/${encodeURIComponent(course.id)};`;
@@ -120,8 +131,6 @@ describe('API Integration tests, course-related routes', () => {
 
   test('GET /api/courses/:id returns 404 for a nonexistent course', async () => {
     // Request the data for a course without any existing in the database
-    const handler = toWebHandler(app);
-
     const res = await handler(new Request(endpoint('/api/courses/1')));
 
     expect(res.ok).toBe(false);
