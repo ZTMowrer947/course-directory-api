@@ -8,11 +8,13 @@ import initApp from './app.ts';
 import { container } from './container.ts';
 import { prisma } from './prisma-client.ts';
 import { CourseService } from './services/course.ts';
+import { UserService } from './services/user.ts';
 
 // Set DI dependencies for root container
 container.register({
   prisma: asValue(prisma),
   courseService: asClass(CourseService).scoped(),
+  userService: asClass(UserService).scoped(),
 });
 
 // Setup HTTP server

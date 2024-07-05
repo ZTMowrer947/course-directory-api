@@ -5,8 +5,9 @@ import $ from 'dax-sh';
 import mysql from 'mysql2/promise';
 import { beforeAll, inject } from 'vitest';
 
-import { container } from '~/container';
-import { CourseService } from '~/services/course';
+import { container } from '~/container.ts';
+import { CourseService } from '~/services/course.ts';
+import { UserService } from '~/services/user.ts';
 
 interface IntegrationContext {
   databaseUrl: string;
@@ -40,6 +41,7 @@ export default function setupTestDatabase() {
         })
       ),
       courseService: asClass(CourseService),
+      userService: asClass(UserService),
     });
 
     return async () => {

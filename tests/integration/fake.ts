@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import type { Prisma } from '@prisma/client';
 import argon2 from 'argon2';
 
-import type { UserInputData } from '~/validation/user';
+import type { UserInputData } from '~/validation/user.ts';
 
 export function fakeCourses(count = 2) {
   return Array.from({ length: count }, (_, index) => {

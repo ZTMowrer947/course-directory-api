@@ -2,7 +2,7 @@ import argon2 from 'argon2';
 import basicAuth from 'basic-auth';
 import { createError, getHeader, H3Event } from 'h3';
 
-import { type AuthedUser,userInfo } from '~/selects/user.ts';
+import { type AuthedUser, userInfo } from '~/selects/user.ts';
 
 import { getDependency } from './di.ts';
 
