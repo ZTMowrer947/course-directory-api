@@ -1,11 +1,10 @@
-import { Prisma } from '@prisma/client';
-import argon2 from 'argon2';
 import { createError, createRouter, eventHandler, setResponseStatus } from 'h3';
 
-import { type AuthedUser, getUserOrFail } from '~/composables/auth.ts';
+import { getUserOrFail } from '~/composables/auth.ts';
 import { getDependency } from '~/composables/di.ts';
 import readValidatedBody from '~/composables/validate.ts';
-import { userInfo } from '~/selects/user.ts';
+import type { AuthedUser } from '~/selects/user.ts';
+import { DuplicateEmailError } from '~/services/user';
 import { UserInput } from '~/validation/user.ts';
 
 const users = createRouter();
@@ -18,34 +17,17 @@ users.post(
   '/users',
   eventHandler(async (event) => {
     // Validate request body
-    const { firstName, lastName, emailAddress, password } =
-      await readValidatedBody(event, UserInput);
+    const userInput = await readValidatedBody(event, UserInput);
 
-    const prisma = getDependency(event, 'prisma');
+    const service = getDependency(event, 'userService');
 
     let newUser: AuthedUser;
 
     try {
       // Attempt to create new user
-      newUser = await prisma.user.create({
-        data: {
-          firstName,
-          lastName,
-          emailAddress,
-          password: await argon2.hash(password, {
-            parallelism: 4,
-            memoryCost: 2 ** 16,
-            timeCost: 6,
-            type: argon2.argon2id,
-          }),
-        },
-        select: userInfo(),
-      });
+      newUser = await service.create(userInput);
     } catch (err) {
-      if (
-        !(err instanceof Prisma.PrismaClientKnownRequestError) ||
-        err.code !== 'P2002'
-      ) {
+      if (!(err instanceof DuplicateEmailError)) {
         throw err;
       }
 
