@@ -7,7 +7,14 @@ import {
   makeTestPrismaClient,
   truncateTables,
 } from 'tests/db.ts';
-import { afterEach, beforeAll, describe, expect, test } from 'vitest';
+import {
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  test,
+} from 'vitest';
 
 import initApp from '~/app.ts';
 import { container, type FullDeps } from '~/container.ts';
@@ -87,6 +94,8 @@ describe('API Integration tests, user-related routes', () => {
   test.todo('GET /api/users');
 
   describe('POST /api/users', () => {
+    const existingUserInput = fakeUserInput();
+
     // Define test cases for field
     const testCases = [
       // All fields empty
@@ -158,7 +167,28 @@ describe('API Integration tests, user-related routes', () => {
         status: 201,
         ok: true,
       },
+      // Email of existing user
+      {
+        name: 'Body with valid data but with email of existing user',
+        expectedResult: '400',
+        input: existingUserInput,
+        status: 400,
+        ok: false,
+        errorExpectation: {
+          invalidFields: ['emailAddress'],
+          getExpectedMessages() {
+            return ['email address is already in use'];
+          },
+        },
+      },
     ] satisfies AuthCase<UserInputData>[];
+
+    beforeEach(async () => {
+      const service = scope.resolve('userService');
+
+      // Crerate user with pre-generated input for testing "existing user" case
+      await service.create(existingUserInput);
+    });
 
     test.each(testCases)(
       '$name yields result of $expectedResult',

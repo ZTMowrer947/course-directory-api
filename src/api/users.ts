@@ -37,7 +37,7 @@ users.post(
         statusMessage: 'Validation failure when processing request data',
         data: {
           errors: {
-            emailAddress: ['Email address is already in use'],
+            emailAddress: ['email address is already in use'],
           },
         },
       });
