@@ -23,6 +23,7 @@ import { UserService } from '~/services/user.ts';
 import type { UserInputData } from '~/validation/user.ts';
 
 import { fakeUserInput } from './fake.ts';
+import { userFromInput } from './selects.ts';
 import { endpoint } from './utils.ts';
 
 // Helper types
@@ -96,8 +97,16 @@ describe('API Integration tests, user-related routes', () => {
   describe('POST /api/users', () => {
     const existingUserInput = fakeUserInput();
 
-    // Define test cases for field
-    const testCases = [
+    beforeEach(async () => {
+      const prisma = scope.resolve('prisma');
+
+      // Crerate user with pre-generated input for testing "existing user" case
+      await prisma.user.create({
+        data: await userFromInput(existingUserInput),
+      });
+    });
+
+    test.each([
       // All fields empty
       {
         name: 'Body with empty fields',
@@ -181,16 +190,7 @@ describe('API Integration tests, user-related routes', () => {
           },
         },
       },
-    ] satisfies AuthCase<UserInputData>[];
-
-    beforeEach(async () => {
-      const service = scope.resolve('userService');
-
-      // Crerate user with pre-generated input for testing "existing user" case
-      await service.create(existingUserInput);
-    });
-
-    test.each(testCases)(
+    ] satisfies AuthCase<UserInputData>[])(
       '$name yields result of $expectedResult',
       async ({ input, ok, status, errorExpectation }) => {
         // Add helpers for URL and shared request options
