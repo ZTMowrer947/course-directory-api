@@ -25,30 +25,7 @@ import {
 import { fakeUserInput } from './fake.ts';
 import { userFromInput } from './selects.ts';
 import { endpoint } from './utils.ts';
-
-// Helper types
-interface ErrorExpectation {
-  invalidFields: (keyof UserInputData)[];
-  getExpectedMessages(key: keyof UserInputData): string[];
-}
-
-interface AuthCaseBase<T> {
-  name: string;
-  expectedResult: string;
-  status: number;
-  input: T;
-}
-
-type AuthCase<T> = AuthCaseBase<T> &
-  (
-    | {
-        ok: true;
-      }
-    | {
-        ok: false;
-        errorExpectation: ErrorExpectation;
-      }
-  );
+import type { ValidationTestCase } from './utiltype.ts';
 
 // Test suite
 describe('API Integration tests, user-related routes', () => {
@@ -190,7 +167,7 @@ describe('API Integration tests, user-related routes', () => {
           },
         },
       },
-    ] satisfies AuthCase<UserInputData>[])(
+    ] satisfies ValidationTestCase<UserInputData>[])(
       '$name yields result of $expectedResult',
       async ({ input, ok, status, errorExpectation }) => {
         // Add helpers for URL and shared request options
