@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker';
 import { asClass, asFunction, type AwilixContainer } from 'awilix';
 import { toWebHandler, type WebHandler } from 'h3';
 import {
@@ -25,7 +26,7 @@ import {
 import { fakeUserInput } from './fake.ts';
 import { userFromInput } from './selects.ts';
 import { endpoint } from './utils.ts';
-import type { ValidationTestCase } from './utiltype.ts';
+import type { TestCase, ValidationTestCase } from './utiltype.ts';
 
 // Test suite
 describe('API Integration tests, user-related routes', () => {
@@ -69,7 +70,99 @@ describe('API Integration tests, user-related routes', () => {
     await truncateTables(databaseUrl);
   });
 
-  test.todo('GET /api/users');
+  describe('GET /api/users', () => {
+    const actualUserInput = fakeUserInput();
+
+    beforeEach(async () => {
+      const prisma = scope.resolve('prisma');
+
+      await prisma.user.create({
+        data: await userFromInput(actualUserInput),
+      });
+    });
+
+    test.each([
+      {
+        name: 'No credentials',
+        expectedResult: '401',
+        input: null,
+        status: 401,
+        ok: false,
+        errorExpectation: {},
+      },
+      {
+        name: 'Empty credentials',
+        expectedResult: '401',
+        input: ['', ''],
+        status: 401,
+        ok: false,
+        errorExpectation: {},
+      },
+      {
+        name: 'Invalid credentials',
+        expectedResult: '401',
+        // Credentials not attached to any user
+        input: [faker.internet.email(), faker.internet.password()],
+        status: 401,
+        ok: false,
+        errorExpectation: {},
+      },
+      {
+        name: 'Correct email, incorrect password',
+        expectedResult: '401',
+        input: [actualUserInput.emailAddress, faker.internet.password()],
+        status: 401,
+        ok: false,
+        errorExpectation: {},
+      },
+      {
+        name: 'Valid credentials',
+        expectedResult: '200',
+        input: [actualUserInput.emailAddress, actualUserInput.password],
+        status: 200,
+        ok: true,
+      },
+    ] satisfies TestCase<[string, string] | null, Record<string, never>>[])(
+      '$name yields result of $expectedResult',
+      async (fixture) => {
+        // Setup request
+        const url = endpoint('/api/users');
+        const req = new Request(url);
+
+        // If credentials are provided, encode them and attach to request
+        if (fixture.input) {
+          const encoded = Buffer.from(fixture.input.join(':')).toString(
+            'base64'
+          );
+
+          req.headers.set('Authorization', `Basic ${encoded}`);
+        }
+
+        // Make request
+        const res = await handler(req);
+
+        // Ensure response fulfills expectations of fixture
+        expect(res.ok).toEqual(fixture.ok);
+        expect(res.status).toEqual(fixture.status);
+        expect(res.headers.get('Content-Type')).toBe('application/json');
+
+        if (fixture.ok) {
+          // For valid input, assert that output data properly represents user
+          const body = await res.json();
+
+          expect(body).toHaveProperty('id');
+          expect(body).toHaveProperty('firstName', actualUserInput.firstName);
+          expect(body).toHaveProperty('lastName', actualUserInput.lastName);
+          expect(body).toHaveProperty(
+            'emailAddress',
+            actualUserInput.emailAddress
+          );
+          // Ensure passworrd is not exposed in any form
+          expect(body).not.toHaveProperty('password');
+        }
+      }
+    );
+  });
 
   describe('POST /api/users', () => {
     const existingUserInput = fakeUserInput();
@@ -155,7 +248,7 @@ describe('API Integration tests, user-related routes', () => {
       },
       // Email of existing user
       {
-        name: 'Body with valid data but with email of existing user',
+        name: 'Body with existing user email',
         expectedResult: '400',
         input: existingUserInput,
         status: 400,
