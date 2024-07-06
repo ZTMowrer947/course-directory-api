@@ -1,5 +1,5 @@
-import { asClass,asFunction, type AwilixContainer } from 'awilix';
-import { toWebHandler,type WebHandler } from 'h3';
+import { asClass, asFunction, type AwilixContainer } from 'awilix';
+import { toWebHandler, type WebHandler } from 'h3';
 import {
   dropTestDb,
   generateTestDbUrl,
@@ -10,18 +10,39 @@ import {
 import { afterEach, beforeAll, describe, expect, test } from 'vitest';
 
 import initApp from '~/app.ts';
-import { container,type FullDeps } from '~/container.ts';
+import { container, type FullDeps } from '~/container.ts';
 import { CourseService } from '~/services/course.ts';
 import { UserService } from '~/services/user.ts';
-import type { UserInputData } from '~/validation/user';
+import type { UserInputData } from '~/validation/user.ts';
 
-import { endpoint } from './utils';
+import { fakeUserInput } from './fake.ts';
+import { endpoint } from './utils.ts';
 
+// Helper types
 interface ErrorExpectation {
   invalidFields: (keyof UserInputData)[];
   getExpectedMessages(key: keyof UserInputData): string[];
 }
 
+interface AuthCaseBase<T> {
+  name: string;
+  expectedResult: string;
+  status: number;
+  input: T;
+}
+
+type AuthCase<T> = AuthCaseBase<T> &
+  (
+    | {
+        ok: true;
+      }
+    | {
+        ok: false;
+        errorExpectation: ErrorExpectation;
+      }
+  );
+
+// Test suite
 describe('API Integration tests, user-related routes', () => {
   let databaseUrl: string;
   let handler: WebHandler;
@@ -65,56 +86,87 @@ describe('API Integration tests, user-related routes', () => {
 
   test.todo('GET /api/users');
 
-  test('POST /api/users yields 400 for input with empty fields', async () => {
-    // Add helpers for URL and shared request options
-    const url = endpoint('/api/users');
-    const getReqOptions = (input: UserInputData): RequestInit => {
-      return {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+  describe('POST /api/users', () => {
+    // Define test cases for field
+    const testCases = [
+      {
+        name: 'Body with empty fields',
+        expectedResult: '400',
+        input: {
+          firstName: '',
+          lastName: '',
+          emailAddress: '',
+          password: '',
         },
-        body: JSON.stringify(input),
-      };
-    };
+        status: 400,
+        ok: false,
+        errorExpectation: {
+          invalidFields: ['firstName', 'lastName', 'emailAddress', 'password'],
+          getExpectedMessages(fieldName) {
+            const messages = [`${fieldName} required but not provided`];
 
-    const emptyInput = {
-      firstName: '',
-      lastName: '',
-      emailAddress: '',
-      password: '',
-    } satisfies UserInputData;
+            if (fieldName === 'emailAddress') {
+              messages.push('emailAddress must be a valid email');
+            } else if (fieldName === 'password') {
+              messages.splice(0, 1, 'password must have length of at least 8');
+            }
 
-    // Define expectations for inputs
-    const emptyErrors = {
-      invalidFields: ['firstName', 'lastName', 'emailAddress', 'password'],
-      getExpectedMessages(fieldName) {
-        const messages = [`${fieldName} required but not provided`];
-
-        if (fieldName === 'emailAddress') {
-          messages.push('emailAddress must be a valid email');
-        } else if (fieldName === 'password') {
-          messages.splice(0, 1, 'password must have length of at least 8');
-        }
-
-        return messages;
+            return messages;
+          },
+        },
       },
-    } satisfies ErrorExpectation;
+      {
+        name: 'Body with invalid email',
+        expectedResult: '400',
+        input: {
+          ...fakeUserInput(),
+          emailAddress: 'notgoodemail',
+        },
+        status: 400,
+        ok: false,
+        errorExpectation: {
+          invalidFields: ['emailAddress'],
+          getExpectedMessages() {
+            return ['emailAddress must be a valid email'];
+          },
+        },
+      },
+    ] satisfies AuthCase<UserInputData>[];
 
-    // Make request
-    const emptyRes = await handler(new Request(url, getReqOptions(emptyInput)));
+    test.each(testCases)(
+      '$name yields result of $expectedResult',
+      async ({ input, ok, status, errorExpectation }) => {
+        // Add helpers for URL and shared request options
+        const url = endpoint('/api/users');
+        const getReqOptions = (input: UserInputData): RequestInit => {
+          return {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(input),
+          };
+        };
 
-    // Expect JSON response with 400 status
-    expect(emptyRes.status).toBe(400);
-    expect(emptyRes.headers.get('Content-Type')).toBe('application/json');
-    const emptyResBody = await emptyRes.json();
+        // Make request
+        const res = await handler(new Request(url, getReqOptions(input)));
 
-    // Ensure correct validation errors are present
-    for (const field of emptyErrors.invalidFields) {
-      expect(emptyResBody).toHaveProperty(
-        ['data', 'errors', field],
-        emptyErrors.getExpectedMessages(field)
-      );
-    }
+        // Make assertions based on test data
+        expect(res.ok).toEqual(ok);
+        expect(res.status).toBe(status);
+        expect(res.headers.get('Content-Type')).toBe('application/json');
+        if (errorExpectation) {
+          const body = await res.json();
+
+          // Ensure correct validation errors are present
+          for (const field of errorExpectation.invalidFields) {
+            expect(body).toHaveProperty(
+              ['data', 'errors', field],
+              errorExpectation.getExpectedMessages(field)
+            );
+          }
+        }
+      }
+    );
   });
 });
