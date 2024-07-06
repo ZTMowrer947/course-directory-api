@@ -89,6 +89,7 @@ describe('API Integration tests, user-related routes', () => {
   describe('POST /api/users', () => {
     // Define test cases for field
     const testCases = [
+      // All fields empty
       {
         name: 'Body with empty fields',
         expectedResult: '400',
@@ -115,6 +116,7 @@ describe('API Integration tests, user-related routes', () => {
           },
         },
       },
+      // Only invalid email
       {
         name: 'Body with invalid email',
         expectedResult: '400',
@@ -130,6 +132,31 @@ describe('API Integration tests, user-related routes', () => {
             return ['emailAddress must be a valid email'];
           },
         },
+      },
+      // Only poor-strength password
+      {
+        name: 'Body with invalid password',
+        expectedResult: '400',
+        input: {
+          ...fakeUserInput(),
+          password: 'wtf',
+        },
+        status: 400,
+        ok: false,
+        errorExpectation: {
+          invalidFields: ['password'],
+          getExpectedMessages() {
+            return ['password must have length of at least 8'];
+          },
+        },
+      },
+      // Valid input
+      {
+        name: 'Body with valid data',
+        expectedResult: '201',
+        input: fakeUserInput(),
+        status: 201,
+        ok: true,
       },
     ] satisfies AuthCase<UserInputData>[];
 
@@ -155,16 +182,25 @@ describe('API Integration tests, user-related routes', () => {
         expect(res.ok).toEqual(ok);
         expect(res.status).toBe(status);
         expect(res.headers.get('Content-Type')).toBe('application/json');
-        if (errorExpectation) {
-          const body = await res.json();
 
-          // Ensure correct validation errors are present
+        const body = await res.json();
+
+        if (errorExpectation) {
+          // For invalid input, assert on validation errors
           for (const field of errorExpectation.invalidFields) {
             expect(body).toHaveProperty(
               ['data', 'errors', field],
               errorExpectation.getExpectedMessages(field)
             );
           }
+        } else {
+          // For valid input, assert that output data properly represents user
+          expect(body).toHaveProperty('id');
+          expect(body).toHaveProperty('firstName', input.firstName);
+          expect(body).toHaveProperty('lastName', input.lastName);
+          expect(body).toHaveProperty('emailAddress', input.emailAddress);
+          // Ensure passworrd is not exposed in any form
+          expect(body).not.toHaveProperty('password');
         }
       }
     );
