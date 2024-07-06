@@ -12,16 +12,42 @@ export class ValidationError extends Error {
   public constructor(structErr: StructError) {
     super('Validation failure when processing request data');
 
+    const sizeRegex = /`(?<min>\d+)` and /;
+
     this.errors = structErr
       .failures()
       .reduce((errs: Record<string, string[]>, failure) => {
-        const message = !failure.value
-          ? `${failure.key} required but not provided`
-          : failure.message;
+        const { key, refinement } = failure;
+        let message: string;
+
+        switch (refinement) {
+          case 'nonempty':
+            message = `${key} required but not provided`;
+            break;
+
+          case 'email':
+            message = `${key} must be a valid email`;
+            break;
+
+          case 'size': {
+            const result = sizeRegex.exec(failure.message);
+
+            if (result) {
+              message = `${key} must have length of at least ${result.groups?.min}`;
+            } else {
+              message = failure.message;
+            }
+            break;
+          }
+
+          default:
+            message = failure.message;
+            break;
+        }
 
         return {
           ...errs,
-          [failure.key]: [...(errs[failure.key] ?? []), message],
+          [key]: [...(errs[key] ?? []), message],
         };
       }, {});
     this.name = 'ValidationError';
