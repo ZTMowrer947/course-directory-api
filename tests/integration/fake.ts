@@ -1,6 +1,5 @@
 import { faker } from '@faker-js/faker';
 import type { Prisma } from '@prisma/client';
-import argon2 from 'argon2';
 
 import type { UserInputData } from '~/validation/user.ts';
 
@@ -35,13 +34,4 @@ export function fakeUserInput() {
     emailAddress: faker.internet.email({ firstName, lastName }),
     password: faker.internet.password({ length: 12 }),
   } satisfies UserInputData;
-}
-
-export async function fakeUser() {
-  const userInput = fakeUserInput();
-
-  return {
-    ...userInput,
-    password: await argon2.hash(userInput.password),
-  } satisfies Prisma.UserCreateWithoutCoursesInput;
 }

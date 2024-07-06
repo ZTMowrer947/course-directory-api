@@ -15,7 +15,8 @@ import { courseDetail, coursePreview } from '~/selects/course.ts';
 import { CourseService } from '~/services/course.ts';
 import { UserService } from '~/services/user.ts';
 
-import { fakeCourses, fakeUser } from './fake.ts';
+import { fakeCourses, fakeUserInput } from './fake.ts';
+import { userWithCourses } from './selects.ts';
 import { endpoint } from './utils.ts';
 
 describe('API Integration tests, course-related routes', () => {
@@ -63,19 +64,8 @@ describe('API Integration tests, course-related routes', () => {
     // Seed database with test data
     const prisma = scope.resolve('prisma');
 
-    const userData = await fakeUser();
-
-    const courseData = fakeCourses();
-
     const { courses: expectedCourses } = await prisma.user.create({
-      data: {
-        ...userData,
-        courses: {
-          createMany: {
-            data: courseData,
-          },
-        },
-      },
+      data: await userWithCourses(fakeUserInput(), fakeCourses()),
       select: {
         courses: {
           select: coursePreview(),
@@ -96,19 +86,8 @@ describe('API Integration tests, course-related routes', () => {
     // Seed database with test data
     const prisma = scope.resolve('prisma');
 
-    const userData = await fakeUser();
-
-    const courseData = fakeCourses();
-
     const { courses } = await prisma.user.create({
-      data: {
-        ...userData,
-        courses: {
-          createMany: {
-            data: courseData,
-          },
-        },
-      },
+      data: await userWithCourses(fakeUserInput(), fakeCourses()),
       select: {
         courses: {
           select: courseDetail(),
