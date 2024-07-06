@@ -1,13 +1,6 @@
 import { asClass, asFunction, type AwilixContainer } from 'awilix';
 import { toWebHandler, type WebHandler } from 'h3';
 import {
-  dropTestDb,
-  generateTestDbUrl,
-  initTestDb,
-  makeTestPrismaClient,
-  truncateTables,
-} from 'tests/db.ts';
-import {
   afterEach,
   beforeAll,
   beforeEach,
@@ -21,6 +14,13 @@ import { container, type FullDeps } from '~/container.ts';
 import { CourseService } from '~/services/course.ts';
 import { UserService } from '~/services/user.ts';
 import type { UserInputData } from '~/validation/user.ts';
+import {
+  dropTestDb,
+  generateTestDbUrl,
+  initTestDb,
+  makeTestPrismaClient,
+  truncateTables,
+} from '~tests/db.ts';
 
 import { fakeUserInput } from './fake.ts';
 import { userFromInput } from './selects.ts';
