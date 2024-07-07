@@ -1,14 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { asClass, asFunction, type AwilixContainer } from 'awilix';
 import { toWebHandler, type WebHandler } from 'h3';
-import {
-  afterEach,
-  beforeAll,
-  beforeEach,
-  describe,
-  expect,
-  test,
-} from 'vitest';
+import { beforeAll, describe, expect, test } from 'vitest';
 
 import initApp from '~/app.ts';
 import { container, type FullDeps } from '~/container.ts';
@@ -66,19 +59,19 @@ describe('API Integration tests, user-related routes', () => {
     };
   });
 
-  afterEach(async () => {
-    await truncateTables(databaseUrl);
-  });
-
   describe('GET /api/users', () => {
     const actualUserInput = fakeUserInput();
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const prisma = scope.resolve('prisma');
 
       await prisma.user.create({
         data: await userFromInput(actualUserInput),
       });
+
+      return async () => {
+        await truncateTables(databaseUrl);
+      };
     });
 
     test.each([
@@ -167,13 +160,17 @@ describe('API Integration tests, user-related routes', () => {
   describe('POST /api/users', () => {
     const existingUserInput = fakeUserInput();
 
-    beforeEach(async () => {
+    beforeAll(async () => {
       const prisma = scope.resolve('prisma');
 
       // Crerate user with pre-generated input for testing "existing user" case
       await prisma.user.create({
         data: await userFromInput(existingUserInput),
       });
+
+      return async () => {
+        await truncateTables(databaseUrl);
+      };
     });
 
     test.each([
