@@ -1,19 +1,19 @@
 import { asClass, asFunction, type AwilixContainer } from 'awilix';
 import { toWebHandler, type WebHandler } from 'h3';
-import {
-  dropTestDb,
-  generateTestDbUrl,
-  initTestDb,
-  makeTestPrismaClient,
-  truncateTables,
-} from 'tests/db.ts';
-import { afterEach, beforeAll, describe, expect, test } from 'vitest';
+import { beforeAll, describe, expect, test } from 'vitest';
 
 import initApp from '~/app.ts';
 import { container, type FullDeps } from '~/container.ts';
 import { courseDetail, coursePreview } from '~/selects/course.ts';
 import { CourseService } from '~/services/course.ts';
 import { UserService } from '~/services/user.ts';
+import {
+  dropTestDb,
+  generateTestDbUrl,
+  initTestDb,
+  makeTestPrismaClient,
+  truncateTables,
+} from '~tests/db.ts';
 
 import { fakeCourses, fakeUserInput } from './fake.ts';
 import { userWithCourses } from './selects.ts';
@@ -56,64 +56,65 @@ describe('API Integration tests, course-related routes', () => {
     };
   });
 
-  afterEach(async () => {
-    await truncateTables(databaseUrl);
-  });
+  describe('Non-authenticated routes', () => {
+    beforeAll(async () => {
+      // Initialize a user and some courses
+      const prisma = scope.resolve('prisma');
 
-  test('GET /api/courses retrieves course listing', async () => {
-    // Seed database with test data
-    const prisma = scope.resolve('prisma');
+      await prisma.user.create({
+        data: await userWithCourses(fakeUserInput(), fakeCourses()),
+      });
 
-    const { courses: expectedCourses } = await prisma.user.create({
-      data: await userWithCourses(fakeUserInput(), fakeCourses()),
-      select: {
-        courses: {
-          select: coursePreview(),
-        },
-      },
+      return async () => {
+        await truncateTables(databaseUrl);
+      };
     });
 
-    // Query for course list
-    const res = await handler(new Request(endpoint('/api/courses')));
+    test('GET /api/courses retrieves course listing', async () => {
+      // Seed database with test data
+      const prisma = scope.resolve('prisma');
 
-    // Expect a successful JSON response with the correct course listing
-    expect(res.ok).toBe(true);
-    expect(res.headers.get('Content-Type')).toBe('application/json');
-    await expect(res.json()).resolves.toStrictEqual(expectedCourses);
-  });
+      const expectedCourses = await prisma.course.findMany({
+        select: coursePreview(),
+      });
 
-  test('GET /api/courses/:id retrieves full course details for courses that exist', async () => {
-    // Seed database with test data
-    const prisma = scope.resolve('prisma');
+      // Query for course list
+      const res = await handler(new Request(endpoint('/api/courses')));
 
-    const { courses } = await prisma.user.create({
-      data: await userWithCourses(fakeUserInput(), fakeCourses()),
-      select: {
-        courses: {
-          select: courseDetail(),
-        },
-      },
-    });
-
-    // Get course details for each created course
-    for (const course of courses) {
-      const path = `/api/courses/${encodeURIComponent(course.id)};`;
-
-      const res = await handler(new Request(endpoint(path)));
-
-      // Expect each course request to result in a successful JSON response with the correct data
+      // Expect a successful JSON response with the correct course listing
       expect(res.ok).toBe(true);
       expect(res.headers.get('Content-Type')).toBe('application/json');
-      await expect(res.json()).resolves.toStrictEqual(course);
-    }
-  });
+      await expect(res.json()).resolves.toStrictEqual(expectedCourses);
+    });
 
-  test('GET /api/courses/:id returns 404 for a nonexistent course', async () => {
-    // Request the data for a course without any existing in the database
-    const res = await handler(new Request(endpoint('/api/courses/1')));
+    test('GET /api/courses/:id retrieves full course details for courses that exist', async () => {
+      // Seed database with test data
+      const prisma = scope.resolve('prisma');
 
-    expect(res.ok).toBe(false);
-    expect(res.status).toBe(404);
+      const courses = await prisma.course.findMany({
+        select: courseDetail(),
+      });
+
+      // Get course details for each created course
+      for (const course of courses) {
+        const path = `/api/courses/${encodeURIComponent(course.id)};`;
+
+        const res = await handler(new Request(endpoint(path)));
+
+        // Expect each course request to result in a successful JSON response with the correct data
+        expect(res.ok).toBe(true);
+        expect(res.headers.get('Content-Type')).toBe('application/json');
+        await expect(res.json()).resolves.toStrictEqual(course);
+      }
+    });
+
+    test('GET /api/courses/:id returns 404 for a nonexistent course', async () => {
+      // Request the data for a course without any existing in the database
+      const res = await handler(new Request(endpoint('/api/courses/999')));
+
+      expect(res.ok).toBe(false);
+      expect(res.status).toBe(404);
+    });
   });
 
   test.todo('POST /api/courses');
