@@ -4,7 +4,11 @@ import { beforeAll, describe, expect, test } from 'vitest';
 
 import initApp from '~/app.ts';
 import { container, type FullDeps } from '~/container.ts';
-import { courseDetail, coursePreview } from '~/selects/course.ts';
+import {
+  courseDetail,
+  type CoursePreview,
+  coursePreview,
+} from '~/selects/course.ts';
 import { CourseService } from '~/services/course.ts';
 import { UserService } from '~/services/user.ts';
 import {
@@ -57,13 +61,29 @@ describe('API Integration tests, course-related routes', () => {
   });
 
   describe('Non-authenticated routes', () => {
+    const courseCount = 2;
+    let courseIds: CoursePreview['id'][];
+    const existsCases = Array.from(
+      { length: 2 },
+      (_, index): [number, 'exists'] => [index + 1, 'exists']
+    );
+
     beforeAll(async () => {
       // Initialize a user and some courses
       const prisma = scope.resolve('prisma');
 
-      await prisma.user.create({
-        data: await userWithCourses(fakeUserInput(), fakeCourses()),
+      const result = await prisma.user.create({
+        data: await userWithCourses(fakeUserInput(), fakeCourses(courseCount)),
+        select: {
+          courses: {
+            select: {
+              id: true,
+            },
+          },
+        },
       });
+
+      courseIds = result.courses.map((c) => c.id);
 
       return async () => {
         await truncateTables(databaseUrl);
@@ -87,34 +107,44 @@ describe('API Integration tests, course-related routes', () => {
       await expect(res.json()).resolves.toStrictEqual(expectedCourses);
     });
 
-    test('GET /api/courses/:id retrieves full course details for courses that exist', async () => {
-      // Seed database with test data
-      const prisma = scope.resolve('prisma');
-
-      const courses = await prisma.course.findMany({
-        select: courseDetail(),
-      });
-
-      // Get course details for each created course
-      for (const course of courses) {
-        const path = `/api/courses/${encodeURIComponent(course.id)};`;
+    test.each([
+      ...existsCases,
+      [courseCount + 1, 'does not exist' as const],
+      [Number.MAX_SAFE_INTEGER, 'does not exist' as const],
+    ] satisfies [number, 'exists' | 'does not exist'][])(
+      'GET /api/courses/:id correctly responds for course #%i, which %s',
+      async (courseNum, status) => {
+        const id = status === 'exists' ? courseIds[courseNum - 1] : courseNum;
+        const path = `/api/courses/${encodeURIComponent(id)}`;
 
         const res = await handler(new Request(endpoint(path)));
 
-        // Expect each course request to result in a successful JSON response with the correct data
-        expect(res.ok).toBe(true);
-        expect(res.headers.get('Content-Type')).toBe('application/json');
-        await expect(res.json()).resolves.toStrictEqual(course);
+        // If the course should exist, fetch what the response body should match
+        if (status === 'exists') {
+          const prisma = scope.resolve('prisma');
+          const expectedCourse = await prisma.course.findUniqueOrThrow({
+            where: {
+              id,
+            },
+            select: courseDetail(),
+          });
+
+          // Expect a successful JSON result matching the corresponding course
+          expect(res.ok).toBe(true);
+          expect(res.headers.get('Content-Type')).toBe('application/json');
+          await expect(res.json()).resolves.toStrictEqual(expectedCourse);
+        } else {
+          // If course shouldn't exist, expect a 404
+          expect(res.ok).toBe(false);
+          expect(res.status).toBe(404);
+          expect(res.headers.get('Content-Type')).toBe('application/json');
+          await expect(res.json()).resolves.toHaveProperty(
+            'statusMessage',
+            'Course not found'
+          );
+        }
       }
-    });
-
-    test('GET /api/courses/:id returns 404 for a nonexistent course', async () => {
-      // Request the data for a course without any existing in the database
-      const res = await handler(new Request(endpoint('/api/courses/999')));
-
-      expect(res.ok).toBe(false);
-      expect(res.status).toBe(404);
-    });
+    );
   });
 
   test.todo('POST /api/courses');
