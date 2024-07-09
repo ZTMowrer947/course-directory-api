@@ -270,11 +270,27 @@ describe('API Integration tests, course-related routes', () => {
           },
         });
 
-        // Make request
+        const prisma = scope.resolve('prisma');
+
+        // Make request, and attempt to retrieve course afterwards
         const res = await handler(req);
+        const postDeleteResult = await prisma.course.findUnique({
+          where: {
+            id: courseId,
+          },
+        });
 
         // Expect status to match fixture data
         expect(res.status).toBe(status);
+
+        // If the deletion should have succeeded, or the course didn't exist anyways
+        if ([204, 404].includes(status)) {
+          // Expect course to not be available in database
+          expect(postDeleteResult).toBeNull();
+        } else {
+          // Otherwise, expect course to still exist
+          expect(postDeleteResult).not.toBeNull();
+        }
       }
     );
   });
