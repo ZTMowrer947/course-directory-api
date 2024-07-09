@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker';
 import { asClass, asFunction, type AwilixContainer } from 'awilix';
 import { toWebHandler, type WebHandler } from 'h3';
 import { beforeAll, describe, expect, test } from 'vitest';
@@ -148,20 +149,96 @@ describe('API Integration tests, course-related routes', () => {
   });
 
   describe('Authenticated routes', () => {
+    const courseCount = 1;
     const userInput = fakeUserInput();
-    const [courseInput] = fakeCourses(1);
+    const [courseInput] = fakeCourses(courseCount);
+    const courseIds = Array.from({ length: courseCount }, () => -1);
 
     beforeAll(async () => {
       const prisma = scope.resolve('prisma');
 
-      await prisma.user.create({
+      const result = await prisma.user.create({
         data: await userWithCourses(userInput, [courseInput]),
+        select: {
+          courses: {
+            select: {
+              id: true,
+            },
+          },
+        },
       });
+
+      const mappedIds = result.courses.map((c) => c.id);
+
+      courseIds.splice(0, result.courses.length, ...mappedIds);
 
       return async () => {
         await truncateTables(databaseUrl);
       };
     });
+
+    test.each([
+      ['Absent credentials', null],
+      ['Empty credentials', ['', '']],
+      [
+        'Nonexistent credentials',
+        [faker.internet.email(), faker.internet.password()],
+      ],
+      [
+        'Credentials with wrong password',
+        [userInput.emailAddress, faker.internet.password()],
+      ],
+    ] satisfies [string, null | [string, string]][])(
+      '%s yield 401 for POST, PUT, and DELETE',
+      async (_, credentials) => {
+        // Get URLs for POST, PUT, and DELETE
+        const postUrl = endpoint('/api/courses');
+        const putDelUrl = endpoint(
+          `/api/courses/${encodeURIComponent(courseIds[0])}`
+        );
+
+        // Generate shared request options from credentials
+        const encodedCredentials = credentials
+          ? Buffer.from(credentials.join(':')).toString('base64')
+          : undefined;
+        const reqOptions = {
+          headers: encodedCredentials
+            ? {
+                Authorization: `Basic ${encodedCredentials}`,
+              }
+            : undefined,
+        } satisfies RequestInit;
+
+        // Make the requests
+        const responses = await Promise.all([
+          handler(
+            new Request(postUrl, {
+              ...reqOptions,
+              method: 'POST',
+            })
+          ),
+          handler(
+            new Request(putDelUrl, {
+              ...reqOptions,
+              method: 'PUT',
+            })
+          ),
+          handler(
+            new Request(putDelUrl, {
+              ...reqOptions,
+              method: 'DELETE',
+            })
+          ),
+        ]);
+
+        // Expect each request to have failed with a 401
+        for (const res of responses) {
+          expect(res.ok).toBe(false);
+          expect(res.status).toBe(401);
+          expect(res.headers.get('Content-Type')).toBe('application/json');
+        }
+      }
+    );
 
     test.todo('POST /api/courses');
     test.todo('PUT /api/courses/:id');
