@@ -147,7 +147,24 @@ describe('API Integration tests, course-related routes', () => {
     );
   });
 
-  test.todo('POST /api/courses');
-  test.todo('PUT /api/courses/:id');
-  test.todo('DELETE /api/courses/:id');
+  describe('Authenticated routes', () => {
+    const userInput = fakeUserInput();
+    const [courseInput] = fakeCourses(1);
+
+    beforeAll(async () => {
+      const prisma = scope.resolve('prisma');
+
+      await prisma.user.create({
+        data: await userWithCourses(userInput, [courseInput]),
+      });
+
+      return async () => {
+        await truncateTables(databaseUrl);
+      };
+    });
+
+    test.todo('POST /api/courses');
+    test.todo('PUT /api/courses/:id');
+    test.todo('DELETE /api/courses/:id');
+  });
 });
