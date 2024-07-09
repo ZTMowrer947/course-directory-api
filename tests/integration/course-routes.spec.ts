@@ -12,6 +12,7 @@ import {
 } from '~/selects/course.ts';
 import { CourseService } from '~/services/course.ts';
 import { UserService } from '~/services/user.ts';
+import type { CourseInputData } from '~/validation/course.ts';
 import {
   dropTestDb,
   generateTestDbUrl,
@@ -153,6 +154,7 @@ describe('API Integration tests, course-related routes', () => {
     const userInputs = Array.from({ length: 2 }, () => fakeUserInput());
     const [courseInput] = fakeCourses(courseCount);
     const courseIds = Array.from({ length: courseCount + 1 }, () => 999);
+    const [newCourseInput] = fakeCourses(1);
 
     beforeAll(async () => {
       const prisma = scope.resolve('prisma');
@@ -245,7 +247,53 @@ describe('API Integration tests, course-related routes', () => {
       }
     );
 
-    test.todo('POST /api/courses');
+    test.each([
+      ['empty fields input', 400, { title: '', description: '' }],
+      ['valid input', 201, newCourseInput],
+    ] satisfies [string, number, CourseInputData][])(
+      'POST /api/course handles %s with %i status',
+      async (_, status, input) => {
+        // Setup request
+        const url = endpoint('/api/courses');
+        const credentials = [
+          userInputs[0].emailAddress,
+          userInputs[0].password,
+        ].join(':');
+        const encodedCredentials = Buffer.from(credentials).toString('base64');
+        const req = new Request(url, {
+          method: 'POST',
+          body: JSON.stringify(input),
+          headers: {
+            Authorization: `Basic ${encodedCredentials}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const prisma = scope.resolve('prisma');
+
+        // Make request and attempt to fetch new course afterwards
+        const res = await handler(req);
+        const newCourse = await prisma.course.findFirst({
+          where: {
+            title: input.title,
+          },
+          select: courseDetail(),
+        });
+
+        // Expect JSON response of correct status
+        expect(res.status).toBe(status);
+        expect(res.headers.get('Content-Type')).toBe('application/json');
+
+        if (status === 201) {
+          // Expect response body to match new course from database if successful
+          expect(newCourse).not.toBeNull();
+          await expect(res.json()).resolves.toStrictEqual(newCourse);
+        } else {
+          expect(newCourse).toBeNull();
+        }
+      }
+    );
+
     test.todo('PUT /api/courses/:id');
 
     test.each([
