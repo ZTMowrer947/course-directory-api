@@ -21,7 +21,7 @@ import {
 } from '~tests/db.ts';
 
 import { fakeCourses, fakeUserInput } from './fake.ts';
-import { userWithCourses } from './selects.ts';
+import { userFromInput, userWithCourses } from './selects.ts';
 import { endpoint } from './utils.ts';
 
 describe('API Integration tests, course-related routes', () => {
@@ -150,15 +150,15 @@ describe('API Integration tests, course-related routes', () => {
 
   describe('Authenticated routes', () => {
     const courseCount = 1;
-    const userInput = fakeUserInput();
+    const userInputs = Array.from({ length: 2 }, () => fakeUserInput());
     const [courseInput] = fakeCourses(courseCount);
-    const courseIds = Array.from({ length: courseCount }, () => -1);
+    const courseIds = Array.from({ length: courseCount + 1 }, () => 999);
 
     beforeAll(async () => {
       const prisma = scope.resolve('prisma');
 
       const result = await prisma.user.create({
-        data: await userWithCourses(userInput, [courseInput]),
+        data: await userWithCourses(userInputs[0], [courseInput]),
         select: {
           courses: {
             select: {
@@ -166,6 +166,11 @@ describe('API Integration tests, course-related routes', () => {
             },
           },
         },
+      });
+
+      // Create a second user to test 403's
+      await prisma.user.create({
+        data: await userFromInput(userInputs[1]),
       });
 
       const mappedIds = result.courses.map((c) => c.id);
@@ -186,7 +191,7 @@ describe('API Integration tests, course-related routes', () => {
       ],
       [
         'Credentials with wrong password',
-        [userInput.emailAddress, faker.internet.password()],
+        [userInputs[0].emailAddress, faker.internet.password()],
       ],
     ] satisfies [string, null | [string, string]][])(
       '%s yield 401 for POST, PUT, and DELETE',
@@ -242,6 +247,35 @@ describe('API Integration tests, course-related routes', () => {
 
     test.todo('POST /api/courses');
     test.todo('PUT /api/courses/:id');
-    test.todo('DELETE /api/courses/:id');
+
+    test.each([
+      ['nonexistent course', 404, 0, 1],
+      ['course being deleted by user other than owner', 403, 1, 0],
+      ['course being deleted by owner', 204, 0, 0],
+    ] satisfies [string, number, number, number][])(
+      'DELETE /api/course/:id handles %s with %i status',
+      async (_, status, userIdx, courseIdx) => {
+        // Setup request
+        const courseId = courseIds[courseIdx];
+        const url = endpoint(`/api/courses/${encodeURIComponent(courseId)}`);
+        const credentials = [
+          userInputs[userIdx].emailAddress,
+          userInputs[userIdx].password,
+        ].join(':');
+        const encodedCredentials = Buffer.from(credentials).toString('base64');
+        const req = new Request(url, {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Basic ${encodedCredentials}`,
+          },
+        });
+
+        // Make request
+        const res = await handler(req);
+
+        // Expect status to match fixture data
+        expect(res.status).toBe(status);
+      }
+    );
   });
 });
