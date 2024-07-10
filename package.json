@@ -1,7 +1,7 @@
 {
   "name": "course-directory-api",
-  "version": "2.1.9",
-  "description": "Treehouse FSJS Techdegree Unit 9 Project - A School database REST API",
+  "version": "3.0.0",
+  "description": "Simple Course Directory REST API",
   "main": "index.js",
   "type": "module",
   "scripts": {
