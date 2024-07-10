@@ -1,6 +1,7 @@
 import { createError, createRouter, eventHandler, setResponseStatus } from 'h3';
 
 import { getUserOrFail } from '~/composables/auth.ts';
+import { useCORS } from '~/composables/cors';
 import { getDependency } from '~/composables/di.ts';
 import readValidatedBody from '~/composables/validate.ts';
 import type { AuthedUser } from '~/selects/user.ts';
@@ -10,12 +11,33 @@ import { UserInput } from '~/validation/user.ts';
 const users = createRouter();
 
 // GET /api/users: Retrieves authenticated user, or 401's if authentication fails.
-users.get('/users', eventHandler(getUserOrFail));
+users.get(
+  '/users',
+  eventHandler((event) => {
+    // Handle CORS
+    const didHandleCors = useCORS(event, {
+      methods: ['GET', 'HEAD', 'POST'],
+      credentials: true,
+    });
+
+    if (didHandleCors) return;
+
+    return getUserOrFail(event);
+  })
+);
 
 // POST /api/users: Creates a new user, 400's if data is invalid.
 users.post(
   '/users',
   eventHandler(async (event) => {
+    // Handle CORS
+    const didHandleCors = useCORS(event, {
+      methods: ['GET', 'HEAD', 'POST'],
+      credentials: false,
+    });
+
+    if (didHandleCors) return;
+
     // Validate request body
     const userInput = await readValidatedBody(event, UserInput);
 

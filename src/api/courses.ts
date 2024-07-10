@@ -7,6 +7,7 @@ import {
 } from 'h3';
 
 import { getUserOrFail } from '~/composables/auth.ts';
+import { useCORS } from '~/composables/cors';
 import { getDependency } from '~/composables/di.ts';
 import readValidatedBody from '~/composables/validate.ts';
 import { CourseInput } from '~/validation/course.ts';
@@ -16,13 +17,31 @@ const courses = createRouter();
 // GET /api/courses: Retrive list of all courses
 courses.get(
   '/courses',
-  eventHandler(async (event) => getDependency(event, 'courseService').getAll())
+  eventHandler(async (event) => {
+    // Handle CORS
+    const didHandleCors = useCORS(event, {
+      methods: ['GET', 'HEAD', 'POST'],
+      credentials: false,
+    });
+
+    if (didHandleCors) return;
+
+    return getDependency(event, 'courseService').getAll();
+  })
 );
 
 // POST /api/courses/:id, creates a new post
 courses.post(
   '/courses',
   eventHandler(async (event) => {
+    // Handle CORS
+    const didHandleCors = useCORS(event, {
+      methods: ['GET', 'HEAD', 'POST'],
+      credentials: true,
+    });
+
+    if (didHandleCors) return;
+
     // Validate authentication, then course data
     const user = await getUserOrFail(event);
     const courseData = await readValidatedBody(event, CourseInput);
@@ -46,6 +65,14 @@ courses.post(
 courses.get(
   '/courses/:id',
   eventHandler(async (event) => {
+    // Handle CORS
+    const didHandleCors = useCORS(event, {
+      methods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'],
+      credentials: false,
+    });
+
+    if (didHandleCors) return;
+
     // Parse ID route parameter
     const idParam = event.context.params?.id ?? '';
     const id = Number.parseInt(idParam, 10);
@@ -70,6 +97,14 @@ courses.get(
 courses.put(
   '/courses/:id',
   eventHandler(async (event) => {
+    // Handle CORS
+    const didHandleCors = useCORS(event, {
+      methods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'],
+      credentials: true,
+    });
+
+    if (didHandleCors) return;
+
     const user = await getUserOrFail(event);
 
     // Parse ID route parameter
@@ -102,6 +137,14 @@ courses.put(
 courses.delete(
   '/courses/:id',
   eventHandler(async (event) => {
+    // Handle CORS
+    const didHandleCors = useCORS(event, {
+      methods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'],
+      credentials: true,
+    });
+
+    if (didHandleCors) return;
+
     const user = await getUserOrFail(event);
 
     // Parse ID route parameter
