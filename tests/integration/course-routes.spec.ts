@@ -154,7 +154,11 @@ describe('API Integration tests, course-related routes', () => {
     const userInputs = Array.from({ length: 2 }, () => fakeUserInput());
     const [courseInput] = fakeCourses(courseCount);
     const courseIds = Array.from({ length: courseCount + 1 }, () => 999);
-    const [newCourseInput] = fakeCourses(1);
+    const [newCourseInput, updateCourseInput] = fakeCourses(2);
+    const emptyCourseInput = {
+      title: '',
+      description: '',
+    } satisfies CourseInputData;
 
     beforeAll(async () => {
       const prisma = scope.resolve('prisma');
@@ -290,6 +294,69 @@ describe('API Integration tests, course-related routes', () => {
           await expect(res.json()).resolves.toStrictEqual(newCourse);
         } else {
           expect(newCourse).toBeNull();
+        }
+      }
+    );
+
+    test.each([
+      ['nonexistent course', 404, 0, 1, emptyCourseInput],
+      [
+        'course being updated by user other than owner',
+        403,
+        1,
+        0,
+        emptyCourseInput,
+      ],
+      ['invalid course update input', 400, 0, 0, emptyCourseInput],
+      ['valid course update input', 204, 0, 0, updateCourseInput],
+    ] satisfies [string, number, number, number, CourseInputData][])(
+      'PUT /api/courses/:id handles %s with %i status',
+      async (_, status, userIdx, courseIdx, input) => {
+        // Setup request
+        const courseId = courseIds[courseIdx];
+        const url = endpoint(`/api/courses/${encodeURIComponent(courseId)}`);
+        const credentials = [
+          userInputs[userIdx].emailAddress,
+          userInputs[userIdx].password,
+        ].join(':');
+        const encodedCredentials = Buffer.from(credentials).toString('base64');
+        const req = new Request(url, {
+          method: 'PUT',
+          headers: {
+            Authorization: `Basic ${encodedCredentials}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(input),
+        });
+
+        const prisma = scope.resolve('prisma');
+
+        // Make request and fetch updated course afterwards
+        const res = await handler(req);
+        const updatedCourse = await prisma.course.findUnique({
+          where: {
+            id: courseId,
+          },
+          select: {
+            title: true,
+            description: true,
+            estimatedTime: true,
+            materialsNeeded: true,
+          },
+        });
+
+        // Expect correct responst status, and that course was found if it did exist at all
+        expect(res.status).toBe(status);
+
+        if (status === 404) {
+          // 404, course shouldn't have been found in database either
+          expect(updatedCourse).toBeNull();
+        } else if (status !== 204) {
+          // Non-404 but still error, course should be unchanged
+          expect(updatedCourse).toStrictEqual(courseInput);
+        } else {
+          // Success, course should match update
+          expect(updatedCourse).toStrictEqual(updateCourseInput);
         }
       }
     );
