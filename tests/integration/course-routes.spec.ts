@@ -361,8 +361,6 @@ describe('API Integration tests, course-related routes', () => {
       }
     );
 
-    test.todo('PUT /api/courses/:id');
-
     test.each([
       ['nonexistent course', 404, 0, 1],
       ['course being deleted by user other than owner', 403, 1, 0],
