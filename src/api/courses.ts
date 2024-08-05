@@ -9,7 +9,7 @@ import {
 import { getUserOrFail } from '~/composables/auth.ts';
 import { useCORS } from '~/composables/cors';
 import { getDependency } from '~/composables/di.ts';
-import readValidatedBody from '~/composables/validate.ts';
+import readSuperstructValidatedBody from '~/composables/validate.ts';
 import { CourseInput } from '~/validation/course.ts';
 
 const courses = createRouter();
@@ -44,7 +44,7 @@ courses.post(
 
     // Validate authentication, then course data
     const user = await getUserOrFail(event);
-    const courseData = await readValidatedBody(event, CourseInput);
+    const courseData = await readSuperstructValidatedBody(event, CourseInput);
 
     // Attempt to create course, attaching to authenticated user
     const service = getDependency(event, 'courseService');
@@ -124,7 +124,7 @@ courses.put(
       });
 
     // Parse request body for update data
-    const updateData = await readValidatedBody(event, CourseInput);
+    const updateData = await readSuperstructValidatedBody(event, CourseInput);
 
     // Perform the update, return 204 if successful
     await service.update(courseToUpdate, updateData);

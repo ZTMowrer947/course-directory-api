@@ -3,7 +3,7 @@ import { createError, createRouter, eventHandler, setResponseStatus } from 'h3';
 import { getUserOrFail } from '~/composables/auth.ts';
 import { useCORS } from '~/composables/cors';
 import { getDependency } from '~/composables/di.ts';
-import readValidatedBody from '~/composables/validate.ts';
+import readSuperstructValidatedBody from '~/composables/validate.ts';
 import type { AuthedUser } from '~/selects/user.ts';
 import { DuplicateEmailError } from '~/services/user';
 import { UserInput } from '~/validation/user.ts';
@@ -39,7 +39,7 @@ users.post(
     if (didHandleCors) return;
 
     // Validate request body
-    const userInput = await readValidatedBody(event, UserInput);
+    const userInput = await readSuperstructValidatedBody(event, UserInput);
 
     const service = getDependency(event, 'userService');
 

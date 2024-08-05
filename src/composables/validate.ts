@@ -2,9 +2,9 @@ import {
   createError,
   type EventHandlerRequest,
   type H3Event,
-  readBody,
+  readValidatedBody,
 } from 'h3';
-import { assert, type Struct, StructError } from 'superstruct';
+import { create, type Struct, StructError } from 'superstruct';
 
 export class ValidationError extends Error {
   readonly errors: Record<string, string[]>;
@@ -54,39 +54,38 @@ export class ValidationError extends Error {
   }
 }
 
-export function assertDataMatches<T>(
-  data: unknown,
-  schema: Struct<T>
-): asserts data is T {
+function validateInput<T>(data: unknown, struct: Struct<T>): T {
   try {
-    assert(data, schema);
+    // Coerce data into struct format
+    return create(data, struct);
   } catch (err) {
-    if (err instanceof StructError) {
-      const validationErr = new ValidationError(err);
-      validationErr.cause =
-        process.env.NODE_ENV !== 'production' ? err : undefined;
+    // Rethrow any non-validation error
+    if (!(err instanceof StructError)) throw err;
 
-      throw validationErr;
-    } else {
-      throw err;
-    }
+    // Create and throw ValidationError
+    const validationErr = new ValidationError(err);
+    validationErr.cause =
+      process.env.NODE_ENV !== 'production' ? err : undefined;
+
+    throw validationErr;
   }
 }
 
-export default async function readValidatedBody<T>(
+export default async function readSuperstructValidatedBody<T>(
   event: H3Event<EventHandlerRequest>,
-  schema: Struct<T>
+  struct: Struct<T>
 ): Promise<T> {
-  const body = await readBody(event);
+  let body: T;
 
   try {
-    assertDataMatches(body, schema);
+    body = await readValidatedBody(event, (input) =>
+      validateInput(input, struct)
+    );
   } catch (err) {
     if (!(err instanceof ValidationError)) throw err;
 
     throw createError({
       status: 400,
-      statusMessage: err.message,
       data: err,
     });
   }
