@@ -1,6 +1,6 @@
 {
   "name": "course-directory-api",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Simple Course Directory REST API",
   "main": "index.js",
   "type": "module",
